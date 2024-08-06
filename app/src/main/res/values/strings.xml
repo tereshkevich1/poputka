@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">poputka</string>
+
+    //auth Screen
+    <string name="auth_screen_title">Войти или создать профиль</string>
+    <string name="phone_number_label">Контакный телефон</string>"
+    <string name="get_code_button_text">Получить код</string>
+
 </resources>

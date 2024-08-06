@@ -50,6 +50,8 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.compose.bom.v20240600))
+    implementation(libs.material3)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
