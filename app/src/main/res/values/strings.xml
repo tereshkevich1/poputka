@@ -6,4 +6,10 @@
     <string name="phone_number_label">Контакный телефон</string>"
     <string name="get_code_button_text">Получить код</string>
 
+    //SMS Verification Screen
+    <string name="sms_verification_screen_title">Мы отправили вам СМС-код</string>
+    <string name="instructions_text">Введите полученный код из СМС для авторизации</string>
+    <string name="retry_the_code_via">Отправить код повторно через</string>
+    <string name="retry_the_code">Отправить код повторно</string>
+    <string name="sign_in_text">Войти</string>
 </resources>

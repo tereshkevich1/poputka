@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.AuthScreen
+package com.example.poputka.presentation.auth_screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,14 +21,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.poputka.R
-import com.example.poputka.presentation.AuthScreen.components.PhoneNumberInputRow
-import com.example.poputka.presentation.AuthScreen.util.NUMERIC_REGEX
+import com.example.poputka.presentation.auth_screen.components.PhoneNumberInputRow
+import com.example.poputka.presentation.auth_screen.util.NUMERIC_REGEX
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
-fun AuthScreen() {
-
+fun AuthScreen(authViewModel: AuthViewModel = hiltViewModel()) {
     val authTitle = stringResource(id = R.string.auth_screen_title)
     val phoneNumberLabel = stringResource(id = R.string.phone_number_label)
     val getCodeButtonText = stringResource(id = R.string.get_code_button_text)
@@ -73,7 +73,7 @@ fun AuthScreen() {
             )
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { authViewModel.sendVerificationCode(phoneNumber) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),

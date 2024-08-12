@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.AuthScreen.util
+package com.example.poputka.presentation.auth_screen.util
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
