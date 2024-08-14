@@ -1,18 +1,18 @@
 package com.example.poputka.data.repository
 
 import com.example.poputka.data.remote.data_source.AuthenticationDataSource
+import com.example.poputka.data.remote.util.AuthFirebaseResult
 import com.example.poputka.data.remote.util.NetworkResult
 import com.example.poputka.domain.repository.AuthenticationRepository
 import com.google.firebase.auth.AuthResult
-import kotlinx.coroutines.flow.Flow
+import com.google.firebase.auth.PhoneAuthCredential
 import javax.inject.Inject
 
 class AuthenticationRepositoryImpl @Inject constructor(private val authenticationDataSource: AuthenticationDataSource) :
     AuthenticationRepository {
-    override suspend fun login(phoneNumber: String): Flow<NetworkResult<AuthResult>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): NetworkResult<AuthResult> =
+        authenticationDataSource.signInWithPhoneAuthCredential(credential)
 
-    override suspend fun sendVerificationCode(phoneNumber: String): NetworkResult<String> =
+    override suspend fun sendVerificationCode(phoneNumber: String): AuthFirebaseResult =
         authenticationDataSource.sendVerificationCode(phoneNumber)
 }

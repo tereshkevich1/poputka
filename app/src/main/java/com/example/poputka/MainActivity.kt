@@ -8,7 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.poputka.presentation.auth_screen.AuthScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.poputka.presentation.navigation.AuthNavHost
 import com.example.poputka.ui.theme.PoputkaTheme
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +22,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PoputkaTheme {
-                AuthScreen()
+                AuthNavHost(
+                    modifier = Modifier,
+                    navController = rememberNavController()
+                )
             }
         }
     }
