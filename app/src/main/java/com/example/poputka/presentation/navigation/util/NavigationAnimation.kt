@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.navigation
+package com.example.poputka.presentation.navigation.util
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -8,20 +8,20 @@ import androidx.compose.animation.slideOutHorizontally
 
 fun enterSlideTransition(): EnterTransition = slideInHorizontally(
     initialOffsetX = { fullWidth -> fullWidth },
-    animationSpec = tween(700)
+    animationSpec = tween(500)
 )
 
 fun exitSlideTransition(): ExitTransition = slideOutHorizontally(
     targetOffsetX = { fullWidth -> -fullWidth },
-    animationSpec = tween(700)
+    animationSpec = tween(500)
 )
 
 fun popEnterSlideTransition(): EnterTransition = slideInHorizontally(
     initialOffsetX = { fullWidth -> -fullWidth },
-    animationSpec = tween(700)
+    animationSpec = tween(500)
 )
 
 fun popExitSlideTransition(): ExitTransition = slideOutHorizontally(
     targetOffsetX = { fullWidth -> fullWidth },
-    animationSpec = tween(700)
+    animationSpec = tween(500)
 )

@@ -22,15 +22,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.poputka.R
 import com.example.poputka.presentation.auth_screen.components.PhoneNumberInputRow
 import com.example.poputka.presentation.auth_screen.util.NUMERIC_REGEX
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
-fun AuthScreen(navController: NavController, authViewModel: AuthViewModel = hiltViewModel()) {
+fun AuthScreen(onNavigateToComposable: () -> Unit, authViewModel: AuthViewModel = hiltViewModel()) {
     val authTitle = stringResource(id = R.string.auth_screen_title)
     val phoneNumberLabel = stringResource(id = R.string.phone_number_label)
     val getCodeButtonText = stringResource(id = R.string.get_code_button_text)
@@ -75,9 +73,10 @@ fun AuthScreen(navController: NavController, authViewModel: AuthViewModel = hilt
             )
 
             Button(
-                onClick = { authViewModel.sendVerificationCode("+375$phoneNumber")
-                          //navController.navigate(Screen.SmsVerification.name)
-                    },
+                onClick = {
+                    authViewModel.sendVerificationCode("+375$phoneNumber")
+                    onNavigateToComposable()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
@@ -93,6 +92,6 @@ fun AuthScreen(navController: NavController, authViewModel: AuthViewModel = hilt
 @Preview
 fun AuthScreenPreview() {
     PoputkaTheme {
-        AuthScreen(rememberNavController())
+        AuthScreen({})
     }
 }
