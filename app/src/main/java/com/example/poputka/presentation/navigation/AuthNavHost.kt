@@ -7,8 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.poputka.presentation.auth_screen.AuthScreen
-import com.example.poputka.presentation.auth_screen.AuthViewModel
+import com.example.poputka.presentation.authorization.auth_screen.AuthScreen
+import com.example.poputka.presentation.authorization.auth_screen.AuthViewModel
 import com.example.poputka.presentation.navigation.nav_items.NavigationItem
 import com.example.poputka.presentation.navigation.util.enterSlideTransition
 import com.example.poputka.presentation.navigation.util.exitSlideTransition
@@ -17,7 +17,7 @@ import com.example.poputka.presentation.navigation.util.navigateIfResumed
 import com.example.poputka.presentation.navigation.util.popEnterSlideTransition
 import com.example.poputka.presentation.navigation.util.popExitSlideTransition
 import com.example.poputka.presentation.navigation.util.sharedViewModel
-import com.example.poputka.presentation.sms_verification_screen.SMSVerificationScreen
+import com.example.poputka.presentation.authorization.sms_verification_screen.SMSVerificationScreen
 
 @Composable
 fun AuthNavHost(

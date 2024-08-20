@@ -15,4 +15,10 @@ class AuthenticationRepositoryImpl @Inject constructor(private val authenticatio
 
     override suspend fun sendVerificationCode(phoneNumber: String): AuthFirebaseResult =
         authenticationDataSource.sendVerificationCode(phoneNumber)
+
+    override suspend fun getCredential(
+        verificationId: String,
+        code: String
+    ): NetworkResult<PhoneAuthCredential> =
+        authenticationDataSource.getCredential(verificationId, code)
 }

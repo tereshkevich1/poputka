@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.auth_screen
+package com.example.poputka.presentation.authorization.auth_screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,8 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.poputka.R
-import com.example.poputka.presentation.auth_screen.components.PhoneNumberInputRow
-import com.example.poputka.presentation.auth_screen.util.NUMERIC_REGEX
+import com.example.poputka.presentation.authorization.auth_screen.components.PhoneNumberInputRow
+import com.example.poputka.presentation.authorization.auth_screen.util.NUMERIC_REGEX
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable

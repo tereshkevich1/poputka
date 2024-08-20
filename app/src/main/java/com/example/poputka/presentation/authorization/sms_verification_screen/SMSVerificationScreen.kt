@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.poputka.presentation.sms_verification_screen
+package com.example.poputka.presentation.authorization.sms_verification_screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,11 +14,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -34,8 +39,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.poputka.R
-import com.example.poputka.presentation.auth_screen.AuthViewModel
-import com.example.poputka.presentation.sms_verification_screen.components.TopAppBar
+import com.example.poputka.presentation.authorization.auth_screen.AuthViewModel
+import com.example.poputka.presentation.authorization.auth_screen.util.SendVerificationCodeState
+import com.example.poputka.presentation.authorization.sms_verification_screen.components.TopAppBar
+import com.example.poputka.presentation.util.CODE_LENGTH
+import com.example.poputka.presentation.util.ScreenUIState
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
@@ -45,6 +53,37 @@ fun SMSVerificationScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
     smsVerificationViewModel: SMSVerificationViewModel = hiltViewModel()
 ) {
+    val sendCodeState by authViewModel.sendCodeState.collectAsState()
+    val signInState by authViewModel.signInState.collectAsState()
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    when(sendCodeState){
+        is SendVerificationCodeState.Loading -> {
+        }
+        is SendVerificationCodeState.VerificationCodeSent -> {
+
+        }
+        is SendVerificationCodeState.Error -> {
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar((sendCodeState as SendVerificationCodeState.Error).message)
+            }
+        }
+
+        is SendVerificationCodeState.PhoneNumberVerified ->{
+
+        }
+
+        SendVerificationCodeState.Empty -> {}
+    }
+
+    when(signInState){
+        ScreenUIState.Empty -> {}
+        is ScreenUIState.Error -> {}
+        ScreenUIState.Loading -> {}
+        is ScreenUIState.Success -> { onNavigateToComposable()}
+    }
+
     val smsVerifTitle = stringResource(id = R.string.sms_verification_screen_title)
     val instructionsText = stringResource(id = R.string.instructions_text)
     val retryViaButtonText = stringResource(id = R.string.retry_the_code_via)
@@ -71,7 +110,7 @@ fun SMSVerificationScreen(
                 title = appBarTitle,
                 onBackPressed = onBackPressed
             )
-        })
+        }, snackbarHost = { SnackbarHost(snackbarHostState)})
     { innerPadding ->
         Column(
             modifier = Modifier
@@ -90,8 +129,8 @@ fun SMSVerificationScreen(
             OutlinedTextField(
                 value = verificationCode,
                 onValueChange = {
-                    verificationCode = if (it.length >= 4) {
-                        it.substring(0..3)
+                    verificationCode = if (it.length >= CODE_LENGTH) {
+                        it.substring(0..<CODE_LENGTH)
                     } else it
                 },
                 modifier = Modifier
@@ -126,7 +165,9 @@ fun SMSVerificationScreen(
             )
 
             Button(
-                onClick = { onNavigateToComposable() },
+                onClick = {
+                    authViewModel.getCredential(authViewModel.verificationId, verificationCode)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),

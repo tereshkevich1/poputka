@@ -8,4 +8,5 @@ import com.google.firebase.auth.PhoneAuthCredential
 interface AuthenticationDataSource {
     suspend fun sendVerificationCode(phoneNumber: String): AuthFirebaseResult
     suspend fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): NetworkResult<AuthResult>
+    suspend fun getCredential(verificationId: String, code: String): NetworkResult<PhoneAuthCredential>
 }

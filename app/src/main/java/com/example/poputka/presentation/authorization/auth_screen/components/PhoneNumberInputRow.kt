@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.auth_screen.components
+package com.example.poputka.presentation.authorization.auth_screen.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.KeyboardType
 import com.example.poputka.R
-import com.example.poputka.presentation.auth_screen.util.NanpVisualTransformation
+import com.example.poputka.presentation.authorization.auth_screen.util.NanpVisualTransformation
 
 @Composable
 fun PhoneNumberInputRow(

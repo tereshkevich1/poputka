@@ -1,6 +1,5 @@
 package com.example.poputka.data.remote.data_source
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.poputka.data.remote.util.AuthFirebaseResult
 import com.example.poputka.data.remote.util.NetworkResult
@@ -75,7 +74,7 @@ class AuthenticationDataSourceImpl @Inject constructor(private val auth: Firebas
                         continuation.resume(NetworkResult.Success(task.result!!))
                     } else {
                         // Sign in failed, display a message and update the UI
-                        Log.w(TAG, "signInWithCredential:failure", task.exception)
+                        Log.w("TAG", "signInWithCredential:failure", task.exception)
                         if (task.exception is FirebaseAuthInvalidCredentialsException) {
                             // The verification code entered was invalid
                             continuation.resume(
@@ -89,4 +88,12 @@ class AuthenticationDataSourceImpl @Inject constructor(private val auth: Firebas
                 }
         }
 
+    override suspend fun getCredential(verificationId: String, code: String): NetworkResult<PhoneAuthCredential> {
+        return try {
+            val credential = PhoneAuthProvider.getCredential(verificationId, code)
+            NetworkResult.Success(credential)
+        } catch (e: Exception) {
+            NetworkResult.Exception(e)
+        }
+    }
 }
