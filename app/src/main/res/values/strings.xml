@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">poputka</string>
+
+    //auth Screen
+    <string name="auth_screen_title">Log in or create a profile</string>
+    <string name="phone_number_label">Contact phone number</string>"
+    <string name="get_code_button_text">Get Code</string>
+
+    //SMS Verification Screen
+    <string name="sms_verification_screen_title">We texted you a code</string>
+    <string name="instructions_text">Enter the received code from SMS for authorization</string>
+    <string name="retry_the_code_via">Resend the code via</string>
+    <string name="retry_the_code">Resend code</string>
+    <string name="sign_in_text">Sign in</string>
+    <string name="sms_verification_app_bar_title">Authorization</string>
+    <string name="sms_code_input_label">000000</string>
+
+    <string name="error_default">Произошла ошибка. Пожалуйста, попробуйте снова позже.</string>
+    <string name="error_network">Проблема с подключением. Пожалуйста, проверьте интернет-соединение.</string>
+    <string name="error_invalid_phone">Неправильный номер телефона. Пожалуйста, проверьте введенные данные.</string>
+    <string name="error_code_sending">Не удалось отправить код. Пожалуйста, проверьте номер телефона и попробуйте снова.</string>
 </resources>
