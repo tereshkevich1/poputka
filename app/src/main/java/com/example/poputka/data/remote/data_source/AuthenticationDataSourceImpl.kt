@@ -1,5 +1,6 @@
 package com.example.poputka.data.remote.data_source
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.poputka.data.remote.util.AuthFirebaseResult
 import com.example.poputka.data.remote.util.NetworkResult
@@ -26,7 +27,7 @@ class AuthenticationDataSourceImpl @Inject constructor(private val auth: Firebas
                 .setTimeout(60L, java.util.concurrent.TimeUnit.SECONDS)
                 .setCallbacks(object : OnVerificationStateChangedCallbacks() {
                     override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                        Log.d("TAG", "onVerificationCompleted:$credential")
+                        Log.d(TAG, "onVerificationCompleted:$credential")
 
                         if (continuation.isActive) {
                             continuation.resume(AuthFirebaseResult.PhoneNumberVerified(credential) )
@@ -34,7 +35,7 @@ class AuthenticationDataSourceImpl @Inject constructor(private val auth: Firebas
                     }
 
                     override fun onVerificationFailed(e: FirebaseException) {
-                        Log.w("TAG", "onVerificationFailed", e)
+                        Log.w(TAG, "onVerificationFailed", e)
                         if (continuation.isActive) {
                             continuation.resume(AuthFirebaseResult.Exception(e))
                         }
@@ -44,7 +45,7 @@ class AuthenticationDataSourceImpl @Inject constructor(private val auth: Firebas
                          verificationId: String,
                          token: PhoneAuthProvider.ForceResendingToken,
                      ) {
-                         Log.d("TAG", "onCodeSent:$verificationId")
+                         Log.d("t", "onCodeSent:$verificationId")
                          if (continuation.isActive) {
                              continuation.resume(AuthFirebaseResult.VerificationCodeSent(verificationId))
                          }

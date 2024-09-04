@@ -2,6 +2,7 @@
 
 package com.example.poputka.presentation.authorization.sms_verification_screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -42,6 +42,7 @@ import com.example.poputka.R
 import com.example.poputka.presentation.authorization.auth_screen.AuthViewModel
 import com.example.poputka.presentation.authorization.auth_screen.util.SendVerificationCodeState
 import com.example.poputka.presentation.authorization.sms_verification_screen.components.TopAppBar
+import com.example.poputka.presentation.common.components.LoadingButton
 import com.example.poputka.presentation.util.CODE_LENGTH
 import com.example.poputka.presentation.util.ScreenUIState
 import com.example.poputka.ui.theme.PoputkaTheme
@@ -56,33 +57,8 @@ fun SMSVerificationScreen(
     val sendCodeState by authViewModel.sendCodeState.collectAsState()
     val signInState by authViewModel.signInState.collectAsState()
 
+    val messageIds by authViewModel.messageIds.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
-
-    when(sendCodeState){
-        is SendVerificationCodeState.Loading -> {
-        }
-        is SendVerificationCodeState.VerificationCodeSent -> {
-
-        }
-        is SendVerificationCodeState.Error -> {
-            LaunchedEffect(snackbarHostState) {
-                snackbarHostState.showSnackbar((sendCodeState as SendVerificationCodeState.Error).message)
-            }
-        }
-
-        is SendVerificationCodeState.PhoneNumberVerified ->{
-
-        }
-
-        SendVerificationCodeState.Empty -> {}
-    }
-
-    when(signInState){
-        ScreenUIState.Empty -> {}
-        is ScreenUIState.Error -> {}
-        ScreenUIState.Loading -> {}
-        is ScreenUIState.Success -> { onNavigateToComposable()}
-    }
 
     val smsVerifTitle = stringResource(id = R.string.sms_verification_screen_title)
     val instructionsText = stringResource(id = R.string.instructions_text)
@@ -90,6 +66,14 @@ fun SMSVerificationScreen(
     val retryButtonText = stringResource(id = R.string.retry_the_code)
     val signInButtonText = stringResource(id = R.string.sign_in_text)
     val appBarTitle = stringResource(id = R.string.sms_verification_app_bar_title)
+    val smsCodeInputLabel = stringResource(id = R.string.sms_code_input_label)
+
+    val inputTextStyle = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.Center)
+    val underlineTextStyle = MaterialTheme.typography.bodyMedium.copy(
+        color = Color.White,
+        textDecoration = TextDecoration.Underline
+    )
+    val titleTextStyle = MaterialTheme.typography.displaySmall
 
     val mediumPadding = dimensionResource(id = R.dimen.padding_medium)
     val largePadding = dimensionResource(id = R.dimen.padding_large)
@@ -102,15 +86,41 @@ fun SMSVerificationScreen(
 
     var verificationCode by rememberSaveable { mutableStateOf("") }
 
-    val inputTextStyle = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.Center)
+    val isLoading =
+        sendCodeState is SendVerificationCodeState.Loading || signInState is ScreenUIState.Loading
 
-    Scaffold(modifier = Modifier.fillMaxSize(),
+    Log.d("SMSVerificationScreen", "signInState: $sendCodeState")
+
+    when (sendCodeState) {
+        is SendVerificationCodeState.PhoneNumberVerified -> {
+            verificationCode =
+                (sendCodeState as SendVerificationCodeState.PhoneNumberVerified).credential.smsCode
+                    ?: ""
+        }
+
+        else -> Unit
+    }
+
+    when (signInState) {
+        is ScreenUIState.Success -> {
+            onNavigateToComposable()
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar("ВХОД")
+            }
+        }
+
+        else -> Unit
+    }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = appBarTitle,
                 onBackPressed = onBackPressed
             )
-        }, snackbarHost = { SnackbarHost(snackbarHostState)})
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) })
     { innerPadding ->
         Column(
             modifier = Modifier
@@ -120,7 +130,7 @@ fun SMSVerificationScreen(
         ) {
             Text(
                 text = smsVerifTitle,
-                style = MaterialTheme.typography.displaySmall,
+                style = titleTextStyle,
                 modifier = Modifier.padding(bottom = mediumPadding)
             )
 
@@ -140,7 +150,7 @@ fun SMSVerificationScreen(
                 textStyle = inputTextStyle,
                 placeholder = {
                     Text(
-                        text = "0000",
+                        text = smsCodeInputLabel,
                         modifier = Modifier.fillMaxWidth(),
                         style = inputTextStyle
                     )
@@ -153,10 +163,7 @@ fun SMSVerificationScreen(
             ClickableText(
                 text = AnnotatedString(displayText),
                 modifier = Modifier.padding(bottom = largePadding),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.White,
-                    textDecoration = TextDecoration.Underline
-                ),
+                style = underlineTextStyle,
                 onClick = {
                     if (isButtonEnabled) {
                         smsVerificationViewModel.disableButton()
@@ -164,17 +171,27 @@ fun SMSVerificationScreen(
                 }
             )
 
-            Button(
-                onClick = {
-                    authViewModel.getCredential(authViewModel.verificationId, verificationCode)
-                },
+            LoadingButton(
+                isLoading = isLoading,
+                buttonText = signInButtonText,
+                onClick = { authViewModel.getCredential(verificationCode) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(52.dp),
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Text(text = signInButtonText)
-            }
+                    .height(52.dp)
+            )
+        }
+    }
+
+    if (messageIds.isNotEmpty()) {
+        val messageId = messageIds.first()
+        val message = stringResource(id = messageId)
+
+        LaunchedEffect(key1 = messageId) {
+            snackbarHostState.showSnackbar(
+                message = message,
+                withDismissAction = true
+            )
+            authViewModel.setMessageShown(messageId)
         }
     }
 }

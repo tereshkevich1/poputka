@@ -71,11 +71,10 @@ fun AuthScreen(onNavigateToComposable: () -> Unit, authViewModel: AuthViewModel 
                 modifier = Modifier
                     .padding(bottom = innerPadding)
             )
-
             Button(
                 onClick = {
-                    authViewModel.sendVerificationCode("+375$phoneNumber")
                     onNavigateToComposable()
+                    authViewModel.sendVerificationCode("+375$phoneNumber")
                 },
                 modifier = Modifier
                     .fillMaxWidth()

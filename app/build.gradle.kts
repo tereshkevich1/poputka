@@ -59,6 +59,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     // Add the dependency for the Firebase Authentication library
     implementation(libs.google.firebase.auth)
+    implementation(libs.firebase.appcheck.playintegrity)
+    implementation (libs.androidx.browser)
+    implementation(libs.firebase.appcheck.debug)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
