@@ -15,7 +15,7 @@ object BarChartUtils {
             bottom = xAxisArea.top
         )
     }
-
+/*
     fun Bars.forEachWithArea(
         drawScope: DrawScope,
         barDrawableArea: Rect,
@@ -42,5 +42,5 @@ object BarChartUtils {
             )
             block(barArea, bar)
         }
-    }
+    }*/
 }
