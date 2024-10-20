@@ -85,6 +85,20 @@ class BarYAxisWithValueDrawer(
             val y = drawableArea.bottom - (i * (totalHeight / labelCount)) + (textBounds.height() / 2f)
 
             canvas.nativeCanvas.drawText(label, x, y, labelPaint)
+
+            canvas.drawLine(
+                p1 = Offset(
+                    x = x,
+                    y = y
+                ),
+                p2 = Offset(
+                    x = drawableArea.right,
+                    y = y
+                ),
+                paint = axisLinePaint.apply {
+                    strokeWidth = axisLineThickness.toPx()
+                }
+            )
         }
     }
 

@@ -33,10 +33,11 @@ import com.example.poputka.presentation.canvas.bar_graph.animation.fadeInAnimati
 import com.example.poputka.presentation.canvas.bar_graph.render.SimpleBarDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.BarXAxisDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.XAxisDrawer
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.ChartMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.DayMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.MonthMode
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.BaseChartMode
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.WeekMode
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers.DayMarkerLabelDrawer
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers.MarkerLabelDrawer
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers.SimpleMarkerLabelDrawer
 import com.example.poputka.presentation.canvas.bar_graph.yaxis.BarYAxisWithValueDrawer
 import com.example.poputka.presentation.canvas.bar_graph.yaxis.YAxisDrawer
 import kotlin.random.Random
@@ -47,8 +48,12 @@ fun BarChart(
     modifier: Modifier = Modifier,
     bars: Bars,
     animation: AnimationSpec<Float> = fadeInAnimation(),
-    chartMode: ChartMode,
-    xAxisDrawer: XAxisDrawer = BarXAxisDrawer(chartMode = chartMode),
+    chartMode: BaseChartMode,
+    markerLabelDrawer: MarkerLabelDrawer,
+    xAxisDrawer: XAxisDrawer = BarXAxisDrawer(
+        chartMode = chartMode,
+        markerLabelDrawer = markerLabelDrawer
+    ),
     yAxisDrawer: YAxisDrawer = BarYAxisWithValueDrawer()
 ) {
     val transitionAnimation = remember(bars.bars) { Animatable(initialValue = 0f) }
@@ -117,6 +122,7 @@ fun BarChartPreview() {
                 .height(500.dp),
             animation = fadeInAnimation(3000),
             chartMode = WeekMode(),
+            markerLabelDrawer = DayMarkerLabelDrawer()
         )
     }
 }
@@ -142,11 +148,12 @@ fun BarChartPreviewV2() {
 
 
         if (showChart) {
-            val numberOfBars = 31
+
+            val chartMode = WeekMode()
 
             BarChart(
                 bars = Bars(
-                    bars = (1..numberOfBars).map {
+                    bars = (1..chartMode.getBarCount()).map {
                         Bar(label = "BAR$it", value = Random.nextFloat()) { bar ->
 
                         }
@@ -154,9 +161,10 @@ fun BarChartPreviewV2() {
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp),
+                    .height(200.dp),
                 animation = fadeInAnimation(3000),
-                chartMode = MonthMode(31),
+                chartMode = chartMode,
+                markerLabelDrawer = SimpleMarkerLabelDrawer()
             )
         }
     }
