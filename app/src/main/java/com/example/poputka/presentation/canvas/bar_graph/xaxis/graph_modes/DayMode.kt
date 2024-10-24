@@ -1,12 +1,14 @@
 package com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes
 
-class DayMode : BaseChartMode(
-    labels = listOf("0", "4", "8",  "12",  "16",  "20",  "24"),
-    labelStep = 8,
-    barCount = 48,
-    barGapCoefficient = 0.2f
-){
-    override fun getMarkerCount(): Int {
-        return labels.size
+class DayMode(labelStep: Int = 8, barCount: Int = 48, barGapCoefficient: Float = 0.3f) :
+    BaseChartMode(
+        labels = generateDayLabels(labelStep),
+        labelStep = labelStep,
+        barCount = barCount,
+        barGapCoefficient = barGapCoefficient
+    ) {
+    companion object {
+        private fun generateDayLabels(step: Int): List<String> =
+            (0..24 / (step / 2)).map { (it * (step / 2)).toString() }
     }
 }

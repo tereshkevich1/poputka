@@ -6,7 +6,7 @@ abstract class BaseChartMode(
     private val barCount: Int,
     private val barGapCoefficient: Float
 ) {
-    open fun getMarkerCount(): Int = labels.size / labelStep
+    open fun getMarkerCount(): Int = labels.size
 
     fun getBarGapCoefficient(): Float = barGapCoefficient
 

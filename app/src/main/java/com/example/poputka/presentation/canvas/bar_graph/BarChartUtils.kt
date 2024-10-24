@@ -22,7 +22,7 @@ object BarChartUtils {
 
         return Pair(
             Rect(yAxisRight, xAxisTop, xAxisRight, xAxisBottom),
-            Rect(0f, 0f, yAxisRight, xAxisTop)
+            Rect(0f, 0f, xAxisRight, xAxisTop)
         )
     }
 
@@ -34,7 +34,6 @@ object BarChartUtils {
             bottom = xAxisArea.top
         )
     }
-
 
     fun Bars.forEachWithArea(
         barDrawableArea: Rect,
@@ -53,7 +52,7 @@ object BarChartUtils {
 
             val barArea = Rect(
                 left = left + barGapPx,
-                top = barDrawableArea.bottom - (bar.value / maxBarValue) * barHeight,
+                top = barDrawableArea.bottom - (bar.value / maxYValue) * barHeight,
                 right = left + widthOfBarArea - barGapPx,
                 bottom = barDrawableArea.bottom
             )

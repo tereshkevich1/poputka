@@ -1,8 +1,13 @@
 package com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes
 
-class WeekMode : BaseChartMode(
-    labels = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"),
-    labelStep = 1,
-    barCount = 7,
-    barGapCoefficient = 0.3f
+class WeekMode(
+    labels: List<String> = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"),
+    labelStep: Int = 1,
+    barCount: Int = labels.size,
+    barGapCoefficient: Float = 0.3f
+) : BaseChartMode(
+    labels = labels,
+    labelStep = labelStep,
+    barCount = barCount,
+    barGapCoefficient = barGapCoefficient
 )

@@ -51,7 +51,7 @@
       </SelectionState>
       <SelectionState runConfigName="BarChartPreviewV2">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-10-20T19:25:03.119337200Z">
+        <DropdownSelection timestamp="2024-10-22T11:45:21.445245300Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Sergey\.android\avd\Pixel_2_API_30.avd" />

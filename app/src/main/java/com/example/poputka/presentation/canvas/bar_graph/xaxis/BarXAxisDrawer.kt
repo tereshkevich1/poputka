@@ -12,7 +12,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.BaseChartMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers.MarkerLabelDrawer
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.DayMode
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers.SimpleMarkerLabelDrawer
 import com.example.poputka.presentation.canvas.common.toLegacyInt
 
 class BarXAxisDrawer(
@@ -21,7 +22,6 @@ class BarXAxisDrawer(
     private val labelTextSize: TextUnit = 12.sp,
     private val markerHeight: Float = 10f,
     private val labelMarkerSpacing: Float = 20f,
-    private val markerLabelDrawer: MarkerLabelDrawer,
     val chartMode: BaseChartMode,
 ) : XAxisDrawer {
 
@@ -29,6 +29,7 @@ class BarXAxisDrawer(
         isAntiAlias = true
         color = axisLineColor.toLegacyInt()
     }
+
     private val textBounds = android.graphics.Rect()
 
     private val axisLinePaint = Paint().apply {
@@ -37,15 +38,12 @@ class BarXAxisDrawer(
         style = PaintingStyle.Stroke
     }
 
-    private fun calculateMarkerAndLabelHeight(drawScope: DrawScope): Float = with(drawScope) {
+    override fun requiredHeight(drawScope: DrawScope): Float = with(drawScope) {
         textPaint.textSize = labelTextSize.toPx()
         textPaint.getTextBounds("0", 0, 1, textBounds)
         val textHeight = textBounds.height().toFloat()
         return textHeight + markerHeight + labelMarkerSpacing
     }
-
-    override fun requiredHeight(drawScope: DrawScope): Float =
-        calculateMarkerAndLabelHeight(drawScope)
 
     override fun drawAxisLine(drawScope: DrawScope, canvas: Canvas, drawableArea: Rect) =
         with(drawScope) {
@@ -54,11 +52,11 @@ class BarXAxisDrawer(
 
             canvas.drawLine(
                 p1 = Offset(
-                    x = drawableArea.left - axisLineThickness.toPx()/2,
+                    x = drawableArea.left - lineThickness / 2,
                     y = y
                 ),
                 p2 = Offset(
-                    x = drawableArea.right + axisLineThickness.toPx()/2,
+                    x = drawableArea.right + lineThickness / 2,
                     y = y
                 ),
                 paint = axisLinePaint.apply {
@@ -71,17 +69,32 @@ class BarXAxisDrawer(
         drawScope: DrawScope,
         canvas: Canvas,
         drawableArea: Rect
-    ) = markerLabelDrawer.drawMarkersAndLabels(
-        drawScope,
-        canvas,
-        drawableArea,
-        axisLinePaint,
-        textPaint,
-        markerHeight,
-        axisLineThickness,
-        labelMarkerSpacing,
-        labelTextSize,
-        chartMode,
-        textBounds
-    )
+    ) {
+        val markerLabelDrawer = when (chartMode) {
+            is DayMode -> SimpleMarkerLabelDrawer(
+                markerHeight,
+                axisLineThickness,
+                labelMarkerSpacing,
+                labelTextSize,
+                chartMode,
+                false
+            )
+
+            else -> SimpleMarkerLabelDrawer(
+                markerHeight,
+                axisLineThickness,
+                labelMarkerSpacing,
+                labelTextSize,
+                chartMode
+            )
+        }
+        markerLabelDrawer.drawMarkersAndLabels(
+            drawScope,
+            canvas,
+            drawableArea,
+            axisLinePaint,
+            textPaint,
+            textBounds
+        )
+    }
 }

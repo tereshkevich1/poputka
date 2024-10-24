@@ -2,7 +2,8 @@ package com.example.poputka.presentation.canvas.bar_graph
 
 data class Bars(
     val bars: List<Bar>,
-    val padBy: Float = 10f,
+    val achievementValue: Float,
+    val padBy: Float = 20f,
     val startAtZero: Boolean = true
 ) {
     init {
@@ -11,12 +12,16 @@ data class Bars(
 
     private val yMinMax: Pair<Float, Float>
         get() {
-            val min = bars.minByOrNull { it.value }?.value ?: 0f
-            val max = bars.maxByOrNull { it.value }?.value ?: 0f
-
+            val min = bars.minByOrNull { it.value }?.value?.coerceAtMost(achievementValue)
+                ?: achievementValue
+            val max = bars.maxByOrNull { it.value }?.value?.coerceAtLeast(achievementValue)
+                ?: achievementValue
             return min to max
         }
-    val maxYValue: Float = yMinMax.second + ((yMinMax.second - yMinMax.first) * padBy / 100f)
+
+    val maxYValue: Float = if (yMinMax.second == achievementValue) yMinMax.second
+    else yMinMax.second + ((yMinMax.second - yMinMax.first) * padBy / 100f)
+
     val minYValue: Float
         get() {
             return if (startAtZero) {
@@ -25,6 +30,4 @@ data class Bars(
                 yMinMax.first - ((yMinMax.second - yMinMax.first) * padBy / 100f)
             }
         }
-
-    val maxBarValue = bars.maxByOrNull { it.value }?.value ?: 0f
 }

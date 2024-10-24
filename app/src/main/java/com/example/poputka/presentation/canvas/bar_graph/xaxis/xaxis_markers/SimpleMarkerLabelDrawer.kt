@@ -11,55 +11,58 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.BaseChartMode
 
-
-class SimpleMarkerLabelDrawer : MarkerLabelDrawer {
+class SimpleMarkerLabelDrawer(
+    private val markerHeight: Float,
+    private val axisLineThickness: Dp,
+    private val labelMarkerSpacing: Float,
+    private val labelTextSize: TextUnit,
+    private val chartMode: BaseChartMode,
+    private val drawMarkersBetweenBars: Boolean = true
+) : MarkerLabelDrawer {
     override fun drawMarkersAndLabels(
         drawScope: DrawScope,
         canvas: Canvas,
         drawableArea: androidx.compose.ui.geometry.Rect,
         axisLinePaint: Paint,
         textPaint: android.graphics.Paint,
-        markerHeight: Float,
-        axisLineThickness: Dp,
-        labelMarkerSpacing: Float,
-        labelTextSize: TextUnit,
-        chartMode: BaseChartMode,
         textBounds: Rect
     ) = with(drawScope) {
 
-        val numberOfBars = chartMode.getBarCount()
-        val numberOfMarkers = chartMode.getMarkerCount() + 1
-
-        val labels = chartMode.retrieveLabels()
-        val labelStep = chartMode.getLabelStep()
-
-        val barWidth = drawableArea.width / numberOfBars
-
-        val lineThickness = axisLineThickness.toPx()
-        val y = drawableArea.top + (lineThickness / 2f)
         val labelPaint = textPaint.apply {
             textSize = labelTextSize.toPx()
             textAlign = Align.CENTER
         }
+        val labels = chartMode.retrieveLabels()
+        val labelStep = chartMode.getLabelStep()
 
+        val numberOfBars = chartMode.getBarCount()
+        val numberOfMarkers = chartMode.getMarkerCount() + 1
+
+        val barWidth = drawableArea.width / numberOfBars
+
+        val lineThickness = axisLineThickness.toPx()
+
+        val y = drawableArea.top + (lineThickness / 2f)
+        val textY =
+            drawableArea.top + markerHeight + labelMarkerSpacing + textBounds.height()
+
+        val markerBaseX = if (drawMarkersBetweenBars) drawableArea.left + barWidth / 2
+        else drawableArea.left
 
         for (markerIndex in 0 until numberOfMarkers) {
             val barIndex = markerIndex * labelStep
 
             if (barIndex < numberOfBars) {
-                val x = drawableArea.left + barIndex * barWidth + barWidth / 2
+                val x = markerBaseX + barIndex * barWidth
 
                 canvas.drawLine(
                     p1 = Offset(x = x, y = y),
                     p2 = Offset(x = x, y = y + markerHeight),
-                    paint = axisLinePaint.apply { strokeWidth = lineThickness }
+                    paint = axisLinePaint
                 )
 
-                val label = labels.getOrNull(barIndex) ?: ""
-                labelPaint.getTextBounds(label, 0, label.length, textBounds)
+                val label = labels.getOrNull(markerIndex) ?: ""
 
-                val textY =
-                    drawableArea.top + markerHeight + labelMarkerSpacing + textBounds.height()
                 canvas.nativeCanvas.drawText(label, x, textY, labelPaint)
             }
         }

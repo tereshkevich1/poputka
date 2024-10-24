@@ -34,12 +34,12 @@ import com.example.poputka.presentation.canvas.bar_graph.render.SimpleBarDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.BarXAxisDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.XAxisDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.BaseChartMode
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.DayMode
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.MonthMode
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.WeekMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers.DayMarkerLabelDrawer
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers.MarkerLabelDrawer
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers.SimpleMarkerLabelDrawer
 import com.example.poputka.presentation.canvas.bar_graph.yaxis.BarYAxisWithValueDrawer
 import com.example.poputka.presentation.canvas.bar_graph.yaxis.YAxisDrawer
+import com.example.poputka.ui.theme.PoputkaTheme
 import kotlin.random.Random
 
 
@@ -49,10 +49,8 @@ fun BarChart(
     bars: Bars,
     animation: AnimationSpec<Float> = fadeInAnimation(),
     chartMode: BaseChartMode,
-    markerLabelDrawer: MarkerLabelDrawer,
     xAxisDrawer: XAxisDrawer = BarXAxisDrawer(
-        chartMode = chartMode,
-        markerLabelDrawer = markerLabelDrawer
+        chartMode = chartMode
     ),
     yAxisDrawer: YAxisDrawer = BarYAxisWithValueDrawer()
 ) {
@@ -78,8 +76,7 @@ fun BarChart(
             val (xAxisArea, yAxisArea) = axisAreas(this, size, xAxisDrawer, yAxisDrawer)
             val barDrawableArea = barDrawableArea(xAxisArea)
 
-            yAxisDrawer.drawAxisLabels(this, canvas, yAxisArea, bars.minYValue, bars.maxYValue)
-            yAxisDrawer.drawAxisLine(this, canvas, yAxisArea)
+            yAxisDrawer.drawAxisLabels(this, canvas, yAxisArea, bars.minYValue, bars.maxYValue, bars.achievementValue)
 
             xAxisDrawer.drawAxisLine(this, canvas, xAxisArea)
             xAxisDrawer.drawAxisMarkersAndLabels(this, canvas, xAxisArea)
@@ -95,38 +92,7 @@ fun BarChart(
             }
         }
     }
-
 }
-
-@Composable
-@Preview
-fun BarChartPreview() {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 30.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val numberOfBars = 48
-
-        BarChart(
-            bars = Bars(
-                bars = (1..numberOfBars).map {
-                    Bar(label = "BAR$it", value = Random.nextFloat()) { bar ->
-
-                    }
-                }),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(500.dp),
-            animation = fadeInAnimation(3000),
-            chartMode = WeekMode(),
-            markerLabelDrawer = DayMarkerLabelDrawer()
-        )
-    }
-}
-
 
 @Composable
 @Preview
@@ -138,34 +104,49 @@ fun BarChartPreviewV2() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        var showChart by remember { mutableStateOf(false) }
-
-
-        Button(onClick = { showChart = !showChart }) {
-            Text(text = if (showChart) "Скрыть график" else "Показать график")
-        }
-
-
-        if (showChart) {
-
+        PoputkaTheme(darkTheme = true) {
+            var showChart by remember { mutableStateOf(false) }
             val chartMode = WeekMode()
 
-            BarChart(
-                bars = Bars(
-                    bars = (1..chartMode.getBarCount()).map {
-                        Bar(label = "BAR$it", value = Random.nextFloat()) { bar ->
-
-                        }
-                    }
+            val barsList = Bars(
+                bars = listOf(
+                    Bar(label = "BAR1", value = 270f) {},
+                    Bar(label = "BAR1", value = 400f) {},
+                    Bar(label = "BAR1", value = 200f) {},
+                    Bar(label = "BAR1", value = 100f) {},
+                    Bar(label = "BAR1", value = 1500f) {},
+                    Bar(label = "BAR1", value = 210f) {},
+                    Bar(label = "BAR1", value = 4800f) {},
                 ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                animation = fadeInAnimation(3000),
-                chartMode = chartMode,
-                markerLabelDrawer = SimpleMarkerLabelDrawer()
+                achievementValue = 5000f
             )
+
+            val numberOfBars = chartMode.getBarCount()
+            val max = 5000.0f
+            val min = 0f
+
+            val barsListM = Bars(
+                bars = (1..numberOfBars).map {
+                    Bar(label = "BAR$it", value = Random.nextFloat() * (max - min) + min) { bar ->
+
+                    }
+                }, achievementValue = 200.0f
+            )
+
+            Button(onClick = { showChart = !showChart }) {
+                Text(text = if (showChart) "Скрыть график" else "Показать график")
+            }
+
+            if (showChart) {
+                BarChart(
+                    bars = barsListM,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(240.dp),
+                    animation = fadeInAnimation(3000),
+                    chartMode = chartMode
+                )
+            }
         }
     }
 }
