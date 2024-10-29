@@ -3,7 +3,7 @@ package com.example.poputka.presentation.canvas.bar_graph
 data class Bars(
     val bars: List<Bar>,
     val achievementValue: Float,
-    val padBy: Float = 20f,
+    val padBy: Float = 10f,
     val startAtZero: Boolean = true
 ) {
     init {

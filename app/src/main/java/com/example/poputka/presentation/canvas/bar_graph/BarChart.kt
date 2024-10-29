@@ -1,8 +1,10 @@
 package com.example.poputka.presentation.canvas.bar_graph
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,8 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,18 +34,17 @@ import com.example.poputka.presentation.canvas.bar_graph.BarChartUtils.axisAreas
 import com.example.poputka.presentation.canvas.bar_graph.BarChartUtils.barDrawableArea
 import com.example.poputka.presentation.canvas.bar_graph.BarChartUtils.forEachWithArea
 import com.example.poputka.presentation.canvas.bar_graph.animation.fadeInAnimation
+import com.example.poputka.presentation.canvas.bar_graph.render.BarValueDrawer
 import com.example.poputka.presentation.canvas.bar_graph.render.SimpleBarDrawer
+import com.example.poputka.presentation.canvas.bar_graph.render.SimpleBarValueDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.BarXAxisDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.XAxisDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.BaseChartMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.DayMode
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.MonthMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.WeekMode
 import com.example.poputka.presentation.canvas.bar_graph.yaxis.BarYAxisWithValueDrawer
 import com.example.poputka.presentation.canvas.bar_graph.yaxis.YAxisDrawer
 import com.example.poputka.ui.theme.PoputkaTheme
 import kotlin.random.Random
-
 
 @Composable
 fun BarChart(
@@ -49,22 +52,26 @@ fun BarChart(
     bars: Bars,
     animation: AnimationSpec<Float> = fadeInAnimation(),
     chartMode: BaseChartMode,
-    xAxisDrawer: XAxisDrawer = BarXAxisDrawer(
-        chartMode = chartMode
-    ),
-    yAxisDrawer: YAxisDrawer = BarYAxisWithValueDrawer()
+    xAxisDrawer: XAxisDrawer = BarXAxisDrawer(chartMode = chartMode),
+    yAxisDrawer: YAxisDrawer = BarYAxisWithValueDrawer(),
+    valueBarDrawer: BarValueDrawer = SimpleBarValueDrawer()
 ) {
-    val transitionAnimation = remember(bars.bars) { Animatable(initialValue = 0f) }
-    val rectangles =
-        remember(bars.bars) { mutableStateMapOf<Bar, Rect>() }
+    val rectangles = remember(bars.bars) { mutableStateMapOf<Bar, Rect>() }
     val barDrawer = SimpleBarDrawer()
+
+    val transitionAnimation = remember(bars.bars) { Animatable(initialValue = 0f) }
     LaunchedEffect(bars.bars) {
         transitionAnimation.animateTo(1f, animationSpec = animation)
+    }
+
+    var selectedBar by remember {
+        mutableStateOf<Pair<Bar, Rect>?>(null)
     }
 
     Canvas(modifier = modifier
         .fillMaxSize()
         .pointerInput(bars.bars) {
+            detectBarByDragGestures(chartMode, rectangles) { selectedBar = it }
             detectTapGestures { offset ->
                 rectangles
                     .filter { it.value.contains(offset) }
@@ -72,11 +79,12 @@ fun BarChart(
             }
         }) {
         drawIntoCanvas { canvas ->
-
             val (xAxisArea, yAxisArea) = axisAreas(this, size, xAxisDrawer, yAxisDrawer)
             val barDrawableArea = barDrawableArea(xAxisArea)
 
-            yAxisDrawer.drawAxisLabels(this, canvas, yAxisArea, bars.minYValue, bars.maxYValue, bars.achievementValue)
+            yAxisDrawer.drawAxisLabels(
+                this, canvas, yAxisArea, bars.minYValue, bars.maxYValue, bars.achievementValue
+            )
 
             xAxisDrawer.drawAxisLine(this, canvas, xAxisArea)
             xAxisDrawer.drawAxisMarkersAndLabels(this, canvas, xAxisArea)
@@ -90,8 +98,50 @@ fun BarChart(
                 barDrawer.drawBar(this, canvas, barArea, bar)
                 rectangles[bar] = barArea
             }
+
+            selectedBar?.let {
+                valueBarDrawer.draw(
+                    this, canvas, size, bars.maxYValue, it.first.value, it.second, xAxisArea
+                )
+            }
         }
     }
+}
+
+private suspend fun PointerInputScope.detectBarByDragGestures(
+    chartMode: BaseChartMode,
+    rectangles: Map<Bar, Rect>,
+    onBarSelected: (Pair<Bar, Rect>?) -> Unit
+) {
+    Log.d("detectBarByDragGestures", "called")
+    val barWidthWithoutGap = size.width / chartMode.getBarCount()
+    val barGapPadding = barWidthWithoutGap * chartMode.getBarGapCoefficient()
+    detectDragGestures(onDrag = { change, _ ->
+        Log.d("detectBarByDragGestures", "detectDragGestures")
+        onBarSelected(findBarAtPosition(change.position, rectangles, barGapPadding))
+    }, onDragEnd = {
+        onBarSelected(null)
+    })
+}
+
+private fun findBarAtPosition(
+    position: Offset,
+    rectangles: Map<Bar, Rect>,
+    barGapPadding: Float
+): Pair<Bar, Rect>? {
+    return rectangles.entries
+        .firstOrNull { (_, rect) -> rect.containsHorizontally(position, barGapPadding) }
+        ?.toPair()
+}
+
+private fun Rect.containsHorizontally(
+    offset: Offset,
+    barGapPadding: Float
+): Boolean {
+    val paddedLeft = this.left - barGapPadding
+    val paddedRight = this.right + barGapPadding
+    Log.d("containsHorizontally", "solid method $paddedLeft -- $paddedRight")
+    return offset.x in paddedLeft..paddedRight
 }
 
 @Composable
@@ -106,24 +156,11 @@ fun BarChartPreviewV2() {
     ) {
         PoputkaTheme(darkTheme = true) {
             var showChart by remember { mutableStateOf(false) }
-            val chartMode = WeekMode()
-
-            val barsList = Bars(
-                bars = listOf(
-                    Bar(label = "BAR1", value = 270f) {},
-                    Bar(label = "BAR1", value = 400f) {},
-                    Bar(label = "BAR1", value = 200f) {},
-                    Bar(label = "BAR1", value = 100f) {},
-                    Bar(label = "BAR1", value = 1500f) {},
-                    Bar(label = "BAR1", value = 210f) {},
-                    Bar(label = "BAR1", value = 4800f) {},
-                ),
-                achievementValue = 5000f
-            )
+            val chartMode = MonthMode(30)
 
             val numberOfBars = chartMode.getBarCount()
-            val max = 5000.0f
-            val min = 0f
+            val max = 1200.0f
+            val min = 100f
 
             val barsListM = Bars(
                 bars = (1..numberOfBars).map {
@@ -134,7 +171,7 @@ fun BarChartPreviewV2() {
             )
 
             Button(onClick = { showChart = !showChart }) {
-                Text(text = if (showChart) "Скрыть график" else "Показать график")
+                Text(text = if (showChart) "Hide" else "Show")
             }
 
             if (showChart) {
@@ -143,7 +180,7 @@ fun BarChartPreviewV2() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(240.dp),
-                    animation = fadeInAnimation(3000),
+                    animation = fadeInAnimation(1500),
                     chartMode = chartMode
                 )
             }

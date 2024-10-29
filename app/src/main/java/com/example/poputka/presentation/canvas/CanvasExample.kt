@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Example() {
     Canvas(modifier = Modifier.fillMaxSize()) {
-        
+
     }
 }
 

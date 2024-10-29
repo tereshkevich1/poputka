@@ -1,6 +1,6 @@
 package com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes
 
-class DayMode(labelStep: Int = 8, barCount: Int = 48, barGapCoefficient: Float = 0.3f) :
+class DayMode(labelStep: Int = 8, barCount: Int = 48, barGapCoefficient: Float = 0.1f) :
     BaseChartMode(
         labels = generateDayLabels(labelStep),
         labelStep = labelStep,

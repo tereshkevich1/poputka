@@ -51,10 +51,10 @@
       </SelectionState>
       <SelectionState runConfigName="BarChartPreviewV2">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-10-22T11:45:21.445245300Z">
+        <DropdownSelection timestamp="2024-10-29T20:20:15.059265800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Sergey\.android\avd\Pixel_2_API_30.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=38231JEHN05951" />
             </handle>
           </Target>
         </DropdownSelection>
