@@ -31,7 +31,10 @@ class SimpleBarValueDrawer(
     private val dashEffect: PathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f)),
     private val textPadding: Float = 5f,
     private val rectVerticalPadding: Float = 5f,
-    private val rectHorizontalPaddingMultiplier: Float = 1f
+    private val rectHorizontalPaddingMultiplier: Float = 1f,
+    private val outerCircleColor: Color = Color.Green.copy(alpha = 0.2f),
+    private val middleCircleColor: Color = Color.Green,
+    private val innerCircleColor: Color = Color.White
 ) : BarValueDrawer {
 
     private val rectPaint = Paint().apply {
@@ -96,7 +99,20 @@ class SimpleBarValueDrawer(
 
         // Draw the text centered within the rectangle
         canvas.nativeCanvas.drawText(text, xCenterText, 0f, paint(drawScope))
+
+        drawIndicator(drawScope, barArea, barCenterX)
     }
+
+    private fun drawIndicator(drawScope: DrawScope, barArea: Rect, barCenterX: Float) =
+        with(drawScope) {
+            drawCircle(
+                outerCircleColor,
+                radius = 22f,
+                center = Offset(barCenterX, barArea.top + 5f)
+            )
+            drawCircle(middleCircleColor, radius = 13f, center = Offset(barCenterX, barArea.top + 5f))
+            drawCircle(innerCircleColor, radius = 8f, center = Offset(barCenterX, barArea.top + 5f))
+        }
 
     // Helper function to adjust X-center for text within bounds
     private fun adjustXCenterForText(xCenter: Float, textWidth: Float, totalSize: Size): Float {

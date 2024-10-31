@@ -36,7 +36,7 @@ class SimpleMarkerLabelDrawer(
         val labelStep = chartMode.getLabelStep()
 
         val numberOfBars = chartMode.getBarCount()
-        val numberOfMarkers = chartMode.getMarkerCount() + 1
+        val numberOfMarkers = chartMode.getMarkerCount()
 
         val barWidth = drawableArea.width / numberOfBars
 
@@ -52,19 +52,15 @@ class SimpleMarkerLabelDrawer(
         for (markerIndex in 0 until numberOfMarkers) {
             val barIndex = markerIndex * labelStep
 
-            if (barIndex < numberOfBars) {
-                val x = markerBaseX + barIndex * barWidth
+            val x = markerBaseX + barIndex * barWidth
+            val label = labels.getOrNull(markerIndex) ?: ""
 
-                canvas.drawLine(
-                    p1 = Offset(x = x, y = y),
-                    p2 = Offset(x = x, y = y + markerHeight),
-                    paint = axisLinePaint
-                )
-
-                val label = labels.getOrNull(markerIndex) ?: ""
-
-                canvas.nativeCanvas.drawText(label, x, textY, labelPaint)
-            }
+            canvas.drawLine(
+                p1 = Offset(x = x, y = y),
+                p2 = Offset(x = x, y = y + markerHeight),
+                paint = axisLinePaint
+            )
+            canvas.nativeCanvas.drawText(label, x, textY, labelPaint)
         }
     }
 }

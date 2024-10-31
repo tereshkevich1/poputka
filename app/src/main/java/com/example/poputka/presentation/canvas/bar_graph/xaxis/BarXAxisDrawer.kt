@@ -85,7 +85,8 @@ class BarXAxisDrawer(
                 axisLineThickness,
                 labelMarkerSpacing,
                 labelTextSize,
-                chartMode
+                chartMode,
+                true
             )
         }
         markerLabelDrawer.drawMarkersAndLabels(

@@ -40,7 +40,9 @@ import com.example.poputka.presentation.canvas.bar_graph.render.SimpleBarValueDr
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.BarXAxisDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.XAxisDrawer
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.BaseChartMode
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.DayMode
 import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.MonthMode
+import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.WeekMode
 import com.example.poputka.presentation.canvas.bar_graph.yaxis.BarYAxisWithValueDrawer
 import com.example.poputka.presentation.canvas.bar_graph.yaxis.YAxisDrawer
 import com.example.poputka.ui.theme.PoputkaTheme
@@ -156,7 +158,7 @@ fun BarChartPreviewV2() {
     ) {
         PoputkaTheme(darkTheme = true) {
             var showChart by remember { mutableStateOf(false) }
-            val chartMode = MonthMode(30)
+            val chartMode = DayMode()
 
             val numberOfBars = chartMode.getBarCount()
             val max = 1200.0f
@@ -167,7 +169,7 @@ fun BarChartPreviewV2() {
                     Bar(label = "BAR$it", value = Random.nextFloat() * (max - min) + min) { bar ->
 
                     }
-                }, achievementValue = 200.0f
+                }, achievementValue =  Random.nextFloat() * (max - min) + min
             )
 
             Button(onClick = { showChart = !showChart }) {
