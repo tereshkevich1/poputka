@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers
+package com.example.poputka.presentation.canvas.bar_chart.xaxis.xaxis_markers
 
 import android.graphics.Paint.Align
 import android.graphics.Rect
@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.BaseChartMode
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.BaseChartMode
 
 class SimpleMarkerLabelDrawer(
     private val markerHeight: Float,

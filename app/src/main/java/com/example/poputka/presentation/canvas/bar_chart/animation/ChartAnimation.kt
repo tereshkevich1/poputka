@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph.animation
+package com.example.poputka.presentation.canvas.bar_chart.animation
 
 import androidx.compose.animation.core.TweenSpec
 

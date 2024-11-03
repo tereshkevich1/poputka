@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes
+package com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes
 
 class MonthMode(totalDaysInMonth: Int, labelStep: Int = 5, barGapCoefficient: Float = 0.1f) :
     BaseChartMode(

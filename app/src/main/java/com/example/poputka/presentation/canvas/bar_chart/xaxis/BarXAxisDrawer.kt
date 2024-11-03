@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph.xaxis
+package com.example.poputka.presentation.canvas.bar_chart.xaxis
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.BaseChartMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.DayMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.xaxis_markers.SimpleMarkerLabelDrawer
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.BaseChartMode
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.DayMode
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.xaxis_markers.SimpleMarkerLabelDrawer
 import com.example.poputka.presentation.canvas.common.toLegacyInt
 
 class BarXAxisDrawer(

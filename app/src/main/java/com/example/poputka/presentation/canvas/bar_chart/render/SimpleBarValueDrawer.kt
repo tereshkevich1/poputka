@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph.render
+package com.example.poputka.presentation.canvas.bar_chart.render
 
 import android.graphics.Paint.Align.CENTER
 import android.graphics.RectF

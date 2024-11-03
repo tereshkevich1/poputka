@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph.xaxis
+package com.example.poputka.presentation.canvas.bar_chart.xaxis
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Canvas

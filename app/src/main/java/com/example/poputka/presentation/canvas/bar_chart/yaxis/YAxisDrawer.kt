@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph.yaxis
+package com.example.poputka.presentation.canvas.bar_chart.yaxis
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Canvas

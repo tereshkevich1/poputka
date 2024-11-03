@@ -1,10 +1,10 @@
-package com.example.poputka.presentation.canvas.bar_graph
+package com.example.poputka.presentation.canvas.bar_chart
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.XAxisDrawer
-import com.example.poputka.presentation.canvas.bar_graph.yaxis.YAxisDrawer
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.XAxisDrawer
+import com.example.poputka.presentation.canvas.bar_chart.yaxis.YAxisDrawer
 
 object BarChartUtils {
 

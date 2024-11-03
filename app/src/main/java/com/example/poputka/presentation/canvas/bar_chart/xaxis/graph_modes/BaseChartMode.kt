@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes
+package com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes
 
 abstract class BaseChartMode(
     protected val labels: List<String>,

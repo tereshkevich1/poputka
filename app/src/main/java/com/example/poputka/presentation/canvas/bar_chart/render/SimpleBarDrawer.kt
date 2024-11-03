@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph.render
+package com.example.poputka.presentation.canvas.bar_chart.render
 
 
 import androidx.compose.ui.geometry.Rect
@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import com.example.poputka.presentation.canvas.bar_graph.Bar
+import com.example.poputka.presentation.canvas.bar_chart.Bar
 
 class SimpleBarDrawer : BarDrawer {
     private val barPaint = Paint().apply {

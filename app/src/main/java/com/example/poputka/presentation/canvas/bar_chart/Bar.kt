@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph
+package com.example.poputka.presentation.canvas.bar_chart
 
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color

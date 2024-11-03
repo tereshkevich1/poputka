@@ -35,6 +35,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -62,6 +63,9 @@ dependencies {
     implementation(libs.firebase.appcheck.playintegrity)
     implementation (libs.androidx.browser)
     implementation(libs.firebase.appcheck.debug)
+
+    //to use LocalDate with a low API
+    coreLibraryDesugaring (libs.desugar.jdk.libs)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

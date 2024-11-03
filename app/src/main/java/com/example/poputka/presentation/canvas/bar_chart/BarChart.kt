@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph
+package com.example.poputka.presentation.canvas.bar_chart
 
 import android.util.Log
 import androidx.compose.animation.core.Animatable
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,21 +31,19 @@ import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.poputka.presentation.canvas.bar_graph.BarChartUtils.axisAreas
-import com.example.poputka.presentation.canvas.bar_graph.BarChartUtils.barDrawableArea
-import com.example.poputka.presentation.canvas.bar_graph.BarChartUtils.forEachWithArea
-import com.example.poputka.presentation.canvas.bar_graph.animation.fadeInAnimation
-import com.example.poputka.presentation.canvas.bar_graph.render.BarValueDrawer
-import com.example.poputka.presentation.canvas.bar_graph.render.SimpleBarDrawer
-import com.example.poputka.presentation.canvas.bar_graph.render.SimpleBarValueDrawer
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.BarXAxisDrawer
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.XAxisDrawer
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.BaseChartMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.DayMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.MonthMode
-import com.example.poputka.presentation.canvas.bar_graph.xaxis.graph_modes.WeekMode
-import com.example.poputka.presentation.canvas.bar_graph.yaxis.BarYAxisWithValueDrawer
-import com.example.poputka.presentation.canvas.bar_graph.yaxis.YAxisDrawer
+import com.example.poputka.presentation.canvas.bar_chart.BarChartUtils.axisAreas
+import com.example.poputka.presentation.canvas.bar_chart.BarChartUtils.barDrawableArea
+import com.example.poputka.presentation.canvas.bar_chart.BarChartUtils.forEachWithArea
+import com.example.poputka.presentation.canvas.bar_chart.animation.fadeInAnimation
+import com.example.poputka.presentation.canvas.bar_chart.render.BarValueDrawer
+import com.example.poputka.presentation.canvas.bar_chart.render.SimpleBarDrawer
+import com.example.poputka.presentation.canvas.bar_chart.render.SimpleBarValueDrawer
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.BarXAxisDrawer
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.XAxisDrawer
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.BaseChartMode
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.WeekMode
+import com.example.poputka.presentation.canvas.bar_chart.yaxis.BarYAxisWithValueDrawer
+import com.example.poputka.presentation.canvas.bar_chart.yaxis.YAxisDrawer
 import com.example.poputka.ui.theme.PoputkaTheme
 import kotlin.random.Random
 
@@ -149,42 +148,48 @@ private fun Rect.containsHorizontally(
 @Composable
 @Preview
 fun BarChartPreviewV2() {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 30.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        PoputkaTheme(darkTheme = true) {
-            var showChart by remember { mutableStateOf(false) }
-            val chartMode = DayMode()
+    PoputkaTheme(darkTheme = true) {
+        Surface {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 30.dp)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-            val numberOfBars = chartMode.getBarCount()
-            val max = 1200.0f
-            val min = 100f
+                var showChart by remember { mutableStateOf(false) }
+                val chartMode = WeekMode()
 
-            val barsListM = Bars(
-                bars = (1..numberOfBars).map {
-                    Bar(label = "BAR$it", value = Random.nextFloat() * (max - min) + min) { bar ->
+                val numberOfBars = chartMode.getBarCount()
+                val max = 1200.0f
+                val min = 100f
 
-                    }
-                }, achievementValue =  Random.nextFloat() * (max - min) + min
-            )
+                val barsListM = Bars(
+                    bars = (1..numberOfBars).map {
+                        Bar(
+                            label = "BAR$it",
+                            value = Random.nextFloat() * (max - min) + min
+                        ) { bar ->
 
-            Button(onClick = { showChart = !showChart }) {
-                Text(text = if (showChart) "Hide" else "Show")
-            }
-
-            if (showChart) {
-                BarChart(
-                    bars = barsListM,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(240.dp),
-                    animation = fadeInAnimation(1500),
-                    chartMode = chartMode
+                        }
+                    }, achievementValue = Random.nextFloat() * (max - min) + min
                 )
+
+                Button(onClick = { showChart = !showChart }) {
+                    Text(text = if (showChart) "Hide" else "Show")
+                }
+
+                if (showChart) {
+                    BarChart(
+                        bars = barsListM,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(240.dp),
+                        animation = fadeInAnimation(1500),
+                        chartMode = chartMode
+                    )
+                }
             }
         }
     }

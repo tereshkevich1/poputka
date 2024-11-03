@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.bar_graph
+package com.example.poputka.presentation.canvas.bar_chart
 
 data class Bars(
     val bars: List<Bar>,
