@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.calendar_chart
+package com.example.poputka.presentation.canvas.calendar_chart.render
 
 import androidx.compose.ui.geometry.Offset
 

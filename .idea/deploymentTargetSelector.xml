@@ -40,7 +40,7 @@
       </SelectionState>
       <SelectionState runConfigName="CalendarPreview">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-11-01T23:31:46.832017Z">
+        <DropdownSelection timestamp="2024-11-03T22:34:32.764529600Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Sergey\.android\avd\Pixel_2_API_30.avd" />

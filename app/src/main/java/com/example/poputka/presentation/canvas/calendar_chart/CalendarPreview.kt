@@ -5,16 +5,12 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,58 +20,96 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.poputka.R
+import com.example.poputka.presentation.canvas.calendar_chart.CalendarChartUtils.toPx
+import com.example.poputka.presentation.canvas.calendar_chart.CalendarChartUtilsV.forEach
+import com.example.poputka.presentation.canvas.calendar_chart.calendar.ChartData
+import com.example.poputka.presentation.canvas.calendar_chart.calendar.ChartElement
+import com.example.poputka.presentation.canvas.calendar_chart.render.SimpleCalendarDrawer
+import com.example.poputka.presentation.canvas.calendar_chart.render.SimpleCircleChartDrawer
+import com.example.poputka.presentation.canvas.common.DateNavigationBar
 import com.example.poputka.ui.theme.PoputkaTheme
+import java.time.YearMonth
+import kotlin.random.Random
 
 @Composable
 fun CalendarChart(
+    currentMonth: YearMonth,
+    chartData: ChartData,
     modifier: Modifier = Modifier,
-    simpleCalendarDrawer: SimpleCalendarDrawer = SimpleCalendarDrawer(),
-    viewModel: CalendarViewModel = CalendarViewModel()
+    simpleCalendarDrawer: SimpleCalendarDrawer = remember { SimpleCalendarDrawer() },
+    calendarCalculator: CalendarCalculator = remember { CalendarSimpleCalculator() },
+    circleChartDrawer: SimpleCircleChartDrawer = remember { SimpleCircleChartDrawer() },
+    dayCellHeight: Dp = 52.dp
 ) {
-
-    val currentMonth by viewModel.currentDate.collectAsState()
+    val context = LocalContext.current
+    val daysInMonth = currentMonth.lengthOfMonth()
+    val startOffset = CalendarChartUtils.calculateStartOffset(currentMonth)
+    val calendarRows = CalendarChartUtils.calculateCalendarRows(daysInMonth, startOffset)
+    val canvasHeight = CalendarChartUtils.getCanvasHeight(
+        context,
+        dayCellHeight,
+        simpleCalendarDrawer.requiredHeightForHeader(),
+        calendarRows
+    )
 
     var canvasSize by remember {
         mutableStateOf(Size.Zero)
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        DateNavigationBar(
-            modifier = Modifier.padding(bottom = 8.dp),
-            currentDate = viewModel.getCurrentMonthAsString(),
-            onPrevious = {viewModel.previousMonth()},
-            onNext = {viewModel.nextMonth()})
+    Log.d("CalendarChart", "parameters")
 
-        Canvas(modifier = modifier
-            .fillMaxSize()
-            .pointerInput(true) {
-                detectTapGestures(onTap = { offset ->
-                    Log.d(
-                        "detectTapGestures",
-                        simpleCalendarDrawer
-                            .getDayForPosition(offset, canvasSize)
-                            .toString()
-                    )
-                    simpleCalendarDrawer.getDayForPosition(offset, canvasSize)
-                })
-            }) {
+    Canvas(modifier = modifier
+        .fillMaxWidth()
+        .height(canvasHeight)
+        .pointerInput(true) {
+            detectTapGestures(onTap = { offset ->
+                Log.d(
+                    "detectTapGestures",
+                    calendarCalculator
+                        .getDayForPosition(offset, canvasSize, startOffset)
+                        .toString()
+                )
+                calendarCalculator.getDayForPosition(offset, canvasSize, startOffset)
+            })
+        }) {
 
-            val canvasHeight = size.height
-            val canvasWidth = size.width
-            canvasSize = Size(canvasWidth, canvasHeight)
+        val adjustedCanvasHeight = size.height - simpleCalendarDrawer.requiredHeightForHeader()
+        val canvasWidth = size.width
+        canvasSize = Size(canvasWidth, adjustedCanvasHeight)
 
-            drawIntoCanvas { canvas ->
-                simpleCalendarDrawer.drawWeekHeader(this, canvas)
-                simpleCalendarDrawer.drawCalendar(this, canvas, currentMonth)
+        val dayCellHeightPx = dayCellHeight.toPx(context)
+
+        drawIntoCanvas { canvas ->
+            Log.d("drawIntoCanvas", "draw")
+            chartData.forEach(
+                this,
+                dayCellHeightPx,
+                startOffset,
+                2f
+            ) { offset, radius, alpha, chartElement ->
+                circleChartDrawer.draw(
+                    canvas,
+                    offset,
+                    radius,
+                    chartElement.color.copy(alpha = alpha)
+                )
             }
+            simpleCalendarDrawer.drawWeekHeader(this, canvas)
+            simpleCalendarDrawer.drawCalendar(
+                this,
+                canvas,
+                dayCellHeightPx,
+                daysInMonth,
+                startOffset,
+                calendarRows
+            )
         }
     }
 }
@@ -83,98 +117,40 @@ fun CalendarChart(
 @Composable
 @Preview
 fun CalendarPreview() {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 30.dp)
-            .fillMaxWidth()
-            .height(360.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        PoputkaTheme(darkTheme = true) {
-            CalendarChart()
-        }
-    }
-}
-
-@Composable
-fun NextButton(onClick: () -> Unit, iconSize: Dp = 32.dp) {
-    IconButton(onClick = onClick, modifier = Modifier.fillMaxSize()) {
-        Icon(
-            painter = painterResource(id = R.drawable.baseline_keyboard_arrow_right_24),
-            contentDescription = "Arrow right icon",
-            modifier = Modifier.size(iconSize)
-        )
-    }
-}
-
-@Composable
-fun PreviousButton(onClick: () -> Unit, iconSize: Dp = 32.dp) {
-    IconButton(onClick = onClick, modifier = Modifier.fillMaxSize()) {
-        Icon(
-            painter = painterResource(id = R.drawable.baseline_keyboard_arrow_left_24),
-            contentDescription = "Arrow left icon",
-            modifier = Modifier.size(iconSize)
-        )
-    }
-}
-
-@Composable
-fun DateLabel(currentDate: String) {
-    Text(text = currentDate)
-}
-
-@Composable
-fun DateNavigationBar(
-    modifier: Modifier = Modifier,
-    currentDate: String,
-    onPrevious: () -> Unit,
-    onNext: () -> Unit
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth()
-    ) {
-        IconButton(onClick = onPrevious, modifier = Modifier) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_keyboard_arrow_left_24),
-                contentDescription = "Arrow left icon",
-                modifier = Modifier.size(32.dp)
-            )
-        }
-
-        Text(
-            text = currentDate,
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 16.dp),
-            textAlign = TextAlign.Center
-        )
-
-        IconButton(onClick = onNext, modifier = Modifier) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_keyboard_arrow_right_24),
-                contentDescription = "Arrow right icon",
-                modifier = Modifier.size(32.dp)
-            )
-        }
-    }
-}
-
-@Composable
-@Preview
-fun NextButtonPreview() {
-    PoputkaTheme(darkTheme = true) {
+    PoputkaTheme {
         Surface {
+            val viewModel = CalendarViewModel()
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
+                    .padding(horizontal = 30.dp)
+                    .fillMaxWidth()
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                //DateNavigationBar("November", {}, {})
+                PoputkaTheme(darkTheme = true) {
+                    val currentDate by viewModel.currentDate.collectAsState()
+
+                    val elements = List(currentDate.lengthOfMonth()) {
+                        ChartElement(
+                            value = Random.nextFloat() * (1000f - 200f) + 200f,
+                            color = Color.Blue,
+                            onTap = { }
+                        )
+                    }
+
+                    DateNavigationBar(
+                        modifier = Modifier,
+                        currentDate = currentDate.toString(),
+                        onNext = { viewModel.nextMonth() },
+                        onPrevious = { viewModel.previousMonth() })
+                    CalendarChart(currentMonth = currentDate, ChartData(elements))
+                    Button(onClick = { }) {
+
+                    }
+                }
             }
         }
     }
 }
+
