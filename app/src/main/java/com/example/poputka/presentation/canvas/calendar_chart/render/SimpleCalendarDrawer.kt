@@ -16,13 +16,13 @@ class SimpleCalendarDrawer(
     private val labelTextSize: TextUnit = 14.sp,
     private val labels: List<String> = listOf("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
 ) {
-    private val dayNumberTextPaint = android.graphics.Paint().apply {
+    private val dayNumberTextPaint = Paint().apply {
         isAntiAlias = true
         color = dayNumberTextColor.toLegacyInt()
         textAlign = Paint.Align.CENTER
     }
 
-    private val labelTextPaint = android.graphics.Paint().apply {
+    private val labelTextPaint = Paint().apply {
         isAntiAlias = true
         color = labelTextColor.toLegacyInt()
     }

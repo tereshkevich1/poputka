@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.canvas.common
+package com.example.poputka.presentation.canvas
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

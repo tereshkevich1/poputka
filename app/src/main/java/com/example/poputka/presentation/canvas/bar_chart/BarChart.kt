@@ -1,6 +1,5 @@
 package com.example.poputka.presentation.canvas.bar_chart
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.Canvas
@@ -26,6 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
@@ -35,13 +36,13 @@ import com.example.poputka.presentation.canvas.bar_chart.BarChartUtils.axisAreas
 import com.example.poputka.presentation.canvas.bar_chart.BarChartUtils.barDrawableArea
 import com.example.poputka.presentation.canvas.bar_chart.BarChartUtils.forEachWithArea
 import com.example.poputka.presentation.canvas.bar_chart.animation.fadeInAnimation
-import com.example.poputka.presentation.canvas.bar_chart.render.BarValueDrawer
+import com.example.poputka.presentation.canvas.common.render.ChartValueDrawer
+import com.example.poputka.presentation.canvas.common.render.SimpleChartValueDrawer
 import com.example.poputka.presentation.canvas.bar_chart.render.SimpleBarDrawer
-import com.example.poputka.presentation.canvas.bar_chart.render.SimpleBarValueDrawer
 import com.example.poputka.presentation.canvas.bar_chart.xaxis.BarXAxisDrawer
 import com.example.poputka.presentation.canvas.bar_chart.xaxis.XAxisDrawer
 import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.BaseChartMode
-import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.WeekMode
+import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.DayMode
 import com.example.poputka.presentation.canvas.bar_chart.yaxis.BarYAxisWithValueDrawer
 import com.example.poputka.presentation.canvas.bar_chart.yaxis.YAxisDrawer
 import com.example.poputka.ui.theme.PoputkaTheme
@@ -55,7 +56,7 @@ fun BarChart(
     chartMode: BaseChartMode,
     xAxisDrawer: XAxisDrawer = BarXAxisDrawer(chartMode = chartMode),
     yAxisDrawer: YAxisDrawer = BarYAxisWithValueDrawer(),
-    valueBarDrawer: BarValueDrawer = SimpleBarValueDrawer()
+    valueBarDrawer: ChartValueDrawer = SimpleChartValueDrawer()
 ) {
     val rectangles = remember(bars.bars) { mutableStateMapOf<Bar, Rect>() }
     val barDrawer = SimpleBarDrawer()
@@ -101,12 +102,29 @@ fun BarChart(
             }
 
             selectedBar?.let {
-                valueBarDrawer.draw(
-                    this, canvas, size, bars.maxYValue, it.first.value, it.second, xAxisArea
-                )
+                drawValueBar(canvas, it.second, it.first.value, valueBarDrawer)
             }
         }
     }
+}
+
+private fun DrawScope.drawValueBar(
+    canvas: Canvas,
+    barArea: Rect,
+    barValue: Float,
+    valueBarDrawer: ChartValueDrawer
+) {
+    val barCenterX = barArea.left + (barArea.width / 2)
+    valueBarDrawer.draw(
+        drawScope = this,
+        canvas = canvas,
+        totalSize = size,
+        centerXPosition = barCenterX,
+        startYPosition = 0f,
+        endYPosition = barArea.bottom,
+        indicatorCenterY = barArea.top,
+        value = barValue
+    )
 }
 
 private suspend fun PointerInputScope.detectBarByDragGestures(
@@ -114,15 +132,12 @@ private suspend fun PointerInputScope.detectBarByDragGestures(
     rectangles: Map<Bar, Rect>,
     onBarSelected: (Pair<Bar, Rect>?) -> Unit
 ) {
-    Log.d("detectBarByDragGestures", "called")
     val barWidthWithoutGap = size.width / chartMode.getBarCount()
     val barGapPadding = barWidthWithoutGap * chartMode.getBarGapCoefficient()
+
     detectDragGestures(onDrag = { change, _ ->
-        Log.d("detectBarByDragGestures", "detectDragGestures")
         onBarSelected(findBarAtPosition(change.position, rectangles, barGapPadding))
-    }, onDragEnd = {
-        onBarSelected(null)
-    })
+    }, onDragEnd = { onBarSelected(null) })
 }
 
 private fun findBarAtPosition(
@@ -141,7 +156,6 @@ private fun Rect.containsHorizontally(
 ): Boolean {
     val paddedLeft = this.left - barGapPadding
     val paddedRight = this.right + barGapPadding
-    Log.d("containsHorizontally", "solid method $paddedLeft -- $paddedRight")
     return offset.x in paddedLeft..paddedRight
 }
 
@@ -159,7 +173,7 @@ fun BarChartPreviewV2() {
             ) {
 
                 var showChart by remember { mutableStateOf(false) }
-                val chartMode = WeekMode()
+                val chartMode = DayMode()
 
                 val numberOfBars = chartMode.getBarCount()
                 val max = 1200.0f
@@ -170,7 +184,7 @@ fun BarChartPreviewV2() {
                         Bar(
                             label = "BAR$it",
                             value = Random.nextFloat() * (max - min) + min
-                        ) { bar ->
+                        ) { _ ->
 
                         }
                     }, achievementValue = Random.nextFloat() * (max - min) + min

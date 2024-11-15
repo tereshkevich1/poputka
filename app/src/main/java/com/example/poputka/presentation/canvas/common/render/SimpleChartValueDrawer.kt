@@ -1,9 +1,8 @@
-package com.example.poputka.presentation.canvas.bar_chart.render
+package com.example.poputka.presentation.canvas.common.render
 
 import android.graphics.Paint.Align.CENTER
 import android.graphics.RectF
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
@@ -21,7 +20,7 @@ import com.example.poputka.presentation.canvas.common.Formatter
 import com.example.poputka.presentation.canvas.common.toLegacyInt
 import kotlin.math.abs
 
-class SimpleBarValueDrawer(
+class SimpleChartValueDrawer(
     private val valueTextSize: TextUnit = 14.sp,
     private val valueTextColor: Color = Black,
     private val formatter: Formatter = { value -> "%.1f".format(value) },
@@ -35,7 +34,7 @@ class SimpleBarValueDrawer(
     private val outerCircleColor: Color = Color.Green.copy(alpha = 0.2f),
     private val middleCircleColor: Color = Color.Green,
     private val innerCircleColor: Color = Color.White
-) : BarValueDrawer {
+) : ChartValueDrawer {
 
     private val rectPaint = Paint().apply {
         isAntiAlias = true
@@ -50,7 +49,6 @@ class SimpleBarValueDrawer(
         pathEffect = dashEffect
     }
 
-    private val _labelTextArea: Float? = null
     private val textPaint = android.graphics.Paint().apply {
         isAntiAlias = true
         textAlign = CENTER
@@ -59,30 +57,26 @@ class SimpleBarValueDrawer(
 
     private val textBounds = android.graphics.Rect()
 
-    override fun requiredAboveBarHeight(drawScope: DrawScope): Float =
-        (3f / 2f) * labelTextHeight(drawScope)
-
     override fun draw(
         drawScope: DrawScope,
         canvas: Canvas,
         totalSize: Size,
-        maxBarValue: Float,
-        value: Float,
-        barArea: Rect,
-        xAxisArea: Rect
+        centerXPosition: Float,
+        startYPosition: Float,
+        endYPosition: Float,
+        indicatorCenterY: Float,
+        value: Float
     ) = with(drawScope) {
 
         val text = formatter(value)
+
         textPaint.getTextBounds(text, 0, text.length, textBounds)
         val textHeight = textBounds.height().toFloat()
         val textWidth = textBounds.width().toFloat()
 
-        // Calculate xCenter for the bar line
-        val barCenterX = barArea.left + (barArea.width / 2)
-
         // Center text horizontally, adjusted for canvas bounds
-        val xCenterText = adjustXCenterForText(barCenterX, textWidth, totalSize)
-        val rectBounds = calculateRectBounds(xCenterText, textWidth, textHeight)
+        val xCenterText = adjustXCenterForText(centerXPosition, textWidth, totalSize)
+        val rectBounds = calculateRectBounds(xCenterText, startYPosition, textWidth, textHeight)
 
         // Draw background rectangle with rounded corners
         canvas.drawRoundRect(
@@ -92,26 +86,38 @@ class SimpleBarValueDrawer(
 
         // Draw a connecting line in the center of the bar
         canvas.drawLine(
-            p1 = Offset(barCenterX, 0f),
-            p2 = Offset(barCenterX, barArea.bottom),
+            p1 = Offset(centerXPosition, startYPosition),
+            p2 = Offset(centerXPosition, endYPosition),
             paint = valueLinePaint.apply { strokeWidth = valueLineThickness.toPx() }
         )
 
         // Draw the text centered within the rectangle
-        canvas.nativeCanvas.drawText(text, xCenterText, 0f, paint(drawScope))
+        canvas.nativeCanvas.drawText(text, xCenterText, startYPosition, paint(drawScope))
 
-        drawIndicator(drawScope, barArea, barCenterX)
+        drawIndicator(drawScope, centerXPosition, indicatorCenterY)
     }
 
-    private fun drawIndicator(drawScope: DrawScope, barArea: Rect, barCenterX: Float) =
+    private fun drawIndicator(
+        drawScope: DrawScope,
+        indicatorCenterX: Float,
+        indicatorCenterY: Float
+    ) =
         with(drawScope) {
             drawCircle(
                 outerCircleColor,
                 radius = 22f,
-                center = Offset(barCenterX, barArea.top + 5f)
+                center = Offset(indicatorCenterX, indicatorCenterY + 5f)
             )
-            drawCircle(middleCircleColor, radius = 13f, center = Offset(barCenterX, barArea.top + 5f))
-            drawCircle(innerCircleColor, radius = 8f, center = Offset(barCenterX, barArea.top + 5f))
+            drawCircle(
+                middleCircleColor,
+                radius = 13f,
+                center = Offset(indicatorCenterX, indicatorCenterY + 5f)
+            )
+            drawCircle(
+                innerCircleColor,
+                radius = 8f,
+                center = Offset(indicatorCenterX, indicatorCenterY + 5f)
+            )
         }
 
     // Helper function to adjust X-center for text within bounds
@@ -131,20 +137,25 @@ class SimpleBarValueDrawer(
     }
 
     // Helper function to calculate rectangle bounds for text
-    private fun calculateRectBounds(xCenter: Float, textWidth: Float, textHeight: Float): RectF {
+    private fun calculateRectBounds(
+        centerXPosition: Float,
+        startYPosition: Float,
+        textWidth: Float,
+        textHeight: Float
+    ): RectF {
         val horizontalTextPadding = textWidth * rectHorizontalPaddingMultiplier
-        val rectTop = -textHeight * 1.5f - rectVerticalPadding
-        val rectBottom = textHeight * 0.5f + rectVerticalPadding
+        /*
+        val rectTop = - rectVerticalPadding
+        val rectBottom = textHeight * 0.5f + rectVerticalPadding*/
+
+        val rectTop = startYPosition - textHeight * 1.5f - rectVerticalPadding
+        val rectBottom = startYPosition + textHeight * 0.5f + rectVerticalPadding
         return RectF(
-            xCenter - horizontalTextPadding - textPadding,
+            centerXPosition - horizontalTextPadding - textPadding,
             rectTop,
-            xCenter + horizontalTextPadding + textPadding,
+            centerXPosition + horizontalTextPadding + textPadding,
             rectBottom
         )
-    }
-
-    private fun labelTextHeight(drawScope: DrawScope) = with(drawScope) {
-        _labelTextArea ?: ((3f / 2f) * valueTextSize.toPx())
     }
 
     private fun paint(drawScope: DrawScope) = with(drawScope) {
