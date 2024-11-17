@@ -1,6 +1,7 @@
 package com.example.poputka.presentation.canvas.calendar_chart.render
 
 import android.graphics.Paint
+import android.util.Log
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -17,12 +18,14 @@ class SimpleCalendarDrawer(
     private val labels: List<String> = listOf("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
 ) {
     private val dayNumberTextPaint = Paint().apply {
+        Log.d("paint","SimpleCalendarDrawer $this")
         isAntiAlias = true
         color = dayNumberTextColor.toLegacyInt()
         textAlign = Paint.Align.CENTER
     }
 
     private val labelTextPaint = Paint().apply {
+        Log.d("paint","SimpleCalendarDrawer $this")
         isAntiAlias = true
         color = labelTextColor.toLegacyInt()
     }
@@ -92,7 +95,7 @@ class SimpleCalendarDrawer(
 
         labelTextPaint.textSize = labelTextSize.toPx()
         labelTextPaint.getTextBounds("0", 0, 1, textBounds)
-
+        Log.d("drawIntoCanvas", "drawWeekHeader")
         val yPosition = headerHeight
         val xSteps = headerWidth / CALENDAR_COLUMNS
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,22 +55,12 @@ fun CalendarChart(
     simpleCalendarDrawer: SimpleCalendarDrawer = remember { SimpleCalendarDrawer() },
     calendarCalculator: CalendarCalculator = remember { CalendarSimpleCalculator() },
     circleChartDrawer: SimpleCircleChartDrawer = remember { SimpleCircleChartDrawer() },
-    dayCellHeight: Dp = 52.dp,
-    valueBarDrawer: ChartValueDrawer = SimpleChartValueDrawer()
+    valueBarDrawer: ChartValueDrawer = remember { SimpleChartValueDrawer() },
+    dayCellHeight: Dp = 52.dp
 ) {
-    val transitionAnimation = remember(chartData.elements) { Animatable(initialValue = 0f) }
-    LaunchedEffect(chartData.elements) {
-        transitionAnimation.animateTo(1f, animationSpec = animation)
-    }
-
-    var position by remember {
-        mutableStateOf<Int?>(null)
-    }
-
     val context = LocalContext.current
     val daysInMonth = currentMonth.lengthOfMonth()
     val startOffset = CalendarChartUtils.calculateStartOffset(currentMonth)
-    Log.d("currentMonth", "$startOffset  $currentMonth")
     val calendarRows = CalendarChartUtils.calculateCalendarRows(daysInMonth, startOffset)
     val canvasHeight = CalendarChartUtils.getCanvasHeight(
         context,
@@ -80,55 +72,77 @@ fun CalendarChart(
     var canvasSize by remember {
         mutableStateOf(Size.Zero)
     }
+    Box {
+        FirstCanvas(
+            modifier = modifier,
+            currentMonth = currentMonth,
+            daysInMonth = daysInMonth,
+            startOffset = startOffset,
+            calendarRows = calendarRows,
+            dayCellHeight = dayCellHeight,
+            canvasHeight = canvasHeight,
+            simpleCalendarDrawer = simpleCalendarDrawer,
+            chartData = chartData,
+            animation = animation,
+            circleChartDrawer = circleChartDrawer,
+            changeSize = { newSize -> canvasSize = newSize },
+            canvasSize = canvasSize
+        )
 
-    Log.d("CalendarChart", "parameters")
+        DraggableCalendarCanvas(
+            calendarCalculator = calendarCalculator,
+            elements = chartData.elements,
+            canvasHeight = canvasHeight,
+            canvasSize = canvasSize,
+            daysInMonth = daysInMonth,
+            calendarRows = calendarRows,
+            startOffset = startOffset,
+            dayCellHeight = dayCellHeight,
+            valueBarDrawer = valueBarDrawer
+        )
+    }
+}
 
-    Canvas(modifier = modifier
-        .fillMaxWidth()
-        .height(canvasHeight)
-        .pointerInput(chartData.elements) {
-            detectDragGestures(onDrag = { change, _ ->
-                val offset = change.position
-                val newPosition = calendarCalculator.getDayIndexFromDragPosition(
-                    offset, canvasSize, daysInMonth,
-                    calendarRows, startOffset
-                )
-                if (newPosition != position) position = newPosition
+@Composable
+fun FirstCanvas(
+    modifier: Modifier,
+    currentMonth: YearMonth,
+    daysInMonth: Int,
+    startOffset: Int,
+    calendarRows: Int,
+    dayCellHeight: Dp,
+    canvasHeight: Dp,
+    simpleCalendarDrawer: SimpleCalendarDrawer,
+    chartData: ChartData,
+    animation: AnimationSpec<Float>,
+    circleChartDrawer: SimpleCircleChartDrawer,
+    changeSize: (Size) -> Unit,
+    canvasSize: Size
+) {
+    val context = LocalContext.current
 
-            }, onDragEnd = { position = null })
+    val transitionAnimation = remember(currentMonth) { Animatable(initialValue = 0f) }
+    LaunchedEffect(currentMonth) {
+        transitionAnimation.animateTo(1f, animationSpec = animation)
+    }
+
+    Canvas(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(canvasHeight)
+            .graphicsLayer()
+
+    ) {
+
+        val adjustedCanvasHeight =
+            size.height - simpleCalendarDrawer.requiredHeightForHeader()
+        if (canvasSize.height != adjustedCanvasHeight) {
+            val canvasWidth = size.width
+            changeSize(Size(canvasWidth, adjustedCanvasHeight))
         }
-        .pointerInput(Unit) {
-            detectTapGestures(onTap = { offset ->
-                Log.d(
-                    "detectTapGestures",
-                    calendarCalculator
-                        .getDayIndexFromTapPosition(
-                            offset,
-                            canvasSize,
-                            daysInMonth,
-                            calendarRows,
-                            startOffset
-                        )
-                        .toString()
-                )
-                calendarCalculator.getDayIndexFromTapPosition(
-                    offset,
-                    canvasSize,
-                    daysInMonth,
-                    calendarRows,
-                    startOffset
-                )
-            })
-        }) {
-
-        val adjustedCanvasHeight = size.height - simpleCalendarDrawer.requiredHeightForHeader()
-        val canvasWidth = size.width
-        canvasSize = Size(canvasWidth, adjustedCanvasHeight)
-
         val dayCellHeightPx = dayCellHeight.toPx(context)
 
         drawIntoCanvas { canvas ->
-            Log.d("drawIntoCanvas", "draw")
             chartData.forEach(
                 this,
                 dayCellHeightPx,
@@ -151,22 +165,86 @@ fun CalendarChart(
                 startOffset,
                 calendarRows
             )
+        }
+    }
+}
 
+@Composable
+fun DraggableCalendarCanvas(
+    modifier: Modifier = Modifier,
+    calendarCalculator: CalendarCalculator,
+    elements: List<ChartElement>,
+    canvasHeight: Dp,
+    canvasSize: Size,
+    daysInMonth: Int,
+    calendarRows: Int,
+    startOffset: Int,
+    dayCellHeight: Dp,
+    valueBarDrawer: ChartValueDrawer
+) {
+    var position by remember {
+        mutableStateOf<Int?>(null)
+    }
+    Canvas(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(canvasHeight)
+            .graphicsLayer()
+            .pointerInput(elements) {
+                detectDragGestures(onDrag = { change, _ ->
+                    val offset = change.position
+                    val newPosition = calendarCalculator.getDayIndexFromDragPosition(
+                        offset, canvasSize, daysInMonth,
+                        calendarRows, startOffset
+                    )
+                    if (newPosition != position) {
+                        position = newPosition
+                    }
+                }, onDragEnd = {
+                    position = null
+                })
+            }
+            .pointerInput(elements) {
+                detectTapGestures(onTap = { offset ->
+                    Log.d(
+                        "detectTapGestures",
+                        calendarCalculator
+                            .getDayIndexFromTapPosition(
+                                offset,
+                                canvasSize,
+                                daysInMonth,
+                                calendarRows,
+                                startOffset
+                            )
+                            .toString()
+                    )
+                    calendarCalculator.getDayIndexFromTapPosition(
+                        offset,
+                        canvasSize,
+                        daysInMonth,
+                        calendarRows,
+                        startOffset
+                    )
+                })
+            }
+    ) {
+        drawIntoCanvas { canvas ->
+            val canvasWidth = size.width
+            val dayCellHeightPx = dayCellHeight.toPx()
+
+            // Drawing the selected element logic
             position?.let {
-                Log.d("column", "position?.let - $it")
-                val _position = it
-                val selectionElement = chartData.elements.getOrNull(_position)
+                val currentPosition = it
+                val selectionElement = elements.getOrNull(currentPosition)
                 selectionElement?.let {
-
-                    val ySteps = dayCellHeightPx
                     val xSteps = canvasWidth / 7
 
-
-                    val s = startOffset + _position
+                    val s = startOffset + currentPosition
                     val centerXPosition =
                         xSteps * (s % 7) + xSteps / 2
                     val endYPosition =
-                        (s / 7) * ySteps + ySteps / 2
+                        (s / 7) * dayCellHeightPx + dayCellHeightPx / 2
+
 
                     valueBarDrawer.draw(
                         this,
@@ -183,6 +261,7 @@ fun CalendarChart(
         }
     }
 }
+
 
 @Composable
 @Preview

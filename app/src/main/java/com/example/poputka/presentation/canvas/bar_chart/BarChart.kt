@@ -1,5 +1,6 @@
 package com.example.poputka.presentation.canvas.bar_chart
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.Canvas
@@ -97,11 +98,13 @@ fun BarChart(
                 chartMode.getBarCount(),
                 chartMode.getBarGapCoefficient()
             ) { barArea, bar ->
+                Log.d("draw"," barDrawer.drawBat")
                 barDrawer.drawBar(this, canvas, barArea, bar)
                 rectangles[bar] = barArea
             }
 
             selectedBar?.let {
+                Log.d("draw","drawValueBar")
                 drawValueBar(canvas, it.second, it.first.value, valueBarDrawer)
             }
         }

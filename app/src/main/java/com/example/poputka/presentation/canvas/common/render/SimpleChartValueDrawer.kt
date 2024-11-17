@@ -2,6 +2,7 @@ package com.example.poputka.presentation.canvas.common.render
 
 import android.graphics.Paint.Align.CENTER
 import android.graphics.RectF
+import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
@@ -41,6 +42,7 @@ class SimpleChartValueDrawer(
         color = textBackgroundRectColor
         style = PaintingStyle.Fill
     }
+
 
     private val valueLinePaint = Paint().apply {
         isAntiAlias = true
