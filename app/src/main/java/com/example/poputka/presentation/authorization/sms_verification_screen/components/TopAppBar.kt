@@ -23,7 +23,7 @@ fun TopAppBar(title: String, onBackPressed: () -> Unit) {
         ),
         title = { Text(text = title) },
         navigationIcon = {
-            IconButton(onClick = { onBackPressed() }) {
+            IconButton(onClick = onBackPressed ) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
         }

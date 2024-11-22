@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.example.poputka.presentation.authorization.sms_verification_screen
 
 import android.util.Log
@@ -117,7 +115,7 @@ fun SMSVerificationScreen(
         topBar = {
             TopAppBar(
                 title = appBarTitle,
-                onBackPressed = onBackPressed
+                onBackPressed = {onBackPressed()}
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) })

@@ -13,12 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.poputka.presentation.navigation.BottomNavBar
-import com.example.poputka.presentation.navigation.graphs.AppNavGraph
-import com.example.poputka.presentation.navigation.nav_items.Screen
-import com.example.poputka.presentation.navigation.util.currentRouteAsState
-import com.example.poputka.presentation.navigation.util.currentScreenAsState
+import com.example.poputka.presentation.navigation.nav_graph.AppNavGraph
+import com.example.poputka.presentation.navigation.topLevelRoutes
 import com.example.poputka.ui.theme.PoputkaTheme
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
@@ -39,20 +39,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            val currentSelectedScreen by navController.currentScreenAsState()
-            val currentRoute by navController.currentRouteAsState()
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry?.destination
 
-            val bottomNavRoutes = listOf(
-                Screen.Home.name,
-                Screen.Search.name
-            )
+
 
             PoputkaTheme {
                 Scaffold(bottomBar = {
-                    if (currentRoute == null || bottomNavRoutes.contains(currentRoute)) {
+                    if (currentDestination == null || topLevelRoutes.any { currentDestination.hasRoute(it.route::class) })  {
                         BottomNavBar(
                             navController = navController,
-                            currentSelectedScreen = currentSelectedScreen
+                            currentDestination = currentDestination
                         )
                     }
                 }) { padding ->

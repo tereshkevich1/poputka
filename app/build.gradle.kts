@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
+    alias(libs.plugins.androidx.navigation.safeargs.kotlin.gradle.plugin)
+    alias(libs.plugins.compose.compiler)
     id ("com.google.dagger.hilt.android")
     id ("kotlin-kapt")
 }
@@ -43,12 +46,16 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+
+    configurations.all {
+        exclude( group = "xmlpull", module = "xmlpull")
     }
 }
 
@@ -74,6 +81,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.navigation.safe.args.gradle.plugin)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
