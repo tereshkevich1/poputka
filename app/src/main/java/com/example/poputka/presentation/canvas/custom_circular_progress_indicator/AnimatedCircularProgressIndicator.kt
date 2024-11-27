@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import com.example.poputka.presentation.canvas.bar_graph.animation.fadeInAnimation
 import com.example.poputka.presentation.canvas.custom_circular_progress_indicator.render.drawCircularProgressIndicator
 import com.example.poputka.ui.theme.PoputkaTheme
-import com.example.poputka.ui.theme.PurpleGrey40
 
 @Composable
 fun AnimatedCircularProgressIndicator(
@@ -112,7 +111,7 @@ fun CircularPIPreview() {
             ) {
                 AnimatedCircularProgressIndicator(
                     maxValue = maxValue,
-                    progressBackgroundColor = PurpleGrey40,
+                    progressBackgroundColor = Color.Green,
                     progressIndicatorColor = Color.Blue,
                     indicatorColor = MaterialTheme.colorScheme.surface,
                     currentValueProvider = { currentAnimValue }
