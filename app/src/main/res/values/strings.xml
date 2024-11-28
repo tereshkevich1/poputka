@@ -19,4 +19,31 @@
     <string name="error_network">Проблема с подключением. Пожалуйста, проверьте интернет-соединение.</string>
     <string name="error_invalid_phone">Неправильный номер телефона. Пожалуйста, проверьте введенные данные.</string>
     <string name="error_code_sending">Не удалось отправить код. Пожалуйста, проверьте номер телефона и попробуйте снова.</string>
+
+    //Drinks list
+    <string name="water">Вода</string>
+    <string name="tea">Чай</string>
+    <string name="coffee">Кофе</string>
+    <string name="milk">Молоко</string>
+    <string name="juice">Сок</string>
+    <string name="soda">Газированная вода</string>
+    <string name="smoothie">Смузи</string>
+    <string name="lemonade">Лимонад</string>
+    <string name="energy_drink">Энергос</string>
+    <string name="herbal_tea">Травяной чай</string>
+
+    <string name="beer">Пиво</string>
+    <string name="wine">Вино</string>
+    <string name="vodka">Водка</string>
+    <string name="whiskey">Виски</string>
+    <string name="rum">Ром</string>
+    <string name="gin">Джин</string>
+    <string name="tequila">Текила</string>
+    <string name="brandy">Бренди</string>
+    <string name="cocktail">Коктейль</string>
+    <string name="champagne">Шампанское</string>
+    
+    //Home Screen
+    <string name="drink_log">Журнал учета выпитого</string>
+    
 </resources>

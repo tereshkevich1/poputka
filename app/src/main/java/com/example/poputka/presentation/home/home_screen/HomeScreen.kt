@@ -1,143 +1,59 @@
 package com.example.poputka.presentation.home.home_screen
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.poputka.R
+import com.example.poputka.presentation.canvas.custom_circular_progress_indicator.AnimatedCircularProgressIndicator
+import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkLogPanel
+import com.example.poputka.presentation.home.util.DrinkCategory
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
 fun HomeScreen() {
-    Column(modifier = Modifier.fillMaxSize()) {
-
-    }
-}
-
-@Composable
-fun DrinkItem(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(44.dp)
-            .background(
-                Color.Gray,
-                RoundedCornerShape(24.dp)
-            ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Spacer(modifier = Modifier.width(8.dp))
-        DrinkItemIcon()
-        Spacer(modifier = Modifier.weight(1f))
-        Text("Water")
-        Spacer(modifier = Modifier.weight(1f))
-        Text("200ml", modifier = Modifier.padding(end = 8.dp))
-    }
-}
-
-@Composable
-fun DrinkItemIcon() {
-    Image(
-        painter = painterResource(R.drawable.heart_check),
-        contentDescription = null,
-        modifier = Modifier
-            .size(28.dp)
-            .background(Color.Cyan, CircleShape)
-
+    val list = listOf(
+        Pair(DrinkCategory.EnergyDrink, "2100"),
+        Pair(DrinkCategory.Wine, "8"),
+        Pair(DrinkCategory.Water, "900"),
+        Pair(DrinkCategory.Tea, "700"),
+        Pair(DrinkCategory.Coffee, "20"),
+        Pair(DrinkCategory.Beer, "50")
     )
-}
+    var currentAnimValue by remember { mutableFloatStateOf(600f) }
+    val maxValue = 2000f
+    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(modifier = Modifier.height(12.dp))
+        AnimatedCircularProgressIndicator(
+            maxValue = maxValue,
+            progressBackgroundColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            progressIndicatorColor = MaterialTheme.colorScheme.primary,
+            indicatorColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            currentValueProvider = { currentAnimValue }
+        )
+        Spacer(modifier = Modifier.height(32.dp))
 
-@Composable
-fun DrinkLogPanel() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = dimensionResource(R.dimen.horizontal_default_padding))
-            .background(color = Color.DarkGray, shape = RoundedCornerShape(24.dp))
-    ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+        DrinkLogPanel(list)
+
+        Button(
+            onClick = { currentAnimValue += 200f },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
-            DrinkItem(
-                modifier = Modifier.padding(
-                    start = 8.dp,
-                    top = 8.dp,
-                    end = 4.dp,
-                    bottom = 4.dp
-                )
-            )
-            DrinkItem(
-                modifier = Modifier.padding(
-                    start = 8.dp,
-                    top = 4.dp,
-                    end = 4.dp,
-                    bottom = 4.dp
-                )
-            )
-            DrinkItem(
-                modifier = Modifier.padding(
-                    start = 8.dp,
-                    top = 4.dp,
-                    end = 4.dp,
-                    bottom = 8.dp
-                )
-            )
+            Text("Increase Progress")
         }
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            DrinkItem(
-                modifier = Modifier.padding(
-                    start = 4.dp,
-                    top = 8.dp,
-                    end = 8.dp,
-                    bottom = 4.dp
-                )
-            )
-            DrinkItem(
-                modifier = Modifier.padding(
-                    start = 4.dp,
-                    top = 4.dp,
-                    end = 8.dp,
-                    bottom = 4.dp
-                )
-            )
-            DrinkItem(
-                modifier = Modifier.padding(
-                    start = 4.dp,
-                    top = 8.dp,
-                    end = 8.dp,
-                    bottom = 8.dp
-                )
-            )
-        }
-
     }
 }
 
@@ -146,18 +62,5 @@ fun DrinkLogPanel() {
 fun HomeScreenPreview() {
     PoputkaTheme {
         HomeScreen()
-    }
-}
-
-
-@Composable
-@Preview
-fun DrinkItemPreview() {
-    PoputkaTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Box(contentAlignment = Alignment.Center) {
-                DrinkLogPanel()
-            }
-        }
     }
 }

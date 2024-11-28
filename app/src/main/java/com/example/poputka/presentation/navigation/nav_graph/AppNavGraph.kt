@@ -5,9 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.poputka.presentation.authorization.navigation.addAuthRoute
+import com.example.poputka.presentation.home.navigation.HomeDestination
 import com.example.poputka.presentation.home.navigation.addHomeRoute
 import com.example.poputka.presentation.journal.navigation.addJournalRoute
-import com.example.poputka.presentation.journal.navigation.JournalDestination
 import com.example.poputka.presentation.navigation.util.enterSlideTransition
 import com.example.poputka.presentation.navigation.util.exitSlideTransition
 import com.example.poputka.presentation.navigation.util.popEnterSlideTransition
@@ -22,7 +22,7 @@ fun AppNavGraph(
 ) {
     NavHost(modifier = modifier,
         navController = navController,
-        startDestination = JournalDestination.JournalNav,
+        startDestination = HomeDestination.HomeNav,
         enterTransition = { enterSlideTransition() },
         exitTransition = { exitSlideTransition() },
         popEnterTransition = { popEnterSlideTransition() },
