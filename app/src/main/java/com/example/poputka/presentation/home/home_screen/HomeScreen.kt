@@ -1,7 +1,6 @@
 package com.example.poputka.presentation.home.home_screen
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +21,6 @@ import com.example.poputka.presentation.canvas.custom_circular_progress_indicato
 import com.example.poputka.presentation.home.home_screen.add_water_button.AddWaterButton
 import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkListItemFull
 import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkLogHeader
-import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkLogPanel
 import com.example.poputka.presentation.home.home_screen.hydration_info_panel.HydrationInfoPanel
 import com.example.poputka.presentation.home.util.DrinkCategory
 import com.example.poputka.ui.theme.PoputkaTheme
@@ -85,13 +83,14 @@ fun HomeScreen() {
         )
 
     }
+    /*
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
         AddWaterButton(
             onClick = { currentAnimValue += 200f },
             onLongClick = {},
             modifier = Modifier.padding(bottom = 16.dp)
         )
-    }
+    }*/
 }
 
 @Composable
