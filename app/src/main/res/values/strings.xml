@@ -44,6 +44,9 @@
     <string name="champagne">Шампанское</string>
     
     //Home Screen
-    <string name="drink_log">Журнал учета выпитого</string>
+    <string name="drink_log">Журнал выпитого</string>
+    <string name="hydration_info_block_title_hydration">Гидратация</string>
+    <string name="hydration_info_block_title_all_drinks">Все напитки</string>
+    <string name="hydration_title">Гидратация</string>
     
 </resources>

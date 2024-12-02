@@ -15,10 +15,10 @@
       </SelectionState>
       <SelectionState runConfigName="MainActivity">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-11-28T01:44:02.106569400Z">
+        <DropdownSelection timestamp="2024-11-29T00:38:58.662410200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Sergey\.android\avd\Pixel_6_Pro_API_29.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=38231JEHN05951" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -39,6 +39,9 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="DrinkItemPreview (1)">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="DrinkListItemPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

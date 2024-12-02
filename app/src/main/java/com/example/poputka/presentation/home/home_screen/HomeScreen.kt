@@ -1,14 +1,14 @@
 package com.example.poputka.presentation.home.home_screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -19,7 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.poputka.presentation.canvas.custom_circular_progress_indicator.AnimatedCircularProgressIndicator
+import com.example.poputka.presentation.home.home_screen.add_water_button.AddWaterButton
+import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkListItemFull
+import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkLogHeader
 import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkLogPanel
+import com.example.poputka.presentation.home.home_screen.hydration_info_panel.HydrationInfoPanel
 import com.example.poputka.presentation.home.util.DrinkCategory
 import com.example.poputka.ui.theme.PoputkaTheme
 
@@ -29,8 +33,6 @@ fun HomeScreen() {
         Pair(DrinkCategory.EnergyDrink, "2100"),
         Pair(DrinkCategory.Wine, "8"),
         Pair(DrinkCategory.Water, "900"),
-        Pair(DrinkCategory.Tea, "700"),
-        Pair(DrinkCategory.Coffee, "20"),
         Pair(DrinkCategory.Beer, "50")
     )
     var currentAnimValue by remember { mutableFloatStateOf(600f) }
@@ -46,13 +48,68 @@ fun HomeScreen() {
         )
         Spacer(modifier = Modifier.height(32.dp))
 
-        DrinkLogPanel(list)
+        HydrationInfoPanel("100 ml", "200 ml", {}, Modifier)
+        Spacer(modifier = Modifier.height(16.dp))
+        DrinkLogHeader()
+        Spacer(modifier = Modifier.height(16.dp))
+        DrinkListItemFull(
+            DrinkCategory.Water,
+            "900 ml",
+            "03:00",
+            {},
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
 
-        Button(
+        DrinkListItemFull(
+            DrinkCategory.Tea,
+            "90 ml",
+            "12:00",
+            {},
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        DrinkListItemFull(
+            DrinkCategory.Wine,
+            "900 ml",
+            "13:00",
+            {},
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        DrinkListItemFull(
+            DrinkCategory.EnergyDrink,
+            "900 ml",
+            "03:00",
+            {},
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+    }
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+        AddWaterButton(
             onClick = { currentAnimValue += 200f },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text("Increase Progress")
+            onLongClick = {},
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+    }
+}
+
+@Composable
+@Preview
+fun DrinkItemPreview() {
+    PoputkaTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                HydrationInfoPanel("200", "3000", {}, Modifier)
+
+                Spacer(Modifier.height(16.dp))
+
+                AddWaterButton({}, {}, modifier = Modifier)
+            }
         }
     }
 }

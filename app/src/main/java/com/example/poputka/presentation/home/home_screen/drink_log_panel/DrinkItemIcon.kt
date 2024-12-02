@@ -14,11 +14,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DrinkItemIcon(@ColorRes backgroundColor: Int, @DrawableRes iconId: Int) {
+fun DrinkItemIcon(
+    @ColorRes backgroundColor: Int,
+    @DrawableRes iconId: Int,
+    modifier: Modifier = Modifier
+) {
     Image(
         painter = painterResource(iconId),
         contentDescription = null,
-        modifier = Modifier
+        modifier = modifier
             .size(28.dp)
             .background(color = colorResource(backgroundColor), shape = CircleShape),
         contentScale = ContentScale.Inside
