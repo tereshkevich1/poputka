@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.example.poputka.R
+import com.example.poputka.presentation.util.UiConstants.fabSize
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
@@ -53,8 +53,7 @@ fun AddWaterButton(
 
     FloatingActionButton(
         onClick = {},
-        modifier = modifier
-            .size(68.dp),
+        modifier = modifier.size(fabSize),
         shape = CircleShape,
         containerColor = containerColor,
         contentColor = contentColor,

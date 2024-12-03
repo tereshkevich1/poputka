@@ -6,15 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -23,6 +21,8 @@ import com.example.poputka.presentation.home.home_screen.add_water_button.AddWat
 import com.example.poputka.presentation.navigation.BottomNavBar
 import com.example.poputka.presentation.navigation.nav_graph.AppNavGraph
 import com.example.poputka.presentation.navigation.topLevelRoutes
+import com.example.poputka.presentation.util.UiConstants.BottomNavBarHeight
+import com.example.poputka.presentation.util.UiConstants.fabYOffset
 import com.example.poputka.ui.theme.PoputkaTheme
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
@@ -30,6 +30,19 @@ import com.google.firebase.appcheck.appCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.initialize
 import dagger.hilt.android.AndroidEntryPoint
+
+/**
+ * MainActivity — the main entry point of the application.
+ *
+ * Changes related to `BottomNavBar`:
+ * 1. Removed the automatic bottom padding (`paddingValues`) in the `Scaffold` to ensure
+ *    main content is displayed under the navigation bar without overlapping.
+ * 2. Defined the BottomNavBar height in `UiConstants.BottomNavBarHeight` for consistent usage.
+ * 3. Added manual padding where necessary using `Spacer` or `Modifier.padding`.
+ *
+ * These changes improve the UI structure and prevent conflicts between the main content
+ * and the BottomNavBar.
+ */
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -47,6 +60,9 @@ class MainActivity : ComponentActivity() {
             val currentDestination = navBackStackEntry?.destination
 
             PoputkaTheme {
+
+                // Scaffold with bottom padding removal to prevent conflicts
+                // between content and the BottomNavBar.
                 Scaffold(
                     bottomBar = {
                         if (currentDestination == null || topLevelRoutes.any {
@@ -54,9 +70,13 @@ class MainActivity : ComponentActivity() {
                                     it.route::class
                                 )
                             }) {
+
+                            // Setting the BottomNavBar height explicitly using Modifier.height.
+                            // The height is fixed and defined in UiConstants.
                             BottomNavBar(
                                 navController = navController,
-                                currentDestination = currentDestination
+                                currentDestination = currentDestination,
+                                modifier = Modifier.height(BottomNavBarHeight)
                             )
                         }
                     },
@@ -65,36 +85,22 @@ class MainActivity : ComponentActivity() {
                             onClick = {},
                             onLongClick = {},
                             modifier = Modifier
-                                .offset(y = 48.dp)
+                                .offset(y = fabYOffset)
                         )
                     },
                     floatingActionButtonPosition = FabPosition.Center
-                ) { padding ->
+                ) { paddingValues ->
+
+                    // Ignoring bottom padding to allow the content to fill the screen
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(padding)
+                            .padding(top = paddingValues.calculateTopPadding())
                     ) {
                         AppNavGraph(navController = navController)
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PoputkaTheme {
-        Greeting("Android")
     }
 }

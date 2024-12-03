@@ -1,7 +1,6 @@
 package com.example.poputka.presentation.navigation
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
@@ -17,8 +16,8 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.poputka.presentation.navigation.custom_nav_bar.NavBar
 
 @Composable
-fun BottomNavBar(navController: NavController, currentDestination: NavDestination?) {
-    NavBar(modifier = Modifier.height(108.dp)) {
+fun BottomNavBar(navController: NavController, currentDestination: NavDestination?, modifier: Modifier = Modifier) {
+    NavBar(modifier = modifier) {
         topLevelRoutes.forEachIndexed { index, topLevelRoute ->
 
             // TODO: Refactor

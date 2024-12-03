@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Surface
@@ -33,7 +34,8 @@ fun NavBar(
         color = containerColor,
         contentColor = contentColor,
         tonalElevation = tonalElevation,
-        modifier = modifier.clip(CustomCutoutShape())
+        modifier = modifier
+            .clip(CustomCutoutShape())
     ) {
         Row(
             modifier =
@@ -41,7 +43,8 @@ fun NavBar(
                 .fillMaxWidth()
                 .windowInsetsPadding(windowInsets)
                 .defaultMinSize(minHeight = NavigationBarHeight)
-                .selectableGroup(),
+                .selectableGroup()
+                .clip(RoundedCornerShape(30)),
             horizontalArrangement = Arrangement.spacedBy(NavigationBarItemHorizontalPadding),
             verticalAlignment = Alignment.CenterVertically,
             content = content

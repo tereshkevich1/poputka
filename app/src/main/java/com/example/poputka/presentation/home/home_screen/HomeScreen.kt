@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -23,6 +25,7 @@ import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkIt
 import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkLogHeader
 import com.example.poputka.presentation.home.home_screen.hydration_info_panel.HydrationInfoPanel
 import com.example.poputka.presentation.home.util.DrinkCategory
+import com.example.poputka.presentation.util.UiConstants.bottomNavAndFabPadding
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
@@ -35,7 +38,13 @@ fun HomeScreen() {
     )
     var currentAnimValue by remember { mutableFloatStateOf(600f) }
     val maxValue = 2000f
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = bottomNavAndFabPadding),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Spacer(modifier = Modifier.height(12.dp))
         AnimatedCircularProgressIndicator(
             maxValue = maxValue,
@@ -68,6 +77,46 @@ fun HomeScreen() {
             DrinkCategory.Wine,
             "900 ml",
             "13:00",
+            {},
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        DrinkItem(
+            DrinkCategory.EnergyDrink,
+            "900 ml",
+            "03:00",
+            {},
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        DrinkItem(
+            DrinkCategory.EnergyDrink,
+            "900 ml",
+            "03:00",
+            {},
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        DrinkItem(
+            DrinkCategory.Tea,
+            "90 ml",
+            "12:00",
+            {},
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        DrinkItem(
+            DrinkCategory.Wine,
+            "900 ml",
+            "13:00",
+            {},
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        DrinkItem(
+            DrinkCategory.EnergyDrink,
+            "900 ml",
+            "03:00",
             {},
             modifier = Modifier.padding(horizontal = 16.dp)
         )
