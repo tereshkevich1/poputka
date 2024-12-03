@@ -2,7 +2,6 @@ package com.example.poputka.presentation.home.home_screen.hydration_info_panel
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
-import com.example.poputka.presentation.home.home_screen.add_water_button.AddWaterButton
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
@@ -49,28 +47,26 @@ fun HydrationInfoPanel(
             title = stringResource(R.string.hydration_info_block_title_hydration),
             value = currentHydration,
             modifier = Modifier
-                .weight(1f)
                 .fillMaxHeight()
         )
 
-        VerticalDivider(modifier = Modifier.fillMaxHeight(), thickness = 1.dp)
+        VerticalDivider(modifier = Modifier.height(52.dp), thickness = 1.dp)
 
         HydrationInfoBlock(
             title = stringResource(R.string.hydration_info_block_title_all_drinks),
             value = allDrinksAmount,
             modifier = Modifier
-                .weight(1f)
                 .fillMaxHeight()
         )
 
-        IconButton(onClick = onIconButtonClick, modifier = Modifier) {
+        Spacer(modifier = Modifier.weight(1f))
+
+        IconButton(onClick = onIconButtonClick, modifier = Modifier.padding(end = 8.dp)) {
             Icon(
                 painter = painterResource(R.drawable.help),
                 contentDescription = null
             )
         }
-
-        Spacer(modifier = Modifier.weight(0.1f))
     }
 }
 
@@ -79,16 +75,12 @@ fun HydrationInfoPanel(
 fun HydroInfoPreview() {
     PoputkaTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            Column(
+            Row(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                HydrationInfoPanel("200", "3000", {}, Modifier)
-
-                Spacer(Modifier.height(16.dp))
-
-                AddWaterButton({},{}, modifier = Modifier)
+                HydrationInfoPanel("200", "3000", {}, Modifier.weight(5f))
             }
         }
     }

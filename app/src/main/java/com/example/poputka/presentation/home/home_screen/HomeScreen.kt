@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.poputka.presentation.canvas.custom_circular_progress_indicator.AnimatedCircularProgressIndicator
 import com.example.poputka.presentation.home.home_screen.add_water_button.AddWaterButton
-import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkListItemFull
+import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkItem
 import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkLogHeader
 import com.example.poputka.presentation.home.home_screen.hydration_info_panel.HydrationInfoPanel
 import com.example.poputka.presentation.home.util.DrinkCategory
@@ -47,10 +47,8 @@ fun HomeScreen() {
         Spacer(modifier = Modifier.height(32.dp))
 
         HydrationInfoPanel("100 ml", "200 ml", {}, Modifier)
-        Spacer(modifier = Modifier.height(16.dp))
         DrinkLogHeader()
-        Spacer(modifier = Modifier.height(16.dp))
-        DrinkListItemFull(
+        DrinkItem(
             DrinkCategory.Water,
             "900 ml",
             "03:00",
@@ -58,7 +56,7 @@ fun HomeScreen() {
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        DrinkListItemFull(
+        DrinkItem(
             DrinkCategory.Tea,
             "90 ml",
             "12:00",
@@ -66,7 +64,7 @@ fun HomeScreen() {
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        DrinkListItemFull(
+        DrinkItem(
             DrinkCategory.Wine,
             "900 ml",
             "13:00",
@@ -74,23 +72,14 @@ fun HomeScreen() {
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        DrinkListItemFull(
+        DrinkItem(
             DrinkCategory.EnergyDrink,
             "900 ml",
             "03:00",
             {},
             modifier = Modifier.padding(horizontal = 16.dp)
         )
-
     }
-    /*
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
-        AddWaterButton(
-            onClick = { currentAnimValue += 200f },
-            onLongClick = {},
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-    }*/
 }
 
 @Composable

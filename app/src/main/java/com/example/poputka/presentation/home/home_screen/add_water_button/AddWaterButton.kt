@@ -54,7 +54,7 @@ fun AddWaterButton(
     FloatingActionButton(
         onClick = {},
         modifier = modifier
-            .size(92.dp),
+            .size(68.dp),
         shape = CircleShape,
         containerColor = containerColor,
         contentColor = contentColor,

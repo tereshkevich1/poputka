@@ -3,7 +3,6 @@ package com.example.poputka.presentation.home.home_screen.hydration_info_panel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -17,17 +16,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun HydrationInfoBlock(title: String, value: String, modifier: Modifier) {
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.Start
     ) {
-        val startPadding = 32.dp
-
         Text(
             text = value,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = startPadding),
             textAlign = TextAlign.Left,
             style = MaterialTheme.typography.titleMedium
         )
@@ -36,12 +30,9 @@ fun HydrationInfoBlock(title: String, value: String, modifier: Modifier) {
 
         Text(
             text = title,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = startPadding),
             color = MaterialTheme.colorScheme.outline,
             textAlign = TextAlign.Left,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }
