@@ -14,11 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
-import com.example.poputka.presentation.home.util.DrinkCategory
+import com.example.poputka.presentation.util.DrinkCategory
+import com.example.poputka.presentation.util.DrinkItemIcon
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
@@ -39,8 +42,8 @@ fun DrinkItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         DrinkItemIcon(
-            backgroundColor = drink.colorId,
-            iconId = drink.iconId,
+            backgroundColor = colorResource(drink.colorId),
+            icon = painterResource(drink.iconId),
             modifier = Modifier.padding(start = 16.dp)
         )
 

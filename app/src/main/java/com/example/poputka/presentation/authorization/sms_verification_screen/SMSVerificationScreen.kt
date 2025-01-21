@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -41,7 +40,7 @@ import com.example.poputka.presentation.authorization.auth_screen.AuthViewModel
 import com.example.poputka.presentation.authorization.auth_screen.util.SendVerificationCodeState
 import com.example.poputka.presentation.authorization.sms_verification_screen.components.TopAppBar
 import com.example.poputka.presentation.common.components.LoadingButton
-import com.example.poputka.presentation.util.CODE_LENGTH
+import com.example.poputka.presentation.util.constants.CODE_LENGTH
 import com.example.poputka.presentation.util.ScreenUIState
 import com.example.poputka.ui.theme.PoputkaTheme
 

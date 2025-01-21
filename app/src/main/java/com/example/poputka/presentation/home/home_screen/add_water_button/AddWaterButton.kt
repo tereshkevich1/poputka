@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.res.painterResource
 import com.example.poputka.R
-import com.example.poputka.presentation.util.UiConstants.fabSize
+import com.example.poputka.presentation.util.constants.UiConstants.fabSize
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 

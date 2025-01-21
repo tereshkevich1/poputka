@@ -1,28 +1,30 @@
 [versions]
+accompanistPager = "0.32.0"
 agp = "8.7.3"
 browser = "1.8.0"
-firebaseBom = "33.6.0"
+firebaseBom = "33.7.0"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.9.3"
-composeBom = "2024.11.00"
+activityCompose = "1.10.0"
+composeBom = "2025.01.00"
 googleGmsGoogleServices = "4.4.2"
 hiltAndroid = "2.52"
 hiltCompiler = "2.52"
 hiltNavigationCompose = "1.2.0"
-navigationCompose = "2.8.4"
+navigationCompose = "2.8.5"
 orgJetbrainsKotlinPluginSerializationGradlePlugin = "2.1.0-RC"
 kotlinxSerializationJson = "1.7.3"
-navigationSafeArgsGradlePlugin = "2.9.0-alpha03"
-androidxNavigationSafeargsKotlinGradlePlugin = "2.9.0-alpha03"
-uiTextGoogleFonts = "1.7.5"
+navigationSafeArgsGradlePlugin = "2.9.0-alpha04"
+androidxNavigationSafeargsKotlinGradlePlugin = "2.9.0-alpha04"
+uiTextGoogleFonts = "1.7.6"
 
 
 [libraries]
+accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPager" }
 androidx-browser = { module = "androidx.browser:browser", version.ref = "browser" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }

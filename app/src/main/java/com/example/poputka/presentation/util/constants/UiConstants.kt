@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.util
+package com.example.poputka.presentation.util.constants
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp

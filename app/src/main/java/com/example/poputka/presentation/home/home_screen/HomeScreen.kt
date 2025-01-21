@@ -24,8 +24,8 @@ import com.example.poputka.presentation.home.home_screen.add_water_button.AddWat
 import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkItem
 import com.example.poputka.presentation.home.home_screen.drink_log_panel.DrinkLogHeader
 import com.example.poputka.presentation.home.home_screen.hydration_info_panel.HydrationInfoPanel
-import com.example.poputka.presentation.home.util.DrinkCategory
-import com.example.poputka.presentation.util.UiConstants.bottomNavAndFabPadding
+import com.example.poputka.presentation.util.DrinkCategory
+import com.example.poputka.presentation.util.constants.UiConstants.bottomNavAndFabPadding
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable

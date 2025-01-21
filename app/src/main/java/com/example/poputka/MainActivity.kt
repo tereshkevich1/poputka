@@ -13,7 +13,6 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -21,8 +20,8 @@ import com.example.poputka.presentation.home.home_screen.add_water_button.AddWat
 import com.example.poputka.presentation.navigation.BottomNavBar
 import com.example.poputka.presentation.navigation.nav_graph.AppNavGraph
 import com.example.poputka.presentation.navigation.topLevelRoutes
-import com.example.poputka.presentation.util.UiConstants.BottomNavBarHeight
-import com.example.poputka.presentation.util.UiConstants.fabYOffset
+import com.example.poputka.presentation.util.constants.UiConstants.BottomNavBarHeight
+import com.example.poputka.presentation.util.constants.UiConstants.fabYOffset
 import com.example.poputka.ui.theme.PoputkaTheme
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp

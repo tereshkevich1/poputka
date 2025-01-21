@@ -49,4 +49,10 @@
     <string name="hydration_info_block_title_all_drinks">Все напитки</string>
     <string name="hydration_title">Гидратация</string>
     
+    //AddDrinkScreen
+    <string name="time_title">Время</string>
+    
+    <string name="dismiss_title">Закрыть</string>
+    <string name="ok">OK</string>
+    
 </resources>

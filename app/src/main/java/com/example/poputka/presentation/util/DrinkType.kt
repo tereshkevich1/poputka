@@ -1,8 +1,9 @@
-package com.example.poputka.presentation.home.util
+package com.example.poputka.presentation.util
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.ui.res.stringResource
 import com.example.poputka.R
 
 sealed class DrinkCategory(
@@ -22,4 +23,5 @@ sealed class DrinkCategory(
     data object Wine : DrinkCategory(R.string.wine, R.drawable.wine_bar, R.color.wine_color, 50)
     data object Whiskey : DrinkCategory(R.string.whiskey, R.drawable.liquor, R.color.whiskey_color, 10)
 }
+
 
