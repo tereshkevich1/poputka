@@ -7,7 +7,6 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
-
 class DateFormatUseCase @Inject constructor() {
     operator fun invoke(timestamp: Long): String {
         if (isToday(timestamp)) return "Сегодня"

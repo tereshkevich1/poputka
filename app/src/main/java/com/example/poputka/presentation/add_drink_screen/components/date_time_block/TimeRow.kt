@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.poputka.presentation.add_drink_screen.components
+package com.example.poputka.presentation.add_drink_screen.components.date_time_block
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,9 +25,9 @@ fun TimeRow(
     dateLong: Long?,
     time: String,
     date: String,
-    onDateSelected: (Long?) -> Unit,
+    onDateSelect: (Long?) -> Unit,
     onDateDismiss: () -> Unit,
-    onTimeSelected: (TimePickerState) -> Unit,
+    onTimeSelect: (TimePickerState) -> Unit,
     onTimeDismiss: () -> Unit,
     modifier: Modifier
 ) {
@@ -52,7 +52,7 @@ fun TimeRow(
                 dateLong,
                 onDateSelected = {
                     showDateDialog = false
-                    onDateSelected(it)
+                    onDateSelect(it)
                 },
                 onDismiss = {
                     showDateDialog = false
@@ -65,7 +65,7 @@ fun TimeRow(
                 timeLong,
                 onConfirm = {
                     showTimeDialog = false
-                    onTimeSelected(it)
+                    onTimeSelect(it)
                 },
                 onDismiss = {
                     showTimeDialog = false

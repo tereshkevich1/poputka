@@ -37,10 +37,10 @@
       </SelectionState>
       <SelectionState runConfigName="AddDrinkScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-01-17T18:11:30.076985300Z">
+        <DropdownSelection timestamp="2025-01-24T14:00:25.565806500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Sergey\.android\avd\Pixel_2_API_30.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=38231JEHN05951" />
             </handle>
           </Target>
         </DropdownSelection>

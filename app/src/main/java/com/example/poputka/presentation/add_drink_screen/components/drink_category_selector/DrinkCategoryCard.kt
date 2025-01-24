@@ -1,4 +1,4 @@
-package com.example.poputka.presentation.add_drink_screen.components
+package com.example.poputka.presentation.add_drink_screen.components.drink_category_selector
 
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState

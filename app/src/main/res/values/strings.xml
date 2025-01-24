@@ -54,5 +54,6 @@
     
     <string name="dismiss_title">Закрыть</string>
     <string name="ok">OK</string>
+    <string name="add_drink">Добавить напиток</string>
     
 </resources>

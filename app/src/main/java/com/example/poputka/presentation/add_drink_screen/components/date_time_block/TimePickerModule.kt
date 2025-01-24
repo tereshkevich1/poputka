@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.poputka.presentation.add_drink_screen.components
+package com.example.poputka.presentation.add_drink_screen.components.date_time_block
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api

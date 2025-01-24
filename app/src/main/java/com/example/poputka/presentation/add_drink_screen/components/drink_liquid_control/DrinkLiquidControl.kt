@@ -1,12 +1,10 @@
-package com.example.poputka.presentation.canvas.liquid_control
+package com.example.poputka.presentation.add_drink_screen.components.drink_liquid_control
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,11 +14,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LiquidControl(color: Color) {
+fun DrinkLiquidControl(color: Color, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
-            .width(150.dp)
-            .height(400.dp)
+        modifier = modifier
     ) {
         Canvas(
             modifier = Modifier
