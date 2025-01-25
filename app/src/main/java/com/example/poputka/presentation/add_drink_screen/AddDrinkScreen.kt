@@ -13,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.poputka.domain.use_case.UpdateValueUseCase
 import com.example.poputka.domain.use_case.format.DateFormatUseCase
 import com.example.poputka.domain.use_case.format.TimeFormatUseCase
 import com.example.poputka.presentation.add_drink_screen.components.AddDrinkContent
@@ -34,6 +35,10 @@ fun AddDrinkScreen(
             viewModel.changeDrinkCategory(
                 newDrinkCategory
             )
+        },
+        drinkVolume = uiState.value.volume,
+        onDrinkVolumeChange = { newValue ->
+            viewModel.changeVolume(newValue)
         }
     )
 }
@@ -47,7 +52,7 @@ fun AddDrinkScreenPreview() {
         Surface(modifier = Modifier.fillMaxSize()) {
             AddDrinkScreen(
                 viewModel = AddDrinkViewModel(
-                    dateFormatUseCase = DateFormatUseCase(), TimeFormatUseCase()
+                    dateFormatUseCase = DateFormatUseCase(), TimeFormatUseCase(), UpdateValueUseCase()
                 )
             )
         }

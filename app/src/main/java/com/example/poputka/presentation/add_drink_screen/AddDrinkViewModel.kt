@@ -5,6 +5,7 @@ package com.example.poputka.presentation.add_drink_screen
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
 import androidx.lifecycle.ViewModel
+import com.example.poputka.domain.use_case.UpdateValueUseCase
 import com.example.poputka.domain.use_case.format.DateFormatUseCase
 import com.example.poputka.domain.use_case.format.TimeFormatUseCase
 import com.example.poputka.presentation.util.DrinkCategory
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddDrinkViewModel @Inject constructor(
     private val dateFormatUseCase: DateFormatUseCase,
-    private val timeFormatUseCase: TimeFormatUseCase
+    private val timeFormatUseCase: TimeFormatUseCase,
+    private val updateValueUseCase: UpdateValueUseCase
 ) : ViewModel() {
     private var _uiState = MutableStateFlow(
         AddDrinkUiState()
@@ -52,11 +54,18 @@ class AddDrinkViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(drinkCategory = drinkCategory)
         }
     }
+
+
+    fun changeVolume(newVolume: String) {
+        updateValueUseCase(newVolume)?.let { validVolume ->
+            _uiState.value = _uiState.value.copy(volume = validVolume)
+        }
+    }
 }
 
 data class AddDrinkUiState(
     var time: Long = System.currentTimeMillis(),
     var date: Long = System.currentTimeMillis(),
     var drinkCategory: DrinkCategory = DrinkCategory.Water,
-    var quantity: Int = 0
+    var volume: String = ""
 )

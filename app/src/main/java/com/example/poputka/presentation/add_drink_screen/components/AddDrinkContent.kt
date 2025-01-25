@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.poputka.presentation.add_drink_screen.components
 
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,7 +42,8 @@ fun AddDrinkContent(
     date: String,
     onDateSelect: (Long?) -> Unit,
     onTimeSelect: (TimePickerState) -> Unit,
-    onDrinkCategoryChange: (DrinkCategory?) -> Unit
+    onDrinkCategoryChange: (DrinkCategory?) -> Unit,
+    drinkVolume: String, onDrinkVolumeChange: (String) -> Unit
 ) {
     val largePadding = dimensionResource(R.dimen.padding_large)
     val innerPadding = dimensionResource(id = R.dimen.padding_medium)
@@ -91,7 +95,7 @@ fun AddDrinkContent(
             Spacer(modifier = Modifier.weight(1f))
         }
 
-        DrinkVolumeInputField()
+        DrinkVolumeInputField(drinkVolume, onDrinkVolumeChange)
 
         Spacer(modifier = Modifier.weight(1f))
 
