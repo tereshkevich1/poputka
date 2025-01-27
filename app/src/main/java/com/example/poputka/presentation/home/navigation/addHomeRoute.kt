@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.example.poputka.presentation.home.home_screen.HomeScreen
 
-
 fun NavGraphBuilder.addHomeRoute(navController: NavController) {
     navigation<HomeDestination.HomeNav>(
         startDestination = HomeDestination.Home,

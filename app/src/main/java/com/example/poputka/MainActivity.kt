@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -11,8 +12,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -20,6 +23,8 @@ import com.example.poputka.presentation.home.home_screen.add_water_button.AddWat
 import com.example.poputka.presentation.navigation.BottomNavBar
 import com.example.poputka.presentation.navigation.nav_graph.AppNavGraph
 import com.example.poputka.presentation.navigation.topLevelRoutes
+import com.example.poputka.presentation.settings.LocalSettingsState
+import com.example.poputka.presentation.settings.SettingsViewModel
 import com.example.poputka.presentation.util.constants.UiConstants.BottomNavBarHeight
 import com.example.poputka.presentation.util.constants.UiConstants.fabYOffset
 import com.example.poputka.ui.theme.PoputkaTheme
@@ -53,13 +58,17 @@ class MainActivity : ComponentActivity() {
             DebugAppCheckProviderFactory.getInstance(),
         )
         enableEdgeToEdge()
+
+        val settingsViewModel: SettingsViewModel by viewModels()
+
         setContent {
+            val settingsState by settingsViewModel.settingsState.collectAsStateWithLifecycle()
+
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
 
             PoputkaTheme {
-
                 // Scaffold with bottom padding removal to prevent conflicts
                 // between content and the BottomNavBar.
                 Scaffold(
@@ -96,10 +105,14 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(top = paddingValues.calculateTopPadding())
                     ) {
-                        AppNavGraph(navController = navController)
+                        CompositionLocalProvider(LocalSettingsState provides settingsState) {
+                            AppNavGraph(navController = navController)
+                        }
                     }
                 }
             }
         }
     }
 }
+
+
