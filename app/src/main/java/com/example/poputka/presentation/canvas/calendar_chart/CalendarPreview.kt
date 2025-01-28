@@ -1,5 +1,6 @@
 package com.example.poputka.presentation.canvas.calendar_chart
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
@@ -46,6 +47,7 @@ import com.example.poputka.ui.theme.PoputkaTheme
 import java.time.YearMonth
 import kotlin.random.Random
 
+@SuppressLint("NewApi")
 @Composable
 fun CalendarChart(
     currentMonth: YearMonth,
@@ -263,6 +265,7 @@ fun DraggableCalendarCanvas(
 }
 
 
+@SuppressLint("ViewModelConstructorInComposable", "NewApi")
 @Composable
 @Preview
 fun CalendarPreview() {
