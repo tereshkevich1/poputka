@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.poputka.presentation.canvas.bar_graph.animation.fadeInAnimation
+import com.example.poputka.presentation.canvas.bar_chart.animation.fadeInAnimation
+
 import com.example.poputka.presentation.canvas.custom_circular_progress_indicator.render.drawCircularProgressIndicator
 import com.example.poputka.ui.theme.PoputkaTheme
 

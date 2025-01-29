@@ -55,5 +55,20 @@
     <string name="dismiss_title">Закрыть</string>
     <string name="ok">OK</string>
     <string name="add_drink">Добавить напиток</string>
+
+    //Settings
+    <!-- Headers and general labels -->
+    <string name="sync_data">Синхронизировать данные</string>
+    <string name="total_drunk">Всего выпито</string>
+    <string name="days_completed">Выполнено дней</string>
+
+    <!-- Settings section -->
+    <string name="notifications">Уведомления</string>
+    <string name="daily_goal">Цель на день</string>
+    <string name="sounds_and_vibration">Звуки и вибрация</string>
+    <string name="measurement_units">Единицы измерения</string>
+    <string name="gender_and_weight">Пол и вес</string>
+    <string name="weather">Погода</string>
+    <string name="time_format">Формат времени</string>
     
 </resources>

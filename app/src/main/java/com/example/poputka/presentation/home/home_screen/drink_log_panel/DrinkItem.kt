@@ -38,7 +38,7 @@ fun DrinkItem(
             .fillMaxWidth()
             .height(64.dp)
             .clip(MaterialTheme.shapes.extraLarge)
-            .background(MaterialTheme.colorScheme.surfaceContainer),
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
         verticalAlignment = Alignment.CenterVertically
     ) {
         DrinkItemIcon(

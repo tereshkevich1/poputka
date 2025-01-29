@@ -26,7 +26,7 @@ fun DayStreakPanel(value: String, onPanelClick: () -> Unit, modifier: Modifier) 
             .fillMaxWidth()
             .height(64.dp)
             .clip(MaterialTheme.shapes.extraLarge)
-            .background(MaterialTheme.colorScheme.surfaceContainer),
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -39,7 +39,7 @@ fun HydrationInfoPanel(
             .height(88.dp)
             .padding(horizontal = dimensionResource(R.dimen.horizontal_default_padding))
             .clip(MaterialTheme.shapes.extraLarge)
-            .background(MaterialTheme.colorScheme.surfaceContainer),
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
