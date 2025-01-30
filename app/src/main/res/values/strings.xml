@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">poputka</string>
 
+    //General
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
+
     //auth Screen
     <string name="auth_screen_title">Log in or create a profile</string>
     <string name="phone_number_label">Contact phone number</string>"
@@ -70,5 +74,9 @@
     <string name="gender_and_weight">Пол и вес</string>
     <string name="weather">Погода</string>
     <string name="time_format">Формат времени</string>
+
+    <!-- Titles -->
+    <string name="title_measurement_units">Единицы измерения</string>
+    <string name="title_notification_settings">Настройки уведомлений</string>
     
 </resources>

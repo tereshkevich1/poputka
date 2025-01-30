@@ -55,9 +55,16 @@ class SettingsViewModel @Inject constructor(private val settingsDataStore: Setti
         )
     }
 
-    fun changeVolumeUnit(value: VolumeUnit) {
-        viewModelScope.launch {
-            settingsDataStore.putString(value.name, key = VOLUME_UNIT_SETTING)
+    fun changeVolumeUnit(value: String) {
+        val adjustedValue = try {
+            VolumeUnit.valueOf(value)
+        } catch (e: IllegalArgumentException) {
+            null
+        }
+        if (adjustedValue != null) {
+            viewModelScope.launch {
+                settingsDataStore.putString(adjustedValue.name, key = VOLUME_UNIT_SETTING)
+            }
         }
     }
 }

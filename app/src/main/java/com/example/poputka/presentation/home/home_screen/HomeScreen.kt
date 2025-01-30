@@ -31,7 +31,7 @@ import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
 fun HomeScreen() {
-    val volumeUnit = LocalSettingsState.current.volumeUnitSetting
+    val volumeUnit = LocalSettingsState.current.volumeUnitSetting.abbreviation
     val currentAnimValue by remember { mutableFloatStateOf(600f) }
     val maxValue = 2000f
     Column(

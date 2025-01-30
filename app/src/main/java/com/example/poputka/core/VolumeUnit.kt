@@ -5,3 +5,10 @@ enum class VolumeUnit(val abbreviation: String) {
     Liters("l"),
     Ounces("oz")
 }
+
+val volumeUnitList =
+    listOf(
+        VolumeUnit.Milliliters.name,
+        VolumeUnit.Liters.name,
+        VolumeUnit.Ounces.name
+    )
