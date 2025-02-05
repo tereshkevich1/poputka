@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.example.poputka.presentation.util.DrinkCategory
-import com.example.poputka.presentation.util.dpToInt
+import com.example.poputka.presentation.util.dpToPx
 import com.example.poputka.presentation.util.drinkCategories
 
 @Composable
@@ -33,7 +33,7 @@ fun DrinkCategorySelector(onDrinkCategoryChange: (newDrinkCategory: DrinkCategor
     val cardWidth = 64.dp
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val horizontalLazyRowPadding = screenWidth / 2 - cardWidth / 2
-    val horizontalLazyRowPaddingInt = dpToInt(horizontalLazyRowPadding)
+    val horizontalLazyRowPaddingInt = dpToPx(horizontalLazyRowPadding)
 
     val currentIndex by remember {
         derivedStateOf {

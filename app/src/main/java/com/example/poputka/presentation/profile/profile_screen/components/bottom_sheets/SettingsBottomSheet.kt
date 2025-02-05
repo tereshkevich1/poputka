@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
 
@@ -51,28 +52,41 @@ fun SettingsBottomSheet(
 
         content()
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(paddingMedium),
-        ) {
-            val buttonModifier = Modifier
-                .weight(1f)
-                .height(52.dp)
+        ActionButtons(
+            onCancelClick = onCancelClick,
+            onSaveClick = onSaveClick,
+            paddingMedium = paddingMedium
+        )
+    }
+}
 
-            OutlinedButton(
-                onClick = onCancelClick,
-                modifier = buttonModifier
-            ) {
-                Text(stringResource(R.string.cancel))
-            }
-            Spacer(modifier = Modifier.width(paddingMedium))
-            Button(
-                onClick = onSaveClick,
-                modifier = buttonModifier
-            ) {
-                Text(stringResource(R.string.save))
-            }
+@Composable
+fun ActionButtons(
+    onCancelClick: () -> Unit,
+    onSaveClick: () -> Unit,
+    paddingMedium: Dp = 16.dp
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(paddingMedium),
+    ) {
+        val buttonModifier = Modifier
+            .weight(1f)
+            .height(52.dp)
+
+        OutlinedButton(
+            onClick = onCancelClick,
+            modifier = buttonModifier
+        ) {
+            Text(stringResource(R.string.cancel))
+        }
+        Spacer(modifier = Modifier.width(paddingMedium))
+        Button(
+            onClick = onSaveClick,
+            modifier = buttonModifier
+        ) {
+            Text(stringResource(R.string.save))
         }
     }
 }

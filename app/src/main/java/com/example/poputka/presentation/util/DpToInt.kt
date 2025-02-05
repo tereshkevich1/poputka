@@ -5,7 +5,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun dpToInt(dpValue: Dp): Int {
+fun dpToPx(dpValue: Dp): Int {
     val density = LocalDensity.current
     return with(density) { dpValue.toPx().toInt() }
 }

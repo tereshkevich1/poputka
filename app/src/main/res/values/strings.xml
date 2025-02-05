@@ -75,6 +75,10 @@
     <string name="weather">Погода</string>
     <string name="time_format">Формат времени</string>
 
+    <string name="gender">Пол</string>
+    <string name="weight">Вес</string>
+    <string name="height">Рост</string>
+
     <!-- Titles -->
     <string name="title_measurement_units">Единицы измерения</string>
     <string name="title_notification_settings">Настройки уведомлений</string>
