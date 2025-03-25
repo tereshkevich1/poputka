@@ -76,8 +76,10 @@
     <string name="time_format">Формат времени</string>
 
     <string name="gender">Пол</string>
+    <string name="birthday">День рождения</string>
     <string name="weight">Вес</string>
     <string name="height">Рост</string>
+    <string name="activity_level">Уровень активности</string>
 
     <!-- Titles -->
     <string name="title_measurement_units">Единицы измерения</string>

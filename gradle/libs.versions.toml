@@ -19,8 +19,8 @@ hiltNavigationCompose = "1.2.0"
 navigationCompose = "2.8.5"
 orgJetbrainsKotlinPluginSerializationGradlePlugin = "2.1.0-RC"
 kotlinxSerializationJson = "1.7.3"
-navigationSafeArgsGradlePlugin = "2.9.0-alpha04"
-androidxNavigationSafeargsKotlinGradlePlugin = "2.9.0-alpha04"
+navigationSafeArgsGradlePlugin = "2.9.0-alpha06"
+androidxNavigationSafeargsKotlinGradlePlugin = "2.9.0-alpha06"
 uiTextGoogleFonts = "1.7.6"
 
 
