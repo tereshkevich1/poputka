@@ -1,4 +1,4 @@
-package com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector
+package com.example.poputka.core.presentation.components.selectors.vertical_selector
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -20,8 +20,8 @@ fun VerticalSelectorItem(
     textStyle: TextStyle,
     onClick: () -> Unit
 ) {
-    val textColor by rememberTextColor(listState, index, verticalPaddingPx)
-    val scale by rememberScaleFactor(listState, index, verticalPaddingPx)
+    val textColor by rememberVerticalTextColor(listState, index, verticalPaddingPx)
+    val scale by rememberVerticalScaleFactor(listState, index, verticalPaddingPx)
 
     Text(
         value,

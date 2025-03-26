@@ -54,7 +54,7 @@ import com.example.poputka.feature_settings.presentation.settings_screen.compone
 import com.example.poputka.feature_settings.presentation.settings_screen.components.bottom_sheets.ActionButtons
 import com.example.poputka.feature_settings.presentation.settings_screen.components.bottom_sheets.VolumeUnitBottomSheet
 import com.example.poputka.feature_settings.presentation.settings_screen.util.SettingsEvent
-import com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.VerticalSelector
+import com.example.poputka.core.presentation.components.selectors.vertical_selector.VerticalSelector
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable

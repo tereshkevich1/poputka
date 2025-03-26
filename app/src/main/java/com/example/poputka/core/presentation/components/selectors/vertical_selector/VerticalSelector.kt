@@ -1,4 +1,4 @@
-package com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector
+package com.example.poputka.core.presentation.components.selectors.vertical_selector
 
 import android.util.Log
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -18,19 +18,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.poputka.core.presentation.components.selectors.common.ScrollStateManager
+import com.example.poputka.core.presentation.components.selectors.util.Orientation
 import com.example.poputka.core.presentation.util.dpToPx
-import com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.ScrollUtils.calculateCenterIndex
+import com.example.poputka.core.presentation.components.selectors.util.VerticalScrollUtils.calculateCenterIndex
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
@@ -52,13 +51,14 @@ fun VerticalSelector(
     val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState)
     val coroutineScope = rememberCoroutineScope()
 
-    var lastReportedIndex by remember { mutableIntStateOf(preselectedIndex) }
+    var lastReportedIndex = remember { preselectedIndex }
 
     val scrollStateManager = remember {
         ScrollStateManager(
             listState = lazyListState,
             coroutineScope = coroutineScope,
-            verticalPaddingPx = verticalPaddingPx
+            paddingPx = verticalPaddingPx,
+            orientation = Orientation.VERTICAL
         )
     }
 
@@ -70,11 +70,11 @@ fun VerticalSelector(
     }
 
     LaunchedEffect(lazyListState.isScrollInProgress) {
-        if (!lazyListState.isScrollInProgress) {
-            lastReportedIndex = calculateCenterIndex(lazyListState, verticalPaddingPx)
-            onIndexChanged(lastReportedIndex)
-            Log.d("lazyListStateLog", "$lastReportedIndex")
-        }
+        if (lazyListState.isScrollInProgress) return@LaunchedEffect
+
+        lastReportedIndex = calculateCenterIndex(lazyListState, verticalPaddingPx)
+        onIndexChanged(lastReportedIndex)
+        Log.d("lazyListStateLog", "$lastReportedIndex")
     }
 
     LazyColumn(
@@ -101,12 +101,11 @@ fun VerticalSelector(
     }
 }
 
-
 @Composable
 @Preview
 fun VerticalSelectorPreview() {
     val ages: MutableList<String> = mutableListOf()
-    val range = 11..100
+    val range = 11..20
     range.forEach {
         ages.add(it.toString())
     }

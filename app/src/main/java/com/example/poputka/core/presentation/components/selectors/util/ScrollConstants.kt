@@ -1,4 +1,4 @@
-package com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector
+package com.example.poputka.core.presentation.components.selectors.util
 
 object ScrollConstants {
     const val SCALE_STEP = 0.015f

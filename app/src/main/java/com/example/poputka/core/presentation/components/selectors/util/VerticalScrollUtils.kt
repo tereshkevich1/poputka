@@ -1,10 +1,10 @@
-package com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector
+package com.example.poputka.core.presentation.components.selectors.util
 
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import kotlin.math.abs
 
-internal object ScrollUtils {
+internal object VerticalScrollUtils {
     fun calculateCenterIndex(
         listState: LazyListState,
         verticalPaddingPx: Int
@@ -20,5 +20,5 @@ internal object ScrollUtils {
     fun calculateItemCenter(
         itemInfo: LazyListItemInfo,
         verticalPaddingPx: Int
-    ): Int = itemInfo.offset + verticalPaddingPx + itemInfo.size / com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.ScrollConstants.CENTER_THRESHOLD_DIVIDER
+    ): Int = itemInfo.offset + verticalPaddingPx + itemInfo.size / ScrollConstants.CENTER_THRESHOLD_DIVIDER
 }
