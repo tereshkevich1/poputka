@@ -3,7 +3,7 @@ package com.example.poputka.feature_settings.presentation.settings_screen.compon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.poputka.R
-import com.example.poputka.presentation.profile.settings_screen.components.RadioButtonSingleSelection
+import com.example.poputka.feature_settings.presentation.settings_screen.components.RadioButtonSingleSelection
 
 @Composable
 fun VolumeUnitBottomSheet(

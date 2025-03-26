@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
-import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.BaseChartMode
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.graph_modes.BaseChartMode
 
 class SimpleMarkerLabelDrawer(
     private val markerHeight: Float,
@@ -18,7 +18,7 @@ class SimpleMarkerLabelDrawer(
     private val labelTextSize: TextUnit,
     private val chartMode: BaseChartMode,
     private val drawMarkersBetweenBars: Boolean = true
-) : com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.xaxis_markers.MarkerLabelDrawer {
+) : MarkerLabelDrawer {
     override fun drawMarkersAndLabels(
         drawScope: DrawScope,
         canvas: Canvas,

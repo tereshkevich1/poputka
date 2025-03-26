@@ -1,14 +1,10 @@
 package com.example.poputka.feature_auth.presentation.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.poputka.feature_auth.presentation.auth_screen.AuthScreen
-import com.example.poputka.feature_auth.presentation.auth_screen.AuthViewModel
-import com.example.poputka.feature_auth.presentation.sms_verification_screen.SMSVerificationScreen
 
 
 fun NavGraphBuilder.addAuthRoute(
@@ -41,12 +37,7 @@ fun NavGraphBuilder.authDestination(
     onNavigateToContactDetails: () -> Unit
 ) {
     composable<AuthDestination.SmsVerification> { backStackEntry ->
-        val authViewModel: AuthViewModel = hiltViewModel(backStackEntry)
 
-        AuthScreen(
-            onNavigateToComposable = onNavigateToContactDetails,
-            authViewModel = authViewModel
-        )
     }
 }
 
@@ -56,12 +47,5 @@ fun NavGraphBuilder.smsVerificationDestination(
     getBackStackEntry: () -> NavBackStackEntry
 ) {
     composable<AuthDestination.SmsVerification> {
-        val authViewModel: AuthViewModel = hiltViewModel(getBackStackEntry())
-
-        SMSVerificationScreen(
-            onNavigateToComposable = { },
-            onBackPressed = { onBackPressed() },
-            authViewModel = authViewModel
-        )
     }
 }

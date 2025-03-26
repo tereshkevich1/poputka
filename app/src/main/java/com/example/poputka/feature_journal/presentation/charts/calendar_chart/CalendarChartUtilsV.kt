@@ -2,8 +2,8 @@ package com.example.poputka.feature_journal.presentation.charts.calendar_chart
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import com.example.poputka.presentation.canvas.calendar_chart.calendar.ChartData
-import com.example.poputka.presentation.canvas.calendar_chart.calendar.ChartElement
+import com.example.poputka.feature_journal.presentation.charts.calendar_chart.calendar.ChartData
+import com.example.poputka.feature_journal.presentation.charts.calendar_chart.calendar.ChartElement
 
 object CalendarChartUtilsV {
     fun ChartData.forEach(

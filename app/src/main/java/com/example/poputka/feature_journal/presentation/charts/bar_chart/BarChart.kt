@@ -33,19 +33,19 @@ import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.poputka.presentation.canvas.bar_chart.BarChartUtils.axisAreas
-import com.example.poputka.presentation.canvas.bar_chart.BarChartUtils.barDrawableArea
-import com.example.poputka.presentation.canvas.bar_chart.BarChartUtils.forEachWithArea
-import com.example.poputka.presentation.canvas.bar_chart.animation.fadeInAnimation
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.BarChartUtils.axisAreas
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.BarChartUtils.barDrawableArea
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.BarChartUtils.forEachWithArea
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.animation.fadeInAnimation
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.render.SimpleBarDrawer
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.BarXAxisDrawer
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.XAxisDrawer
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.graph_modes.BaseChartMode
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.graph_modes.DayMode
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.yaxis.BarYAxisWithValueDrawer
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.yaxis.YAxisDrawer
 import com.example.poputka.feature_journal.presentation.charts.common.render.ChartValueDrawer
 import com.example.poputka.feature_journal.presentation.charts.common.render.SimpleChartValueDrawer
-import com.example.poputka.presentation.canvas.bar_chart.render.SimpleBarDrawer
-import com.example.poputka.presentation.canvas.bar_chart.xaxis.BarXAxisDrawer
-import com.example.poputka.presentation.canvas.bar_chart.xaxis.XAxisDrawer
-import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.BaseChartMode
-import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.DayMode
-import com.example.poputka.presentation.canvas.bar_chart.yaxis.BarYAxisWithValueDrawer
-import com.example.poputka.presentation.canvas.bar_chart.yaxis.YAxisDrawer
 import com.example.poputka.ui.theme.PoputkaTheme
 import kotlin.random.Random
 
@@ -92,19 +92,20 @@ fun BarChart(
             xAxisDrawer.drawAxisLine(this, canvas, xAxisArea)
             xAxisDrawer.drawAxisMarkersAndLabels(this, canvas, xAxisArea)
 
+
             bars.forEachWithArea(
                 barDrawableArea,
                 transitionAnimation.value,
                 chartMode.getBarCount(),
                 chartMode.getBarGapCoefficient()
             ) { barArea, bar ->
-                Log.d("draw"," barDrawer.drawBat")
+                Log.d("draw", " barDrawer.drawBat")
                 barDrawer.drawBar(this, canvas, barArea, bar)
                 rectangles[bar] = barArea
             }
 
             selectedBar?.let {
-                Log.d("draw","drawValueBar")
+                Log.d("draw", "drawValueBar")
                 drawValueBar(canvas, it.second, it.first.value, valueBarDrawer)
             }
         }

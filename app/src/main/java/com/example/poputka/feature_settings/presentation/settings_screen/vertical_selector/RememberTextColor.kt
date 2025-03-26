@@ -8,7 +8,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.ScrollConstants.CENTER_THRESHOLD_DIVIDER
-import com.example.poputka.presentation.profile.settings_screen.vertical_selector.ScrollUtils.calculateItemCenter
+import com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.ScrollUtils.calculateItemCenter
 import kotlin.math.abs
 
 @Composable

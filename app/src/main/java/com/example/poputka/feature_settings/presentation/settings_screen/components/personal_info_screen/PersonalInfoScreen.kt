@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
-import com.example.poputka.presentation.profile.settings_screen.components.SettingsInfoRow
+import com.example.poputka.feature_settings.presentation.settings_screen.components.SettingsInfoRow
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @ExperimentalMaterial3Api
@@ -21,8 +21,6 @@ import com.example.poputka.ui.theme.PoputkaTheme
 fun PersonalInfoScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         val padding = 24.dp
-
-
 
         SettingsInfoRow(
             onClick = {},
@@ -64,9 +62,7 @@ fun PersonalInfoScreen() {
             padding = padding
         )
     }
-
 }
-
 
 @Composable
 @Preview

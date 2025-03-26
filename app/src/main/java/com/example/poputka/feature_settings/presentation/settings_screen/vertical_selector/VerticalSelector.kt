@@ -29,8 +29,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.poputka.presentation.profile.settings_screen.vertical_selector.ScrollUtils.calculateCenterIndex
 import com.example.poputka.core.presentation.util.dpToPx
+import com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.ScrollUtils.calculateCenterIndex
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable

@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.BaseChartMode
-import com.example.poputka.presentation.canvas.bar_chart.xaxis.graph_modes.DayMode
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.graph_modes.BaseChartMode
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.graph_modes.DayMode
 import com.example.poputka.feature_journal.presentation.charts.common.toLegacyInt
 
 class BarXAxisDrawer(

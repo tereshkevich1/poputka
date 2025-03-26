@@ -41,20 +41,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.poputka.R
-import com.example.poputka.feature_settings.domain.volumeUnitList
-import com.example.poputka.feature_settings.data.SettingsDataStore
-import com.example.poputka.presentation.profile.settings_screen.components.GeneralSettingsSection
-import com.example.poputka.presentation.profile.settings_screen.components.PersonalizationSettingsSection
-import com.example.poputka.presentation.profile.settings_screen.components.ProgressOverviewSection
-import com.example.poputka.presentation.profile.settings_screen.components.RadioButtonSingleSelection
-import com.example.poputka.presentation.profile.settings_screen.components.SynchronizeProfileSection
-import com.example.poputka.presentation.profile.settings_screen.components.bottom_sheets.ActionButtons
-import com.example.poputka.presentation.profile.settings_screen.components.bottom_sheets.VolumeUnitBottomSheet
-import com.example.poputka.presentation.profile.settings_screen.util.SettingsEvent
-import com.example.poputka.presentation.profile.settings_screen.vertical_selector.VerticalSelector
-import com.example.poputka.feature_settings.presentation.local_settings_state.LocalSettingsState
-import com.example.poputka.feature_settings.presentation.SettingsViewModel
 import com.example.poputka.core.presentation.constants.UiConstants.bottomNavAndFabPadding
+import com.example.poputka.feature_settings.data.SettingsDataStore
+import com.example.poputka.feature_settings.domain.volumeUnitList
+import com.example.poputka.feature_settings.presentation.SettingsViewModel
+import com.example.poputka.feature_settings.presentation.local_settings_state.LocalSettingsState
+import com.example.poputka.feature_settings.presentation.settings_screen.components.GeneralSettingsSection
+import com.example.poputka.feature_settings.presentation.settings_screen.components.PersonalizationSettingsSection
+import com.example.poputka.feature_settings.presentation.settings_screen.components.ProgressOverviewSection
+import com.example.poputka.feature_settings.presentation.settings_screen.components.RadioButtonSingleSelection
+import com.example.poputka.feature_settings.presentation.settings_screen.components.SynchronizeProfileSection
+import com.example.poputka.feature_settings.presentation.settings_screen.components.bottom_sheets.ActionButtons
+import com.example.poputka.feature_settings.presentation.settings_screen.components.bottom_sheets.VolumeUnitBottomSheet
+import com.example.poputka.feature_settings.presentation.settings_screen.util.SettingsEvent
+import com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.VerticalSelector
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable

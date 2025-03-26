@@ -1,6 +1,7 @@
 package com.example.poputka.feature_journal.presentation.charts.calendar_chart
 
 import android.content.Context
+import android.os.Build
 import android.util.TypedValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -18,7 +19,11 @@ object CalendarChartUtils {
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.value, context.resources.displayMetrics)
 
     fun calculateStartOffset(currentMonth: YearMonth): Int =
-        currentMonth.atDay(1).dayOfWeek.value - 1
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            currentMonth.atDay(1).dayOfWeek.value - 1
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
 
     fun calculateCalendarRows(daysInMonth: Int, startOffset: Int): Int =
         (daysInMonth + startOffset + 6) / 7

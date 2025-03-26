@@ -9,8 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.example.poputka.core.presentation.navigation.util.enterFadeTransaction
 import com.example.poputka.core.presentation.navigation.util.exitFadeTransaction
-import com.example.poputka.presentation.profile.settings_screen.SettingsScreen
-import com.example.poputka.presentation.profile.settings_screen.components.personal_info_screen.PersonalInfoScreen
+import com.example.poputka.feature_settings.presentation.settings_screen.SettingsScreen
+import com.example.poputka.feature_settings.presentation.settings_screen.components.personal_info_screen.PersonalInfoScreen
 
 fun NavGraphBuilder.addProfileRoute(navController: NavController) {
     navigation<ProfileDestination.ProfileNav>(

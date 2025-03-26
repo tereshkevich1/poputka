@@ -7,7 +7,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.ScrollConstants.CENTER_THRESHOLD_DIVIDER
 import com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.ScrollConstants.SCALE_STEP
-import com.example.poputka.presentation.profile.settings_screen.vertical_selector.ScrollUtils.calculateItemCenter
+import com.example.poputka.feature_settings.presentation.settings_screen.vertical_selector.ScrollUtils.calculateItemCenter
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
