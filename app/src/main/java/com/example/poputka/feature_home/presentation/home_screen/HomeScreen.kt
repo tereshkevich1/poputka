@@ -24,14 +24,14 @@ import com.example.poputka.feature_home.presentation.home_screen.add_water_butto
 import com.example.poputka.feature_home.presentation.home_screen.drink_log_panel.DrinkItem
 import com.example.poputka.feature_home.presentation.home_screen.drink_log_panel.DrinkLogHeader
 import com.example.poputka.feature_home.presentation.home_screen.hydration_info_panel.HydrationInfoPanel
-import com.example.poputka.feature_settings.presentation.local_settings_state.LocalSettingsState
+import com.example.poputka.core.global_state.local_settings_state.LocalSettingsState
 import com.example.poputka.core.presentation.DrinkCategory
 import com.example.poputka.core.presentation.constants.UiConstants.bottomNavAndFabPadding
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
 fun HomeScreen() {
-    val volumeUnit = LocalSettingsState.current.volumeUnitSetting.abbreviation
+    val volumeUnit = LocalSettingsState.current.abbreviation
     val currentAnimValue by remember { mutableFloatStateOf(600f) }
     val maxValue = 2000f
     Column(

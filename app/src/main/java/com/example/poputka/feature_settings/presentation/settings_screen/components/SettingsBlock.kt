@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import com.example.poputka.R
+import com.example.poputka.ui.theme.DpSpSize.paddingMedium
 
 @Composable
 fun SettingsBlock(content: @Composable (ColumnScope.() -> Unit)) {
-    val blockColor = MaterialTheme.colorScheme.surfaceContainerHigh
+    val blockColor = MaterialTheme.colorScheme.surfaceContainerLow
     val blockShape = MaterialTheme.shapes.large
-    val paddingMedium = dimensionResource(R.dimen.padding_medium)
     Column(
         modifier = Modifier
             .padding(top = paddingMedium)

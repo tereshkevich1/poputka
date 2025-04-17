@@ -6,9 +6,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -19,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -35,16 +37,16 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.poputka.feature_home.presentation.home_screen.add_water_button.AddWaterButton
+import com.example.poputka.core.domain.repository.AppPreferencesStateHolder
+import com.example.poputka.core.global_state.local_settings_state.LocalSettingsState
+import com.example.poputka.core.presentation.constants.UiConstants.BottomNavBarHeight
+import com.example.poputka.core.presentation.constants.UiConstants.fabYOffset
 import com.example.poputka.core.presentation.navigation.BottomNavBar
 import com.example.poputka.core.presentation.navigation.nav_graph.AppNavGraph
 import com.example.poputka.core.presentation.navigation.topLevelRoutes
 import com.example.poputka.core.presentation.navigation.util.enterFadeTransaction
 import com.example.poputka.core.presentation.navigation.util.exitFadeTransaction
-import com.example.poputka.feature_settings.presentation.local_settings_state.LocalSettingsState
-import com.example.poputka.feature_settings.presentation.SettingsViewModel
-import com.example.poputka.core.presentation.constants.UiConstants.BottomNavBarHeight
-import com.example.poputka.core.presentation.constants.UiConstants.fabYOffset
+import com.example.poputka.feature_home.presentation.home_screen.add_water_button.AddWaterButton
 import com.example.poputka.ui.theme.PoputkaTheme
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
@@ -52,6 +54,7 @@ import com.google.firebase.appcheck.appCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.initialize
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * MainActivity — the main entry point of the application.
@@ -68,6 +71,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var appPreferencesStateHolder: AppPreferencesStateHolder
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(applicationContext)
@@ -77,17 +84,15 @@ class MainActivity : ComponentActivity() {
         )
         enableEdgeToEdge()
 
-        val settingsViewModel: SettingsViewModel by viewModels()
-
         setContent {
-            val settingsState by settingsViewModel.settingsState.collectAsStateWithLifecycle()
+            val settingsState by appPreferencesStateHolder.volumeUnitFlow.collectAsStateWithLifecycle()
 
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
 
-
             var bottomBarState by rememberSaveable { mutableStateOf(true) }
+            var topBarState = !bottomBarState
 
             LaunchedEffect(currentDestination) {
                 if (currentDestination != null) {
@@ -99,15 +104,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-
             PoputkaTheme {
                 // Scaffold with bottom padding removal to prevent conflicts
                 // between content and the BottomNavBar.
                 Scaffold(
                     topBar = {
-                     //   TopBar(navController, bottomBarState)
-
-                             },
+                        // TopBar(navController, bottomBarState)
+                    },
                     bottomBar = {
                         // Setting the BottomNavBar height explicitly using Modifier.height.
                         // The height is fixed and defined in UiConstants.
@@ -127,7 +130,8 @@ class MainActivity : ComponentActivity() {
                                 .offset(y = fabYOffset)
                         )
                     },
-                    floatingActionButtonPosition = FabPosition.Center
+                    floatingActionButtonPosition = FabPosition.Center,
+                    containerColor = MaterialTheme.colorScheme.surface
                 ) { paddingValues ->
 
                     // Ignoring bottom padding to allow the content to fill the screen
@@ -135,6 +139,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(top = paddingValues.calculateTopPadding())
+                            .consumeWindowInsets(paddingValues)
                     ) {
                         CompositionLocalProvider(LocalSettingsState provides settingsState) {
                             AppNavGraph(navController = navController)

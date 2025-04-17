@@ -31,7 +31,6 @@ fun BottomNavBar(
         exit = slideOutVertically(targetOffsetY = { it }),
     ) {
 
-
         NavBar(modifier = modifier) {
             topLevelRoutes.forEachIndexed { index, topLevelRoute ->
 

@@ -1,4 +1,4 @@
-package com.example.poputka.feature_settings.domain
+package com.example.poputka.core.domain.model
 
 object SettingsConstants {
     const val GOAL_SETTING = "goal_setting"

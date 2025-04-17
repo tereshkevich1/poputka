@@ -11,16 +11,16 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.poputka.R
+import com.example.poputka.ui.theme.DpSpSize.paddingMedium
 
 @Composable
 fun ProgressOverviewSection(totalConsumed: String, daysCompleted: String) {
-    val paddingMedium = dimensionResource(R.dimen.padding_medium)
-    val iconColor = MaterialTheme.colorScheme.primary
+    val iconColor = MaterialTheme.colorScheme.secondary
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
         MetricCard(
-            icon = painterResource(R.drawable.baseline_water_drop),
+            icon = painterResource(R.drawable.water_drop),
             iconColor = iconColor,
             value = totalConsumed,
             label = stringResource(R.string.total_drunk),

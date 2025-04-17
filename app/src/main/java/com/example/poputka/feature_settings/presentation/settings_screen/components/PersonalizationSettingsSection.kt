@@ -5,6 +5,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.poputka.R
+import com.example.poputka.ui.theme.DpSpSize.paddingMedium
 
 @Composable
 fun PersonalizationSettingsSection(
@@ -12,25 +13,24 @@ fun PersonalizationSettingsSection(
     onWeatherClick: () -> Unit,
     onTimeFormatClick: () -> Unit,
 ) {
-    val paddingMedium = dimensionResource(R.dimen.padding_medium)
     SettingsBlock {
         SettingsNavigationRow(
             onClick = onPersonalInfoClick,
-            painterResource(R.drawable.person),
-            stringResource(R.string.gender_and_weight),
-            paddingMedium
+            settingsIcon = painterResource(R.drawable.person),
+            description = stringResource(R.string.gender_and_weight),
+            padding = paddingMedium
         )
         SettingsNavigationRow(
             onClick = onWeatherClick,
-            painterResource(R.drawable.cloud),
-            stringResource(R.string.weather),
-            paddingMedium
+            settingsIcon = painterResource(R.drawable.cloud),
+            description = stringResource(R.string.weather),
+            padding = paddingMedium
         )
         SettingsNavigationRow(
             onClick = onTimeFormatClick,
-            painterResource(R.drawable.time),
-            stringResource(R.string.time_format),
-            paddingMedium
+            settingsIcon = painterResource(R.drawable.time),
+            description = stringResource(R.string.time_format),
+            padding = paddingMedium
         )
     }
 }

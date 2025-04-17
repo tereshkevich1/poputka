@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
+import com.example.poputka.ui.theme.DpSpSize.paddingMedium
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
@@ -37,9 +38,9 @@ fun HydrationInfoPanel(
         modifier = modifier
             .fillMaxWidth()
             .height(88.dp)
-            .padding(horizontal = dimensionResource(R.dimen.horizontal_default_padding))
-            .clip(MaterialTheme.shapes.extraLarge)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+            .padding(horizontal = paddingMedium)
+            .clip(MaterialTheme.shapes.large)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

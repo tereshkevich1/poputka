@@ -1,4 +1,4 @@
-package com.example.poputka.feature_settings.presentation.settings_screen.components
+package com.example.poputka.feature_settings.presentation.settings_screen.components.bottom_sheets.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

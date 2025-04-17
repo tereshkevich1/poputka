@@ -23,15 +23,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
+import com.example.poputka.ui.theme.DpSpSize.paddingMedium
+import com.example.poputka.ui.theme.DpSpSize.paddingSmall
 
 @Composable
 fun SynchronizeProfileSection(onClick: () -> Unit) {
     val cardShape = MaterialTheme.shapes.large
-    val paddingMedium = dimensionResource(R.dimen.padding_medium)
-    val paddingSmall = dimensionResource(R.dimen.padding_small)
-    val backgroundColor = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+    val backgroundColor = MaterialTheme.colorScheme.outline
     val fontStyle = MaterialTheme.typography.bodyLarge.copy(backgroundColor)
-    val iconColor = MaterialTheme.colorScheme.surface
+    val iconColor = MaterialTheme.colorScheme.surfaceContainerHigh
 
     Column(
         modifier = Modifier

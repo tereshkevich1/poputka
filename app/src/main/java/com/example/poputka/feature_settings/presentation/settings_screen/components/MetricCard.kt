@@ -18,21 +18,19 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
+import com.example.poputka.ui.theme.DpSpSize.paddingMedium
+import com.example.poputka.ui.theme.DpSpSize.paddingSmall
 
 @Composable
 fun MetricCard(icon: Painter, iconColor: Color, value: String, label: String, modifier: Modifier) {
-    val paddingMedium = dimensionResource(R.dimen.padding_medium)
-    val paddingSmall = dimensionResource(R.dimen.padding_small)
     val headlineFontStyle = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
     val titleColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
     val titleFontStyle = MaterialTheme.typography.titleSmall.copy(titleColor)
-    val cardShape = MaterialTheme.shapes.large
-    val cardColor = MaterialTheme.colorScheme.surfaceContainerHigh
     Column(
         modifier = modifier
             .fillMaxWidth(1f)
-            .clip(cardShape)
-            .background(cardColor)
+            .clip(MaterialTheme.shapes.large)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(paddingMedium),
         verticalArrangement = Arrangement.Center
     ) {

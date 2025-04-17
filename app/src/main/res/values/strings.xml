@@ -81,8 +81,33 @@
     <string name="height">Рост</string>
     <string name="activity_level">Уровень активности</string>
 
+    <string name="weight_decimal_separator">,</string>
+
+    // arrays.xml
+    <string-array name="weight_fraction_values">
+        <item>0.0</item>
+        <item>0.1</item>
+        <item>0.2</item>
+        <item>0.3</item>
+        <item>0.4</item>
+        <item>0.5</item>
+        <item>0.6</item>
+        <item>0.7</item>
+        <item>0.8</item>
+        <item>0.9</item>
+    </string-array>
+
+    <string-array name="weight_units">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+
     <!-- Titles -->
     <string name="title_measurement_units">Единицы измерения</string>
+    <string name="title_weight">Вес</string>
     <string name="title_notification_settings">Настройки уведомлений</string>
-    
+    <string name="personal_settings">Персональные настройки</string>
+    <string name="title_height">Рост</string>
+    <string name="centimeters">см</string>
+
 </resources>

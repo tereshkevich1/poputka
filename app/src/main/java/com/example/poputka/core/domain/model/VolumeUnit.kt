@@ -1,4 +1,4 @@
-package com.example.poputka.feature_settings.domain
+package com.example.poputka.core.domain.model
 
 enum class VolumeUnit(val abbreviation: String) {
     Milliliters("ml"),

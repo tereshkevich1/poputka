@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.poputka.R
 import com.example.poputka.core.presentation.DrinkCategory
 import com.example.poputka.core.presentation.components.DrinkItemIcon
+import com.example.poputka.ui.theme.DpSpSize.paddingSmall
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
@@ -34,11 +35,11 @@ fun DrinkItem(
 ) {
     Row(
         modifier = modifier
-            .padding(bottom = dimensionResource(R.dimen.padding_small))
+            .padding(bottom = paddingSmall)
             .fillMaxWidth()
             .height(64.dp)
-            .clip(MaterialTheme.shapes.extraLarge)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+            .clip(MaterialTheme.shapes.medium)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow),
         verticalAlignment = Alignment.CenterVertically
     ) {
         DrinkItemIcon(

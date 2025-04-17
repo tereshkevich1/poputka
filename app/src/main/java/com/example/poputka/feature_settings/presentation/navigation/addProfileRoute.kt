@@ -9,34 +9,28 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.example.poputka.core.presentation.navigation.util.enterFadeTransaction
 import com.example.poputka.core.presentation.navigation.util.exitFadeTransaction
-import com.example.poputka.feature_settings.presentation.settings_screen.SettingsScreen
-import com.example.poputka.feature_settings.presentation.settings_screen.components.personal_info_screen.PersonalInfoScreen
+import com.example.poputka.feature_settings.presentation.personal_settings_screen.PersonalSettingsRoute
+import com.example.poputka.feature_settings.presentation.settings_screen.SettingsScreenRoute
 
 fun NavGraphBuilder.addProfileRoute(navController: NavController) {
     navigation<ProfileDestination.ProfileNav>(
         startDestination = ProfileDestination.Profile,
     ) {
-        journalDestination(navController)
-        personalInfoDestination()
+        settingsScreen(navController)
+        personalInfoDestination(navController)
     }
 }
 
-fun NavGraphBuilder.journalDestination(navController: NavController) {
+fun NavGraphBuilder.settingsScreen(navController: NavController) {
     composable<ProfileDestination.Profile> {
-        SettingsScreen(
-            onPersonalInfoClick = {
-                navController.navigate(
-                    ProfileDestination.PersonalInfo
-                )
-            }
-        )
+        SettingsScreenRoute(onNavigateToPersonalScree = { navController.navigate(ProfileDestination.PersonalInfo) })
     }
 }
 
-fun NavGraphBuilder.personalInfoDestination() {
+fun NavGraphBuilder.personalInfoDestination(navController: NavController) {
     composable<ProfileDestination.PersonalInfo>(
         enterTransition = { enterFadeTransaction() },
         exitTransition = { exitFadeTransaction() }) {
-        PersonalInfoScreen()
+        PersonalSettingsRoute(onNavigateToSettingsScreen = { navController.navigateUp() })
     }
 }
