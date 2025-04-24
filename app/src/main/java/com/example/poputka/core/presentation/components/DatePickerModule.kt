@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.poputka.feature_home.presentation.add_drink_screen.components.date_time_block
+package com.example.poputka.core.presentation.components
 
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog

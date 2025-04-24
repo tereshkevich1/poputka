@@ -1,4 +1,4 @@
-package com.example.poputka.feature_settings.presentation.settings_screen.components.bottom_sheets.common
+package com.example.poputka.feature_settings.presentation.settings_screen.bottom_sheets.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import com.example.poputka.ui.theme.DpSpSize.paddingMedium
 
 @Composable
 fun RadioButtonSingleSelection(
@@ -34,7 +35,7 @@ fun RadioButtonSingleSelection(
                         onClick = { onOptionSelected(text) },
                         role = Role.RadioButton
                     )
-                    .padding(16.dp),
+                    .padding(paddingMedium),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
@@ -44,7 +45,7 @@ fun RadioButtonSingleSelection(
                 Text(
                     text = text,
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier.padding(start = paddingMedium)
                 )
             }
         }

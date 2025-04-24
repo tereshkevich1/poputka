@@ -7,7 +7,7 @@ import com.example.poputka.feature_journal.presentation.navigation.JournalDestin
 import com.example.poputka.feature_settings.presentation.navigation.ProfileDestination
 import com.example.poputka.feature_tips.presentation.navigation.TipsDestination
 
-data class TopLevelRoute<T : Any>(val name: String, val route: T,@DrawableRes val icon: Int)
+data class TopLevelRoute<T : Any>(val name: String, val route: T, @DrawableRes val icon: Int)
 
 val topLevelRoutes = listOf(
     TopLevelRoute("Main", HomeDestination.Home, R.drawable.water_drop),

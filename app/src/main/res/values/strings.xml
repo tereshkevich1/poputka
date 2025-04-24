@@ -5,6 +5,10 @@
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
 
+    <string name="ml">мл</string>
+    <string name="liters_short">л</string>
+    <string name="oz">унц</string>
+
     //auth Screen
     <string name="auth_screen_title">Log in or create a profile</string>
     <string name="phone_number_label">Contact phone number</string>"
@@ -108,6 +112,35 @@
     <string name="title_notification_settings">Настройки уведомлений</string>
     <string name="personal_settings">Персональные настройки</string>
     <string name="title_height">Рост</string>
+    <string name="title_activity_level">Уровень активности</string>
+
     <string name="centimeters">см</string>
+    <string name="man">Мужской</string>
+    <string name="woman">Женский</string>
+    <string name="title_gender">Пол</string>
+
+    <!-- Activity levels -->
+    <string name="activity_low">Низкая</string>
+    <string name="activity_moderately">Умеренная</string>
+    <string name="activity_intensive">Интенсивная</string>
+    <string name="back_icon">backIcon</string>
+    <string name="kg">кг</string>
+
+    <!-- validations Errors -->
+    <string name="error_invalid_format">Неверный формат ввода</string>
+    <string name="error_invalid_number">Невозможно преобразовать в число</string>
+    <string name="error_too_low">Слишком маленькое значение</string>
+    <string name="error_exceeds_max">Значение превышает максимально допустимое</string>
+
+    <!-- goal bottom sheet -->
+    <string name="auto_calculation">Автоматический расчет</string>
+    <string name="recommended_goal">Реокмендованная цель</string>
+    <string name="manual_goal">Пользовательская цель</string>
+    <string name="auto_calculation_description">Цель на день рассчитывается автоматически на основе ваших персональных данных, температуры и влажности воздуха.</string>
+    <string name="manual_input_description">При отключении автоподсчета вы можете задать свою дневную цель вручную.</string>
+    <string name="goal_dialog_title">Цель</string>
+    <string name="goal_dialog_placeholder">Введите цель</string>
+
+
 
 </resources>

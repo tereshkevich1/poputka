@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -36,6 +37,13 @@ class AppDataStoreSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun putLong(key: String, value: Long) {
+        val preferencesKey = longPreferencesKey(key)
+        context.dataStore.edit { preferences ->
+            preferences[preferencesKey] = value
+        }
+    }
+
     override suspend fun putFloat(key: String, value: Float) {
         val preferencesKey = floatPreferencesKey(key)
         context.dataStore.edit { preferences ->
@@ -54,6 +62,13 @@ class AppDataStoreSourceImpl @Inject constructor(
         val preferencesKey = stringSetPreferencesKey(key)
         context.dataStore.edit { preferences ->
             preferences[preferencesKey] = value
+        }
+    }
+
+    override fun longFlow(key: String): Flow<Long> {
+        val preferencesKey = longPreferencesKey(key)
+        return context.dataStore.data.map { preferences ->
+            preferences[preferencesKey] ?: 0
         }
     }
 
@@ -81,7 +96,7 @@ class AppDataStoreSourceImpl @Inject constructor(
     override fun booleanFlow(key: String): Flow<Boolean> {
         val preferencesKey = booleanPreferencesKey(key)
         return context.dataStore.data.map { preferences ->
-            preferences[preferencesKey] == true
+            preferences[preferencesKey] ?: true
         }
     }
 

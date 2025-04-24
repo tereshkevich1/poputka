@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.poputka.feature_settings.presentation.settings_screen.components.bottom_sheets.common
+package com.example.poputka.feature_settings.presentation.settings_screen.bottom_sheets.common
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
@@ -20,11 +20,12 @@ fun SettingsBottomSheet(
     onDismissRequest: () -> Unit,
     onSaveClick: () -> Unit,
     onCancelClick: () -> Unit,
+    skipPartiallyExpanded: Boolean = false,
     content: @Composable ColumnScope.() -> Unit
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-        sheetState = rememberModalBottomSheetState()
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
     ) {
         Text(
             text = title,

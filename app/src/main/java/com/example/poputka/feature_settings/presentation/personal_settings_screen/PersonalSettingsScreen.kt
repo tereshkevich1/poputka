@@ -2,6 +2,7 @@
 
 package com.example.poputka.feature_settings.presentation.personal_settings_screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,9 +28,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.poputka.R
+import com.example.poputka.core.presentation.components.DatePickerModule
+import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.PersonalSettingsBottomSheet
+import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.asUiText
 import com.example.poputka.feature_settings.presentation.settings_screen.components.SettingsInfoRow
-import com.example.poputka.feature_settings.presentation.settings_screen.components.bottom_sheets.HeightBottomSheet
-import com.example.poputka.feature_settings.presentation.settings_screen.components.bottom_sheets.WeightBottomSheet
+import com.example.poputka.feature_settings.presentation.personal_settings_screen.bottom_sheets.ActivityLevelBottomSheet
+import com.example.poputka.feature_settings.presentation.personal_settings_screen.bottom_sheets.GenderBottomSheet
+import com.example.poputka.feature_settings.presentation.personal_settings_screen.bottom_sheets.HeightBottomSheet
+import com.example.poputka.feature_settings.presentation.personal_settings_screen.bottom_sheets.WeightBottomSheet
 import com.example.poputka.ui.theme.DpSpSize.paddingLarge
 import kotlinx.coroutines.launch
 
@@ -49,7 +55,11 @@ fun PersonalSettingsRoute(
             viewModel.events.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect {
                     when (it) {
-                        is PersonalSettingsEvent.ShowToast -> TODO()
+                        is PersonalSettingsEvent.ShowToast -> Toast.makeText(
+                            context,
+                            it.message,
+                            Toast.LENGTH_LONG
+                        )
 
                         PersonalSettingsEvent.NavigateToSettingsScreen -> onNavigateToSettingsScreen()
                     }
@@ -66,7 +76,7 @@ fun PersonalSettingsRoute(
 
 @Composable
 fun PersonalSettingsScreen(
-    state: PersonalSettingsState,
+    state: PersonalSettingsScreenState,
     onAction: (PersonalSettingsAction) -> Unit,
     modifier: Modifier
 ) {
@@ -76,8 +86,11 @@ fun PersonalSettingsScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.personal_settings)) },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "backIcon")
+                    IconButton(onClick = { onAction(PersonalSettingsAction.OnBackClick) }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            stringResource(R.string.back_icon)
+                        )
                     }
                 }
             )
@@ -89,20 +102,18 @@ fun PersonalSettingsScreen(
                 .padding(innerPadding)
         ) {
             SettingsInfoRow(
-                onClick = {
-
-                },
+                onClick = { onAction(PersonalSettingsAction.OnBirthdayClick) },
                 settingsIcon = painterResource(R.drawable.cake),
                 description = stringResource(R.string.birthday),
-                info = "25 нояб. 2003 г.",
+                info = state.display.birthday.formatted,
                 padding = paddingLarge
             )
 
             SettingsInfoRow(
-                onClick = {},
+                onClick = { onAction(PersonalSettingsAction.OnGenderClick) },
                 settingsIcon = painterResource(R.drawable.person),
                 description = stringResource(R.string.gender),
-                info = "Мужской",
+                info = state.display.gender.asUiText().asString(),
                 padding = paddingLarge
             )
 
@@ -110,49 +121,79 @@ fun PersonalSettingsScreen(
                 onClick = { onAction(PersonalSettingsAction.OnHeightClick) },
                 settingsIcon = painterResource(R.drawable.height),
                 description = stringResource(R.string.height),
-                info = "175 см",
+                info = "${state.display.height} ${stringResource(R.string.centimeters)}",
                 padding = paddingLarge
             )
 
             SettingsInfoRow(
                 onClick = { onAction(PersonalSettingsAction.OnWeightClick) },
-                settingsIcon = painterResource(R.drawable.monitor_weight),
+                settingsIcon = painterResource(R.drawable.weight),
                 description = stringResource(R.string.weight),
-                info = "59 кг",
+                info = "${state.display.weight.first}.${state.display.weight.second} ${stringResource(R.string.kg)}",
                 padding = paddingLarge
             )
 
             SettingsInfoRow(
-                onClick = {},
+                onClick = { onAction(PersonalSettingsAction.OnActivityLevelClick) },
                 settingsIcon = painterResource(R.drawable.activity),
                 description = stringResource(R.string.activity_level),
-                info = "Умеренная",
+                info = state.display.activityLevel.asUiText().asString(),
                 padding = paddingLarge
             )
         }
 
         if (state.showBottomSheet) {
             when (state.bottomSheet) {
-                PersonalSettingsBottomSheet.BIRTHDAY -> TODO()
-                PersonalSettingsBottomSheet.GENDER -> TODO()
+                PersonalSettingsBottomSheet.BIRTHDAY -> {
+                    DatePickerModule(
+                        initialSelectedDateMillis = state.display.birthday.value,
+                        onDateSelected = { onAction(PersonalSettingsAction.OnBirthdaySave(it)) },
+                        onDismiss = { onAction(PersonalSettingsAction.OnBottomSheetClosed) }
+                    )
+                }
+
+                PersonalSettingsBottomSheet.GENDER -> {
+                    GenderBottomSheet(
+                        onDismissRequest = { onAction(PersonalSettingsAction.OnBottomSheetClosed) },
+                        onSaveClick = { onAction(PersonalSettingsAction.OnGenderSave(it)) },
+                        onCancelClick = { onAction(PersonalSettingsAction.OnBottomSheetClosed) },
+                        currentGender = state.display.gender
+                    )
+                }
 
                 PersonalSettingsBottomSheet.HEIGHT -> {
                     HeightBottomSheet(
                         onDismissRequest = { onAction(PersonalSettingsAction.OnBottomSheetClosed) },
-                        onSaveClick = {},
-                        onCancelClick = { onAction(PersonalSettingsAction.OnBottomSheetClosed) }
+                        onSaveClick = { onAction(PersonalSettingsAction.OnHeightSave(it)) },
+                        onCancelClick = { onAction(PersonalSettingsAction.OnBottomSheetClosed) },
+                        currentHeight = state.display.height
                     )
                 }
 
                 PersonalSettingsBottomSheet.WEIGHT -> {
                     WeightBottomSheet(
+                        currentWeight = state.display.weight,
                         onDismissRequest = { onAction(PersonalSettingsAction.OnBottomSheetClosed) },
-                        onSaveClick = {},
+                        onSaveClick = { integer, decimal ->
+                            onAction(
+                                PersonalSettingsAction.OnWeightSave(
+                                    integerPart = integer,
+                                    decimalPart = decimal
+                                )
+                            )
+                        },
                         onCancelClick = { onAction(PersonalSettingsAction.OnBottomSheetClosed) }
                     )
                 }
 
-                PersonalSettingsBottomSheet.ACTIVITY_LEVEL -> TODO()
+                PersonalSettingsBottomSheet.ACTIVITY_LEVEL -> {
+                    ActivityLevelBottomSheet(
+                        onDismissRequest = { onAction(PersonalSettingsAction.OnBottomSheetClosed) },
+                        onSaveClick = { onAction(PersonalSettingsAction.OnActivityLevelSave(it)) },
+                        onCancelClick = { onAction(PersonalSettingsAction.OnBottomSheetClosed) },
+                        currentActivityLevel = state.display.activityLevel
+                    )
+                }
 
                 null -> {}
             }

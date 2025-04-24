@@ -1,21 +1,15 @@
 package com.example.poputka.feature_settings.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.example.poputka.core.domain.model.SettingsConstants.GOAL_SETTING
-import com.example.poputka.core.domain.model.SettingsConstants.VOLUME_UNIT_SETTING
-import com.example.poputka.core.domain.model.VolumeUnit
 import com.example.poputka.core.domain.repository.AppDataStoreSource
 import com.example.poputka.core.presentation.BaseViewModel
-import com.example.poputka.core.global_state.local_settings_state.SettingsState
 import com.example.poputka.feature_settings.presentation.settings_screen.SettingsBottomSheetType
 import com.example.poputka.feature_settings.presentation.settings_screen.SettingsScreenAction
 import com.example.poputka.feature_settings.presentation.settings_screen.SettingsScreenEvent
 import com.example.poputka.feature_settings.presentation.settings_screen.SettingsScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
@@ -34,7 +28,9 @@ class SettingsViewModel @Inject constructor(private val appDataStoreSource: AppD
         when (action) {
             is SettingsScreenAction.OnChangeVolumeUnit -> TODO()
             SettingsScreenAction.OnBottomSheetClosed -> closeBottomSheet()
-            SettingsScreenAction.OnMeasurementSettingsClick -> showMeasurementBottomSheet()
+            SettingsScreenAction.OnMeasurementSettingsClick -> showBottomSheet(
+                SettingsBottomSheetType.MEASUREMENT_BOTTOM_SHEET)
+            SettingsScreenAction.OnDailyGoalSettingsClick -> showBottomSheet(SettingsBottomSheetType.DAILY_GOAL_BOTTOM_SHEET)
             SettingsScreenAction.OnNotificationSettingsClick -> TODO()
             SettingsScreenAction.OnPersonalSettingsClick -> sendEvent(SettingsScreenEvent.NavigateToPersonalInfoScreen)
             SettingsScreenAction.OnSoundSettingsClick -> TODO()
@@ -50,23 +46,12 @@ class SettingsViewModel @Inject constructor(private val appDataStoreSource: AppD
         }
     }
 
-    private fun showMeasurementBottomSheet() {
+    private fun showBottomSheet(bottomSheet: SettingsBottomSheetType) {
         _settingState.update {
             it.copy(
                 showBottomSheet = true,
-                settingsBottomSheetType = SettingsBottomSheetType.MEASUREMENT_BOTTOM_SHEET
+                bottomSheet = bottomSheet
             )
         }
-    }
-
-    private fun loadSettings(): Flow<SettingsState> = combine(
-        appDataStoreSource.intFlow(key = GOAL_SETTING),
-        appDataStoreSource.stringFlow(key = VOLUME_UNIT_SETTING)
-    ) { flows ->
-        val units = VolumeUnit.valueOf(flows[1] as String? ?: VolumeUnit.Liters.name)
-        SettingsState(
-            goalSetting = flows[0] as Int? ?: 1500,
-            volumeUnitSetting = units
-        )
     }
 }

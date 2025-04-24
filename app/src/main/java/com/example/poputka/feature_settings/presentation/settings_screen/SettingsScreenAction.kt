@@ -8,10 +8,13 @@ sealed class SettingsScreenAction {
 
     data object OnSoundSettingsClick : SettingsScreenAction()
     data object OnMeasurementSettingsClick : SettingsScreenAction()
+    data object OnDailyGoalSettingsClick : SettingsScreenAction()
 
     data object OnPersonalSettingsClick : SettingsScreenAction()
     data object OnWeatherSettingsClick : SettingsScreenAction()
     data object OnTimeFormatSettingsClick : SettingsScreenAction()
 
-    data class OnChangeVolumeUnit(val value: String): SettingsScreenAction()
+    data class OnChangeVolumeUnit(val value: String) : SettingsScreenAction()
 }
+
+

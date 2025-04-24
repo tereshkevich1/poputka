@@ -19,19 +19,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.poputka.feature_home.presentation.home_screen.custom_circular_progress_indicator.AnimatedCircularProgressIndicator
-import com.example.poputka.feature_home.presentation.home_screen.add_water_button.AddWaterButton
-import com.example.poputka.feature_home.presentation.home_screen.drink_log_panel.DrinkItem
-import com.example.poputka.feature_home.presentation.home_screen.drink_log_panel.DrinkLogHeader
-import com.example.poputka.feature_home.presentation.home_screen.hydration_info_panel.HydrationInfoPanel
 import com.example.poputka.core.global_state.local_settings_state.LocalSettingsState
 import com.example.poputka.core.presentation.DrinkCategory
 import com.example.poputka.core.presentation.constants.UiConstants.bottomNavAndFabPadding
+import com.example.poputka.core.presentation.models.asUiText
+import com.example.poputka.feature_home.presentation.home_screen.add_water_button.AddWaterButton
+import com.example.poputka.feature_home.presentation.home_screen.custom_circular_progress_indicator.AnimatedCircularProgressIndicator
+import com.example.poputka.feature_home.presentation.home_screen.drink_log_panel.DrinkItem
+import com.example.poputka.feature_home.presentation.home_screen.drink_log_panel.DrinkLogHeader
+import com.example.poputka.feature_home.presentation.home_screen.hydration_info_panel.HydrationInfoPanel
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
 fun HomeScreen() {
-    val volumeUnit = LocalSettingsState.current.abbreviation
+    val currentAppPrefState = LocalSettingsState.current
+    val volumeUnit = currentAppPrefState.volumeUnitSetting.asUiText().asString()
     val currentAnimValue by remember { mutableFloatStateOf(600f) }
     val maxValue = 2000f
     Column(
