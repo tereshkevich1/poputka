@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.poputka.R
-import com.example.poputka.core.presentation.components.selectors.vertical_selector.VerticalSelector
+import com.example.poputka.common.presentation.components.selectors.vertical_selector.VerticalSelector
 import com.example.poputka.feature_settings.presentation.settings_screen.bottom_sheets.common.SettingsBottomSheet
 import com.example.poputka.ui.theme.DpSpSize
 

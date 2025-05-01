@@ -2,10 +2,9 @@ package com.example.poputka.feature_settings.presentation.settings_screen.bottom
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.poputka.common.global_state.AppStateHolder
 import com.example.poputka.core.domain.Result
-import com.example.poputka.core.domain.repository.AppPreferencesStateHolder
-import com.example.poputka.core.presentation.models.asUiText
-import com.example.poputka.feature_settings.domain.use_case.ValidateInputUseCase
+import com.example.poputka.feature_settings.domain.use_case.ValidateVolumeInputUseCase
 import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.errors.asUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
@@ -18,8 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DailyGoalViewModel @Inject constructor(
-    private val appPreferencesStateHolder: AppPreferencesStateHolder,
-    private val validateInputUseCase: ValidateInputUseCase
+    appStateHolder: AppStateHolder,
+    private val validateVolumeInputUseCase: ValidateVolumeInputUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(DailyGoalState())
     val state = _state.stateIn(
@@ -28,6 +27,8 @@ class DailyGoalViewModel @Inject constructor(
         DailyGoalState()
     )
 
+    private val appPreferencesStateHolder = appStateHolder.appPreferencesStateHolder
+
     init {
         viewModelScope.launch {
             appPreferencesStateHolder.appPrefFlow.collect { domainState ->
@@ -35,7 +36,7 @@ class DailyGoalViewModel @Inject constructor(
                     currentUiState.copy(
                         autoCalculation = domainState.autoCalculation,
                         currentGoal = domainState.goalSetting.toString(),
-                        currentVolumeUnit = domainState.volumeUnitSetting.asUiText()
+                        currentVolumeUnit = domainState.volumeUnitSetting
                     )
                 }
             }
@@ -59,6 +60,7 @@ class DailyGoalViewModel @Inject constructor(
                 toggleAutoCalculation(!_state.value.autoCalculation)
                 closeDialog()
             }
+
             DailyGoalAction.OnCancelClick -> resetToCurrentPreferences()
             DailyGoalAction.OnSaveClick -> saveGoal()
         }
@@ -111,13 +113,13 @@ class DailyGoalViewModel @Inject constructor(
     }
 
     private fun updateDailyGoal(input: String) {
-        val result = validateInputUseCase(input, 10000)
+        val result = validateVolumeInputUseCase(input, _state.value.currentVolumeUnit)
         _state.update { currentState ->
             when (result) {
                 is Result.Success -> {
-                    val quantity = result.data
+                    val value = result.data
                     currentState.copy(
-                        inputValue = quantity?.toString() ?: "",
+                        inputValue = value ?: "",
                         errorMessage = null
                     )
                 }
@@ -137,7 +139,7 @@ class DailyGoalViewModel @Inject constructor(
                     it.copy(
                         autoCalculation = domainState.autoCalculation,
                         currentGoal = domainState.goalSetting.toString(),
-                        currentVolumeUnit = domainState.volumeUnitSetting.asUiText(),
+                        currentVolumeUnit = domainState.volumeUnitSetting,
                         inputValue = "",
                         errorMessage = null,
                         showDialog = false

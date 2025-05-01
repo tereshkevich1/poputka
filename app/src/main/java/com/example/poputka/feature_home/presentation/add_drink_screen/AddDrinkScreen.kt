@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.poputka.feature_home.domain.use_case.UpdateValueUseCase
-import com.example.poputka.core.domain.use_case.format.DateFormatUseCase
-import com.example.poputka.core.domain.use_case.format.TimeFormatUseCase
+import com.example.poputka.common.domain.use_case.format.DateFormatUseCase
+import com.example.poputka.common.domain.use_case.format.TimeFormatUseCase
 import com.example.poputka.feature_home.presentation.add_drink_screen.components.AddDrinkContent
 import com.example.poputka.ui.theme.PoputkaTheme
 

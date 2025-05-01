@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import com.example.poputka.core.presentation.DrinkCategory
+import com.example.poputka.common.presentation.DrinkCategory
 
 @Composable
 fun DrinkDetails(

@@ -1,6 +1,7 @@
 package com.example.poputka.feature_settings.presentation.personal_settings_screen
 
 import androidx.lifecycle.viewModelScope
+import com.example.poputka.common.global_state.AppStateHolder
 import com.example.poputka.core.presentation.BaseViewModel
 import com.example.poputka.feature_settings.domain.PersonalInfoStateHolder
 import com.example.poputka.feature_settings.domain.model.ActivityLevel
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PersonalSettingsViewModel @Inject constructor(
-    private val personalInfoStateHolder: PersonalInfoStateHolder
+    appStateHolder: AppStateHolder
 ) : BaseViewModel<PersonalSettingsEvent>() {
     private val _state = MutableStateFlow(PersonalSettingsScreenState())
     val state = _state
@@ -25,6 +26,8 @@ class PersonalSettingsViewModel @Inject constructor(
             SharingStarted.WhileSubscribed(5000),
             PersonalSettingsScreenState()
         )
+
+    private val personalInfoStateHolder = appStateHolder.personalInfoStateHolder
 
     init {
         viewModelScope.launch {

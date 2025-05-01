@@ -13,8 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,10 +23,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.poputka.core.domain.model.volumeUnitList
-import com.example.poputka.core.global_state.local_settings_state.LocalSettingsState
-import com.example.poputka.core.presentation.constants.UiConstants.bottomNavAndFabPadding
-import com.example.poputka.core.presentation.models.asUiText
+import com.example.poputka.common.global_state.local_settings_state.LocalSettingsState
+import com.example.poputka.common.presentation.constants.UiConstants.bottomNavAndFabPadding
+import com.example.poputka.common.presentation.models.asUiText
 import com.example.poputka.feature_settings.presentation.SettingsViewModel
 import com.example.poputka.feature_settings.presentation.settings_screen.bottom_sheets.VolumeUnitBottomSheet
 import com.example.poputka.feature_settings.presentation.settings_screen.bottom_sheets.daily_goal_bottom_sheet.DailyGoalBottomSheet
@@ -44,6 +41,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingsScreenRoute(
     onNavigateToPersonalScree: () -> Unit,
+    onNavigateToNotificationSettingsScreen: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -63,6 +61,7 @@ fun SettingsScreenRoute(
                         )
 
                         SettingsScreenEvent.NavigateToPersonalInfoScreen -> onNavigateToPersonalScree()
+                        SettingsScreenEvent.NavigateToNotificationSettingsScreen -> onNavigateToNotificationSettingsScreen()
                     }
                 }
         }
@@ -104,7 +103,7 @@ fun SettingsScreen(
         )
 
         GeneralSettingsSection(
-            onNotificationsClick = {},
+            onNotificationsClick = { onAction(SettingsScreenAction.OnNotificationSettingsClick) },
             onDailyGoalClick = { onAction(SettingsScreenAction.OnDailyGoalSettingsClick) },
             onSoundsAndVibrationClick = {},
             onMeasurementUnitsClick = { onAction(SettingsScreenAction.OnMeasurementSettingsClick) }
@@ -118,18 +117,11 @@ fun SettingsScreen(
     if (state.showBottomSheet) {
         when (state.bottomSheet) {
             SettingsBottomSheetType.MEASUREMENT_BOTTOM_SHEET -> {
-                val (selectedOption, onOptionSelected) = remember {
-                    mutableStateOf(
-                        volumeUnit.name
-                    )
-                }
                 VolumeUnitBottomSheet(
                     onDismissRequest = { onAction(SettingsScreenAction.OnBottomSheetClosed) },
-                    onSaveClick = {},
+                    onSaveClick = { onAction(SettingsScreenAction.OnSaveVolumeUnit(it)) },
                     onCancelClick = { onAction(SettingsScreenAction.OnBottomSheetClosed) },
-                    radioOptions = volumeUnitList,
-                    selectedOption = selectedOption,
-                    onOptionSelected = onOptionSelected
+                    currentUnit = volumeUnit
                 )
             }
 

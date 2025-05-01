@@ -28,7 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.poputka.R
-import com.example.poputka.core.presentation.components.DatePickerModule
+import com.example.poputka.common.presentation.components.DatePickerModule
 import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.PersonalSettingsBottomSheet
 import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.asUiText
 import com.example.poputka.feature_settings.presentation.settings_screen.components.SettingsInfoRow
@@ -43,8 +43,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun PersonalSettingsRoute(
     onNavigateToSettingsScreen: () -> Unit,
-    viewModel: PersonalSettingsViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PersonalSettingsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current

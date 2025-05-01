@@ -13,8 +13,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.Dp
-import com.example.poputka.core.presentation.components.selectors.horizontal_selector.rememberHorizontalColor
-import com.example.poputka.core.presentation.components.selectors.horizontal_selector.rememberHorizontalScaleFactor
+import com.example.poputka.common.presentation.components.selectors.horizontal_selector.rememberHorizontalColor
+import com.example.poputka.common.presentation.components.selectors.horizontal_selector.rememberHorizontalScaleFactor
 
 @Composable
 fun DrinkCategoryCard(

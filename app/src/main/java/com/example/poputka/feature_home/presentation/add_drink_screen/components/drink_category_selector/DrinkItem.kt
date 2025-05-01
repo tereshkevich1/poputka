@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.poputka.core.presentation.components.DrinkItemIcon
+import com.example.poputka.common.presentation.components.DrinkItemIcon
 
 @Composable
 fun DrinkItem(

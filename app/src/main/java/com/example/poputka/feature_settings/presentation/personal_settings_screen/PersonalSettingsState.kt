@@ -1,6 +1,6 @@
 package com.example.poputka.feature_settings.presentation.personal_settings_screen
 
-import com.example.poputka.core.presentation.util.DateUtils.DEFAULT_DATE_PATTERN
+import com.example.poputka.common.presentation.util.DateTimeUtils.DEFAULT_DATE_PATTERN
 import com.example.poputka.feature_settings.domain.PersonalSettingsState
 import com.example.poputka.feature_settings.domain.model.ActivityLevel
 import com.example.poputka.feature_settings.domain.model.Gender

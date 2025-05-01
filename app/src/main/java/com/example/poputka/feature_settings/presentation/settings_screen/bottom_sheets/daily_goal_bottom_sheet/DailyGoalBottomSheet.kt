@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
+import com.example.poputka.common.presentation.models.asUiText
 import com.example.poputka.feature_settings.presentation.settings_screen.bottom_sheets.common.SettingsBottomSheet
 import com.example.poputka.ui.theme.DpSpSize.paddingMedium
 import com.example.poputka.ui.theme.DpSpSize.paddingSmall
@@ -89,7 +90,7 @@ fun DailyGoalBottomSheet(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "${state.currentGoal} ${state.currentVolumeUnit.asString()}",
+                    text = "${state.currentGoal} ${state.currentVolumeUnit.asUiText().asString()}",
                     style = MaterialTheme.typography.headlineSmall
                 )
             }
@@ -116,7 +117,7 @@ fun DailyGoalBottomSheet(
         GoalInputDialog(
             inputValue = state.inputValue,
             errorMessage = state.errorMessage?.asString() ?: "",
-            volumeUnit = state.currentVolumeUnit.asString(),
+            volumeUnit = state.currentVolumeUnit.asUiText().asString(),
             onValueChange = { onAction(DailyGoalAction.OnGoalValueChange(it)) },
             onDismissRequest = { onAction(DailyGoalAction.OnDialogDismiss) },
             onConfirmation = { onAction(DailyGoalAction.OnDialogConfirm) }

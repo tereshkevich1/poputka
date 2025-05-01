@@ -19,11 +19,7 @@ object CalendarChartUtils {
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.value, context.resources.displayMetrics)
 
     fun calculateStartOffset(currentMonth: YearMonth): Int =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            currentMonth.atDay(1).dayOfWeek.value - 1
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
+        currentMonth.atDay(1).dayOfWeek.value - 1
 
     fun calculateCalendarRows(daysInMonth: Int, startOffset: Int): Int =
         (daysInMonth + startOffset + 6) / 7

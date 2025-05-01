@@ -18,7 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.poputka.R
-import com.example.poputka.core.presentation.components.DatePickerModule
+import com.example.poputka.common.presentation.components.DatePickerModule
+import com.example.poputka.common.presentation.components.TimePickerModule
 
 @Composable
 fun TimeRow(

@@ -19,10 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.poputka.core.global_state.local_settings_state.LocalSettingsState
-import com.example.poputka.core.presentation.DrinkCategory
-import com.example.poputka.core.presentation.constants.UiConstants.bottomNavAndFabPadding
-import com.example.poputka.core.presentation.models.asUiText
+import com.example.poputka.common.global_state.local_settings_state.LocalSettingsState
+import com.example.poputka.common.presentation.DrinkCategory
+import com.example.poputka.common.presentation.constants.UiConstants.bottomNavAndFabPadding
+import com.example.poputka.common.presentation.models.asUiText
 import com.example.poputka.feature_home.presentation.home_screen.add_water_button.AddWaterButton
 import com.example.poputka.feature_home.presentation.home_screen.custom_circular_progress_indicator.AnimatedCircularProgressIndicator
 import com.example.poputka.feature_home.presentation.home_screen.drink_log_panel.DrinkItem

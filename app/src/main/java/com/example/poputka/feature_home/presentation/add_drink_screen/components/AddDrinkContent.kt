@@ -27,7 +27,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
-import com.example.poputka.core.presentation.DrinkCategory
+import com.example.poputka.common.presentation.DrinkCategory
 import com.example.poputka.feature_home.presentation.add_drink_screen.AddDrinkUiState
 import com.example.poputka.feature_home.presentation.add_drink_screen.components.date_time_block.SpacerWithDivider
 import com.example.poputka.feature_home.presentation.add_drink_screen.components.date_time_block.TimeRow

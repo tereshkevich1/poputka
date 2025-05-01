@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.poputka.core.presentation.util.clearFocusOnKeyboardDismiss
+import com.example.poputka.common.presentation.util.clearFocusOnKeyboardDismiss
 
 @Composable
 fun DrinkVolumeInputField(drinkVolume: String, onDrinkVolumeChange: (String) -> Unit) {

@@ -36,15 +36,15 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.poputka.core.domain.repository.AppPreferencesStateHolder
-import com.example.poputka.core.global_state.local_settings_state.LocalSettingsState
-import com.example.poputka.core.presentation.constants.UiConstants.BottomNavBarHeight
-import com.example.poputka.core.presentation.constants.UiConstants.fabYOffset
-import com.example.poputka.core.presentation.navigation.BottomNavBar
-import com.example.poputka.core.presentation.navigation.nav_graph.AppNavGraph
-import com.example.poputka.core.presentation.navigation.topLevelRoutes
-import com.example.poputka.core.presentation.navigation.util.enterFadeTransaction
-import com.example.poputka.core.presentation.navigation.util.exitFadeTransaction
+import com.example.poputka.common.global_state.AppStateHolder
+import com.example.poputka.common.global_state.local_settings_state.LocalSettingsState
+import com.example.poputka.common.presentation.constants.UiConstants.BottomNavBarHeight
+import com.example.poputka.common.presentation.constants.UiConstants.fabYOffset
+import com.example.poputka.common.presentation.navigation.BottomNavBar
+import com.example.poputka.common.presentation.navigation.nav_graph.AppNavGraph
+import com.example.poputka.common.presentation.navigation.topLevelRoutes
+import com.example.poputka.common.presentation.navigation.util.enterFadeTransaction
+import com.example.poputka.common.presentation.navigation.util.exitFadeTransaction
 import com.example.poputka.feature_home.presentation.home_screen.add_water_button.AddWaterButton
 import com.example.poputka.ui.theme.PoputkaTheme
 import com.google.firebase.Firebase
@@ -72,7 +72,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var appPreferencesStateHolder: AppPreferencesStateHolder
+    lateinit var appStateHolder: AppStateHolder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val settingsState by appPreferencesStateHolder.appPrefFlow.collectAsStateWithLifecycle()
+            val settingsState by appStateHolder.appPreferencesStateHolder.appPrefFlow.collectAsStateWithLifecycle()
 
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()

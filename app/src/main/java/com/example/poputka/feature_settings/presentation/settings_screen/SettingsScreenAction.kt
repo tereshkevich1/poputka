@@ -1,5 +1,7 @@
 package com.example.poputka.feature_settings.presentation.settings_screen
 
+import com.example.poputka.common.domain.model.VolumeUnit
+
 sealed class SettingsScreenAction {
     data object OnSynchronizeProfileClick : SettingsScreenAction()
 
@@ -8,13 +10,14 @@ sealed class SettingsScreenAction {
 
     data object OnSoundSettingsClick : SettingsScreenAction()
     data object OnMeasurementSettingsClick : SettingsScreenAction()
+
     data object OnDailyGoalSettingsClick : SettingsScreenAction()
 
     data object OnPersonalSettingsClick : SettingsScreenAction()
     data object OnWeatherSettingsClick : SettingsScreenAction()
     data object OnTimeFormatSettingsClick : SettingsScreenAction()
 
-    data class OnChangeVolumeUnit(val value: String) : SettingsScreenAction()
+    data class OnSaveVolumeUnit(val volumeUnit: VolumeUnit) : SettingsScreenAction()
 }
 
 

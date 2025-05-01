@@ -6,9 +6,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
 import androidx.lifecycle.ViewModel
 import com.example.poputka.feature_home.domain.use_case.UpdateValueUseCase
-import com.example.poputka.core.domain.use_case.format.DateFormatUseCase
-import com.example.poputka.core.domain.use_case.format.TimeFormatUseCase
-import com.example.poputka.core.presentation.DrinkCategory
+import com.example.poputka.common.domain.use_case.format.DateFormatUseCase
+import com.example.poputka.common.domain.use_case.format.TimeFormatUseCase
+import com.example.poputka.common.presentation.DrinkCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

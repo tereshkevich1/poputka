@@ -18,12 +18,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.poputka.core.presentation.DrinkCategory
-import com.example.poputka.core.presentation.components.selectors.common.ScrollStateManager
-import com.example.poputka.core.presentation.components.selectors.util.HorizontalScrollUtils.calculateCenterIndex
-import com.example.poputka.core.presentation.components.selectors.util.Orientation
-import com.example.poputka.core.presentation.drinkCategories
-import com.example.poputka.core.presentation.util.dpToPx
+import com.example.poputka.common.presentation.DrinkCategory
+import com.example.poputka.common.presentation.components.selectors.common.ScrollStateManager
+import com.example.poputka.common.presentation.components.selectors.util.HorizontalScrollUtils.calculateCenterIndex
+import com.example.poputka.common.presentation.components.selectors.util.Orientation
+import com.example.poputka.common.presentation.drinkCategories
+import com.example.poputka.common.presentation.util.dpToPx
 
 @Composable
 fun DrinkCategorySelector(onDrinkCategoryChange: (newDrinkCategory: DrinkCategory?) -> Unit) {
