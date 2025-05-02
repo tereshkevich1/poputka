@@ -6,7 +6,9 @@ import com.example.poputka.core.presentation.BaseViewModel
 import com.example.poputka.feature_notifications.data.repository.NotificationsRepository
 import com.example.poputka.feature_notifications.domain.AlarmScheduler
 import com.example.poputka.feature_notifications.domain.models.ReminderItem
+import com.example.poputka.feature_notifications.domain.use_case.CancelAllEnabledNotifications
 import com.example.poputka.feature_notifications.domain.use_case.GetReminderTimeInMillisUseCase
+import com.example.poputka.feature_notifications.domain.use_case.ScheduleAllEnabledNotifications
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.models.NotificationUi
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.models.mappers.toDisplayableTime
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.models.mappers.toDomain
@@ -24,7 +26,9 @@ class NotificationViewModel @Inject constructor(
     appStateHolder: AppStateHolder,
     private val notificationAlarmScheduler: AlarmScheduler,
     private val notificationsRepository: NotificationsRepository,
-    private val getReminderTimeInMillisUseCase: GetReminderTimeInMillisUseCase
+    private val getReminderTimeInMillisUseCase: GetReminderTimeInMillisUseCase,
+    private val cancelAllEnabledNotifications: CancelAllEnabledNotifications,
+    private val scheduleAllEnabledNotifications: ScheduleAllEnabledNotifications
 ) :
     BaseViewModel<NotificationScreenEvent>() {
     private val _state = MutableStateFlow(NotificationSettingsState())
@@ -59,7 +63,6 @@ class NotificationViewModel @Inject constructor(
                 action.isEnabled
             )
 
-            NotificationScreenAction.OnTimePickerDismissed -> closeTimePicker()
             is NotificationScreenAction.OnTimeSelected -> updateNotificationTime(
                 action.hour,
                 action.minute
@@ -68,6 +71,10 @@ class NotificationViewModel @Inject constructor(
             is NotificationScreenAction.OnNotificationSettingsToggle -> changeNotificationSettings(
                 action.isEnabled
             )
+
+            NotificationScreenAction.OnTimePickerDismissed -> closeTimePicker()
+
+            NotificationScreenAction.OnBackClick -> sendEvent(NotificationScreenEvent.NavigateToSettingsScreen)
         }
     }
 
@@ -82,6 +89,15 @@ class NotificationViewModel @Inject constructor(
                     notifications = notification
                 )
             }
+        }
+    }
+
+    private fun onTimeNotificationClick(notification: NotificationUi) {
+        _state.update { state ->
+            state.copy(
+                selectedNotification = notification,
+                showTimePicker = true,
+            )
         }
     }
 
@@ -115,15 +131,6 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    private fun onTimeNotificationClick(notification: NotificationUi) {
-        _state.update { state ->
-            state.copy(
-                selectedNotification = notification,
-                showTimePicker = true,
-            )
-        }
-    }
-
     private fun toggleNotification(notification: NotificationUi, isEnabled: Boolean) {
         val updatedNotification =
             notification.copy(isEnabled = isEnabled)
@@ -131,8 +138,7 @@ class NotificationViewModel @Inject constructor(
         _state.update { state ->
             state.copy(notifications = state.notifications.map {
                 if (it.id == notification.id) updatedNotification else it
-            }
-            )
+            })
         }
 
         updateNotificationAlarm(updatedNotification)
@@ -147,11 +153,8 @@ class NotificationViewModel @Inject constructor(
             id = notification.id,
             time = notification.time.value
         )
-        if (notification.isEnabled) {
-            notificationAlarmScheduler.schedule(reminderItem)
-        } else {
-            notificationAlarmScheduler.cancel(reminderItem)
-        }
+        if (notification.isEnabled) notificationAlarmScheduler.schedule(reminderItem)
+        else notificationAlarmScheduler.cancel(reminderItem)
     }
 
     private fun changeNotificationSettings(isEnabled: Boolean) {
@@ -160,6 +163,8 @@ class NotificationViewModel @Inject constructor(
         }
         viewModelScope.launch {
             notificationStateHolder.updateNotificationsEnabled(isEnabled)
+            if (isEnabled) scheduleAllEnabledNotifications()
+            else cancelAllEnabledNotifications()
         }
     }
 }

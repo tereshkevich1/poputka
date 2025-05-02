@@ -76,6 +76,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         FirebaseApp.initializeApp(applicationContext)
         Firebase.initialize(applicationContext)
         Firebase.appCheck.installAppCheckProviderFactory(

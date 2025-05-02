@@ -3,6 +3,7 @@
 package com.example.poputka.feature_settings.presentation.notification_settings_screen
 
 import android.os.Build
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -58,7 +59,12 @@ fun NotificationSettingsRoute(
             viewModel.events.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect {
                     when (it) {
-                        else -> {}
+                        NotificationScreenEvent.NavigateToSettingsScreen -> onNavigateToSettingsScreen()
+                        is NotificationScreenEvent.ShowToast -> Toast.makeText(
+                            context,
+                            it.message,
+                            Toast.LENGTH_LONG
+                        )
                     }
                 }
         }
@@ -93,7 +99,8 @@ fun NotificationSettingsScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.title_notification_settings)) },
                 navigationIcon = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { onAction(NotificationScreenAction.OnBackClick) })
+                    {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             stringResource(R.string.back_icon)

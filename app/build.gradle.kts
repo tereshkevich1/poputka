@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
     alias(libs.plugins.androidx.navigation.safeargs.kotlin.gradle.plugin)
     alias(libs.plugins.compose.compiler)
-    id ("com.google.dagger.hilt.android")
+    id ("dagger.hilt.android.plugin")
     id ("kotlin-kapt")
 }
 
@@ -82,7 +82,12 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     testImplementation(libs.androidx.room.testing)
 
+    implementation (libs.androidx.hilt.work)
+    implementation (libs.androidx.work.runtime.ktx)
+
     implementation (libs.accompanist.permissions)
+
+    implementation(libs.hilt.ext.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -93,12 +98,14 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.navigation.safe.args.gradle.plugin)
     implementation(libs.androidx.ui.text.google.fonts)
+
+    implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

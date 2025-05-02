@@ -29,6 +29,7 @@ object NotificationModule {
     fun provideNotificationsRepository(
         db: AppDatabase
     ): NotificationsRepository = NotificationsRepositoryImpl(db.notificationsDao())
+
 }
 
 
