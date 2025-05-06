@@ -2,10 +2,11 @@ package com.example.poputka.feature_settings.presentation.settings_screen.bottom
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.poputka.common.global_state.AppStateHolder
+import com.example.poputka.common.domain.AppStateHolder
 import com.example.poputka.core.domain.Result
 import com.example.poputka.feature_settings.domain.use_case.ValidateVolumeInputUseCase
 import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.errors.asUiText
+import com.example.poputka.feature_weather.domain.use_case.SaveHydrationGoalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,8 +19,10 @@ import javax.inject.Inject
 @HiltViewModel
 class DailyGoalViewModel @Inject constructor(
     appStateHolder: AppStateHolder,
-    private val validateVolumeInputUseCase: ValidateVolumeInputUseCase
+    private val validateVolumeInputUseCase: ValidateVolumeInputUseCase,
+    private val saveHydrationGoalUseCase: SaveHydrationGoalUseCase
 ) : ViewModel() {
+    private var autoCalculationGoal = ""
     private val _state = MutableStateFlow(DailyGoalState())
     val state = _state.stateIn(
         viewModelScope,
@@ -39,6 +42,7 @@ class DailyGoalViewModel @Inject constructor(
                         currentVolumeUnit = domainState.volumeUnitSetting
                     )
                 }
+                autoCalculationGoal = domainState.goalSetting.toString()
             }
         }
     }
@@ -83,6 +87,14 @@ class DailyGoalViewModel @Inject constructor(
     }
 
     private fun toggleAutoCalculation(checked: Boolean) {
+        if (checked) {
+            viewModelScope.launch {
+                saveHydrationGoalUseCase()
+            }
+            _state.update {
+                it.copy(currentGoal = autoCalculationGoal)
+            }
+        }
         _state.update {
             it.copy(autoCalculation = checked)
         }

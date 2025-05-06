@@ -2,6 +2,7 @@ package com.example.poputka.common.data.local
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -51,6 +52,13 @@ class AppDataStoreSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun putDouble(key: String, value: Double) {
+        val preferencesKey = doublePreferencesKey(key)
+        context.dataStore.edit { preferences ->
+            preferences[preferencesKey] = value
+        }
+    }
+
     override suspend fun putBoolean(key: String, value: Boolean) {
         val preferencesKey = booleanPreferencesKey(key)
         context.dataStore.edit { preferences ->
@@ -86,6 +94,13 @@ class AppDataStoreSourceImpl @Inject constructor(
         }
     }
 
+    override fun doubleFlow(key: String): Flow<Double> {
+        val preferencesKey = doublePreferencesKey(key)
+        return context.dataStore.data.map { preferences ->
+            preferences[preferencesKey] ?: 0.0
+        }
+    }
+
     override fun stringFlow(key: String): Flow<String> {
         val preferencesKey = stringPreferencesKey(key)
         return context.dataStore.data.map { preferences ->
@@ -116,6 +131,34 @@ class AppDataStoreSourceImpl @Inject constructor(
 
     override suspend fun getBooleanValue(key: String, defaultValue: Boolean): Boolean {
         val preferencesKey = booleanPreferencesKey(key)
+        return context.dataStore.data.map { preferences ->
+            preferences[preferencesKey] ?: defaultValue
+        }.first()
+    }
+
+    override suspend fun getIntValue(key: String, defaultValue: Int): Int {
+        val preferencesKey = intPreferencesKey(key)
+        return context.dataStore.data.map { preferences ->
+            preferences[preferencesKey] ?: defaultValue
+        }.first()
+    }
+
+    override suspend fun getLongValue(key: String, defaultValue: Long): Long {
+        val preferencesKey = longPreferencesKey(key)
+        return context.dataStore.data.map { preferences ->
+            preferences[preferencesKey] ?: defaultValue
+        }.first()
+    }
+
+    override suspend fun getFloatValue(key: String, defaultValue: Float): Float {
+        val preferencesKey = floatPreferencesKey(key)
+        return context.dataStore.data.map { preferences ->
+            preferences[preferencesKey] ?: defaultValue
+        }.first()
+    }
+
+    override suspend fun getDoubleValue(key: String, defaultValue: Double): Double {
+        val preferencesKey = doublePreferencesKey(key)
         return context.dataStore.data.map { preferences ->
             preferences[preferencesKey] ?: defaultValue
         }.first()

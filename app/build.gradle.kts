@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.androidx.navigation.safeargs.kotlin.gradle.plugin)
     alias(libs.plugins.compose.compiler)
     id ("dagger.hilt.android.plugin")
-    id ("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -78,17 +78,30 @@ dependencies {
 
     //room
     implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     testImplementation(libs.androidx.room.testing)
+    ksp(libs.androidx.room.compiler)
 
+    //hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    ksp(libs.hilt.ext.compiler)
+
+    //worker
     implementation (libs.androidx.hilt.work)
     implementation (libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.work.runtime)
+
+    //retrofit
+    implementation (libs.retrofit2.retrofit)
+    implementation (libs.okhttp)
+    implementation (libs.okhttp.logging.interceptor)
+    implementation(libs.converter.gson)
+
+    //location
+    implementation(libs.play.services.location)
 
     implementation (libs.accompanist.permissions)
-
-    implementation(libs.hilt.ext.compiler)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -97,15 +110,11 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.hilt.android)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.navigation.safe.args.gradle.plugin)
     implementation(libs.androidx.ui.text.google.fonts)
-
     implementation(libs.androidx.hilt.navigation.compose)
-    kapt(libs.hilt.compiler)
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

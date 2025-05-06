@@ -1,6 +1,6 @@
 package com.example.poputka.feature_notifications.domain.use_case
 
-import com.example.poputka.common.global_state.AppStateHolder
+import com.example.poputka.common.domain.AppStateHolder
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

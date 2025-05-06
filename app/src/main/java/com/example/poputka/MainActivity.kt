@@ -36,7 +36,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.poputka.common.global_state.AppStateHolder
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.poputka.common.domain.AppStateHolder
 import com.example.poputka.common.global_state.local_settings_state.LocalSettingsState
 import com.example.poputka.common.presentation.constants.UiConstants.BottomNavBarHeight
 import com.example.poputka.common.presentation.constants.UiConstants.fabYOffset
@@ -46,6 +48,7 @@ import com.example.poputka.common.presentation.navigation.topLevelRoutes
 import com.example.poputka.common.presentation.navigation.util.enterFadeTransaction
 import com.example.poputka.common.presentation.navigation.util.exitFadeTransaction
 import com.example.poputka.feature_home.presentation.home_screen.add_water_button.AddWaterButton
+import com.example.poputka.feature_weather.data.DailyHydrationWorker
 import com.example.poputka.ui.theme.PoputkaTheme
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
@@ -76,6 +79,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val request = OneTimeWorkRequestBuilder<DailyHydrationWorker>().build()
+
+
+
+        WorkManager.getInstance(this).enqueue(request)
 
         FirebaseApp.initializeApp(applicationContext)
         Firebase.initialize(applicationContext)

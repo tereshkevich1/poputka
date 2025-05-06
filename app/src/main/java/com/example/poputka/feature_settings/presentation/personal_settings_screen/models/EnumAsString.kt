@@ -14,5 +14,7 @@ fun ActivityLevel.asUiText(): UiText = when (this) {
     ActivityLevel.LOW -> UiText.StringResource(R.string.activity_low)
     ActivityLevel.MODERATE -> UiText.StringResource(R.string.activity_moderately)
     ActivityLevel.INTENSIVE -> UiText.StringResource(R.string.activity_intensive)
+    ActivityLevel.VERY_LOW -> UiText.StringResource(R.string.activity_very_low)
+    ActivityLevel.VERY_INTENSIVE -> UiText.StringResource(R.string.activity_very_intensive)
 }
 

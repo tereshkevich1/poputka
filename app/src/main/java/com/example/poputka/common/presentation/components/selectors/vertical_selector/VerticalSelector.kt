@@ -28,18 +28,18 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.poputka.common.presentation.components.selectors.common.ScrollStateManager
 import com.example.poputka.common.presentation.components.selectors.util.Orientation
-import com.example.poputka.common.presentation.util.dpToPx
 import com.example.poputka.common.presentation.components.selectors.util.VerticalScrollUtils.calculateCenterIndex
+import com.example.poputka.common.presentation.util.dpToPx
 import com.example.poputka.ui.theme.PoputkaTheme
 
 @Composable
 fun VerticalSelector(
     values: List<String>,
+    modifier: Modifier = Modifier,
     onIndexChanged: (Int) -> Unit = {},
     preselectedIndex: Int = 0,
     height: Dp = 200.dp,
-    textStyle: TextStyle = MaterialTheme.typography.headlineMedium,
-    modifier: Modifier = Modifier
+    textStyle: TextStyle = MaterialTheme.typography.headlineMedium
 ) {
     val textStyleHeight = textStyle.lineHeight.value
     val verticalPadding = (height - textStyleHeight.dp) / 2

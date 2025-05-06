@@ -2,6 +2,7 @@
 
 package com.example.poputka.feature_settings.presentation.notification_settings_screen
 
+import android.Manifest
 import android.os.Build
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -34,12 +35,14 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.poputka.R
 import com.example.poputka.common.presentation.components.TimePickerModule
+import com.example.poputka.feature_settings.presentation.notification_settings_screen.components.CheckMultiplyPermission
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.components.CheckPermission
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.components.NotificationRow
 import com.example.poputka.ui.theme.DpSpSize.paddingMedium
 import com.example.poputka.ui.theme.DpSpSize.paddingSmall
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
 
@@ -86,7 +89,7 @@ fun NotificationSettingsScreen(
 ) {
 
     val notificationPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        rememberPermissionState(android.Manifest.permission.POST_NOTIFICATIONS)
+        rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
     } else {
         null
     }
@@ -127,6 +130,20 @@ fun NotificationSettingsScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
+
+
+            val multiplePermissionsState = rememberMultiplePermissionsState(
+                listOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                )
+            )
+            CheckMultiplyPermission(multiplePermissionsState)
+
+
+
+
+
             notificationPermissionState?.let {
                 CheckPermission(notificationPermissionState)
             }

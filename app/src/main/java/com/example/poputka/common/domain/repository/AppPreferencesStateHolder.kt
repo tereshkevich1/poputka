@@ -12,4 +12,6 @@ interface AppPreferencesStateHolder {
     suspend fun saveGoal(newValue: Double)
 
     suspend fun saveAutoCalculation(newValue: Boolean)
+
+    suspend fun getAppPreferencesSnapshot(): AppPreferencesState
 }

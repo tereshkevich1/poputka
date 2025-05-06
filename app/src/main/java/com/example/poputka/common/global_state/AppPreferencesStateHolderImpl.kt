@@ -54,9 +54,30 @@ class AppPreferencesStateHolderImpl @Inject constructor(private val appDataStore
         appDataStoreSource.putBoolean(AUTO_CALCULATION_SETTING, newValue)
     }
 
+    override suspend fun getAppPreferencesSnapshot(): AppPreferencesState {
+        val volumeUnit =
+            runCatching {
+                VolumeUnit.valueOf(
+                    appDataStoreSource.getStringValue(
+                        VOLUME_UNIT_SETTING,
+                        ""
+                    )
+                )
+            }.getOrDefault(VolumeUnit.Milliliters)
+        return AppPreferencesState(
+            goalSetting = appDataStoreSource.getIntValue(
+                DAILY_GOAL_SETTING, 0
+            ).toDouble(),
+            volumeUnitSetting = volumeUnit,
+            autoCalculation = appDataStoreSource.getBooleanValue(AUTO_CALCULATION_SETTING, false)
+        )
+    }
+
     companion object {
         const val VOLUME_UNIT_SETTING = "volume_unit_setting"
         const val DAILY_GOAL_SETTING = "daily_goal_setting"
         const val AUTO_CALCULATION_SETTING = "auto_calculation"
     }
 }
+
+

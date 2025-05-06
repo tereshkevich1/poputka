@@ -34,7 +34,7 @@ import com.example.poputka.ui.theme.PoputkaTheme
 fun HomeScreen() {
     val currentAppPrefState = LocalSettingsState.current
     val volumeUnit = currentAppPrefState.volumeUnitSetting.asUiText().asString()
-    val currentAnimValue by remember { mutableFloatStateOf(600f) }
+    val currentAnimValue by remember { mutableFloatStateOf(currentAppPrefState.goalSetting.toFloat()) }
     val maxValue = 2000f
     Column(
         modifier = Modifier

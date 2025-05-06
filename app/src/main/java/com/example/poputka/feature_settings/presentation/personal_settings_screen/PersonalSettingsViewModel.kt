@@ -1,12 +1,12 @@
 package com.example.poputka.feature_settings.presentation.personal_settings_screen
 
 import androidx.lifecycle.viewModelScope
-import com.example.poputka.common.global_state.AppStateHolder
+import com.example.poputka.common.domain.AppStateHolder
 import com.example.poputka.core.presentation.BaseViewModel
-import com.example.poputka.feature_settings.domain.PersonalInfoStateHolder
 import com.example.poputka.feature_settings.domain.model.ActivityLevel
 import com.example.poputka.feature_settings.domain.model.Gender
 import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.PersonalSettingsBottomSheet
+import com.example.poputka.feature_weather.domain.use_case.SaveHydrationGoalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PersonalSettingsViewModel @Inject constructor(
-    appStateHolder: AppStateHolder
+    appStateHolder: AppStateHolder,
+    private val saveHydrationGoalUseCase: SaveHydrationGoalUseCase
 ) : BaseViewModel<PersonalSettingsEvent>() {
     private val _state = MutableStateFlow(PersonalSettingsScreenState())
     val state = _state
@@ -83,6 +84,7 @@ class PersonalSettingsViewModel @Inject constructor(
     private fun saveActivityLevel(activityLevel: ActivityLevel) {
         viewModelScope.launch {
             personalInfoStateHolder.updateActivityLevel(activityLevel)
+            saveHydrationGoalUseCase()
             closeBottomSheet()
         }
     }
@@ -91,6 +93,7 @@ class PersonalSettingsViewModel @Inject constructor(
         date?.let {
             viewModelScope.launch {
                 personalInfoStateHolder.updateBirthday(it)
+                saveHydrationGoalUseCase()
             }
         } ?: sendEvent(PersonalSettingsEvent.ShowToast(""))
     }
@@ -98,6 +101,7 @@ class PersonalSettingsViewModel @Inject constructor(
     private fun saveGender(gender: Gender) {
         viewModelScope.launch {
             personalInfoStateHolder.updateGender(gender)
+            saveHydrationGoalUseCase()
         }
         closeBottomSheet()
     }
@@ -107,6 +111,7 @@ class PersonalSettingsViewModel @Inject constructor(
         height?.let {
             viewModelScope.launch {
                 personalInfoStateHolder.updateHeight(it)
+                saveHydrationGoalUseCase()
             }
             closeBottomSheet()
         } ?: sendEvent(PersonalSettingsEvent.ShowToast(""))
@@ -118,6 +123,7 @@ class PersonalSettingsViewModel @Inject constructor(
         weightFloat?.let {
             viewModelScope.launch {
                 personalInfoStateHolder.updateWeight(weightFloat)
+                saveHydrationGoalUseCase()
             }
             closeBottomSheet()
         } ?: sendEvent(PersonalSettingsEvent.ShowToast(""))

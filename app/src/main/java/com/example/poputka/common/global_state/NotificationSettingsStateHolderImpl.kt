@@ -1,10 +1,8 @@
 package com.example.poputka.common.global_state
 
 import com.example.poputka.common.domain.repository.AppDataStoreSource
-import com.example.poputka.common.domain.repository.AppPreferencesStateHolder
 import com.example.poputka.feature_settings.domain.NotificationSettingsStateH
 import com.example.poputka.feature_settings.domain.NotificationSettingsStateHolder
-import com.example.poputka.feature_settings.domain.PersonalInfoStateHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -41,8 +39,3 @@ class NotificationSettingsStateHolderImpl @Inject constructor(
     }
 }
 
-interface AppStateHolder {
-    val personalInfoStateHolder: PersonalInfoStateHolder
-    val appPreferencesStateHolder: AppPreferencesStateHolder
-    val notificationSettingsStateHolder: NotificationSettingsStateHolder
-}

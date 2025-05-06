@@ -123,6 +123,8 @@
     <string name="activity_low">Низкая</string>
     <string name="activity_moderately">Умеренная</string>
     <string name="activity_intensive">Интенсивная</string>
+    <string name="activity_very_low">Очень низкая</string>
+    <string name="activity_very_intensive">Очень интенсивная</string>
     <string name="back_icon">backIcon</string>
     <string name="kg">кг</string>
 

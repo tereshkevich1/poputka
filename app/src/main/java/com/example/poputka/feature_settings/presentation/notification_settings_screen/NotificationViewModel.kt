@@ -1,7 +1,7 @@
 package com.example.poputka.feature_settings.presentation.notification_settings_screen
 
 import androidx.lifecycle.viewModelScope
-import com.example.poputka.common.global_state.AppStateHolder
+import com.example.poputka.common.domain.AppStateHolder
 import com.example.poputka.core.presentation.BaseViewModel
 import com.example.poputka.feature_notifications.data.repository.NotificationsRepository
 import com.example.poputka.feature_notifications.domain.AlarmScheduler

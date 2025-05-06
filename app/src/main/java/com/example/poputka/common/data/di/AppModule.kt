@@ -8,20 +8,58 @@ import androidx.sqlite.SQLiteConnection
 import com.example.poputka.common.data.local.AppDataStoreSourceImpl
 import com.example.poputka.common.data.local.db.AppDatabase
 import com.example.poputka.common.data.local.db.ioThread
+import com.example.poputka.common.domain.AppStateHolder
 import com.example.poputka.common.domain.repository.AppDataStoreSource
-import com.example.poputka.common.global_state.AppStateHolder
 import com.example.poputka.common.global_state.AppStateHolderImpl
 import com.example.poputka.feature_notifications.data.util.PrepopulateData.notifications
+import com.example.poputka.feature_weather.data.data_source.WeatherApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+    @Provides
+    fun provideOkhttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+        OkHttpClient.Builder().apply {
+            addInterceptor(loggingInterceptor)
+            readTimeout(TIMEOUT, TimeUnit.SECONDS)
+            writeTimeout(TIMEOUT, TimeUnit.SECONDS)
+            connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+        }.build()
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder().apply {
+            baseUrl(BASE_URL)
+            addConverterFactory(GsonConverterFactory.create())
+            client(okHttpClient)
+        }.build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherApi(retrofit: Retrofit): WeatherApi {
+        return retrofit.create(WeatherApi::class.java)
+    }
 
     @Provides
     @Singleton
@@ -55,4 +93,7 @@ object AppModule {
     fun provideAppPreferencesStateHolder(appDataStoreSource: AppDataStoreSource): AppStateHolder =
         AppStateHolderImpl(appDataStoreSource)
 
+
+    private const val TIMEOUT: Long = 30L
+    private const val BASE_URL = "https://api.open-meteo.com/"
 }
