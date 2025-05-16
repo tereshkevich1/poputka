@@ -42,8 +42,8 @@ import kotlinx.coroutines.launch
 fun SettingsScreenRoute(
     onNavigateToPersonalScree: () -> Unit,
     onNavigateToNotificationSettingsScreen: () -> Unit,
-    viewModel: SettingsViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val state by viewModel.settingsState.collectAsStateWithLifecycle()
     val context = LocalContext.current

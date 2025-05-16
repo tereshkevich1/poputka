@@ -28,25 +28,26 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.poputka.feature_journal.presentation.charts.bar_chart.animation.fadeInAnimation
+import com.example.poputka.common.domain.model.VolumeUnit
 import com.example.poputka.feature_home.presentation.home_screen.custom_circular_progress_indicator.render.drawCircularProgressIndicator
+import com.example.poputka.feature_journal.presentation.charts.bar_chart.animation.fadeInAnimation
 import com.example.poputka.ui.theme.PoputkaTheme
+import java.util.Locale
 
 @Composable
 fun AnimatedCircularProgressIndicator(
+    unit: VolumeUnit,
+    percent: Int,
     maxValue: Float,
-    progressBackgroundColor: Color,
-    progressIndicatorColor: Color,
-    indicatorColor: Color,
-    circularIndicatorDiameter: Dp = 184.dp,
-    strokeWidth: Dp = 12.dp,
-    animation: AnimationSpec<Float> = fadeInAnimation(800),
-    fontSize: TextUnit = 28.sp,
+    currentValueProvider: () -> Float,
     modifier: Modifier = Modifier,
-    currentValueProvider: () -> Float
+    strokeWidth: Dp = 12.dp,
+    circularIndicatorDiameter: Dp = 184.dp,
+    animation: AnimationSpec<Float> = fadeInAnimation(800),
+    progressBackgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    progressIndicatorColor: Color = MaterialTheme.colorScheme.primary,
+    indicatorColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest
 ) {
     val stroke = with(LocalDensity.current) {
         Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
@@ -56,8 +57,13 @@ fun AnimatedCircularProgressIndicator(
     val currentValue = currentValueProvider()
 
     LaunchedEffect(currentValue) {
+        val target = if (maxValue > 0f && !currentValue.isNaN()) {
+            currentValue / maxValue
+        } else {
+            0f
+        }
         animateFloat.animateTo(
-            targetValue = currentValue / maxValue,
+            targetValue = target,
             animationSpec = animation
         )
     }
@@ -84,16 +90,41 @@ fun AnimatedCircularProgressIndicator(
                 stroke
             )
         }
-        ProgressStatus((animateFloat.value * maxValue).toInt(), fontSize)
+        ProgressStatus(
+            currentValue = animateFloat.value * maxValue,
+            unit = unit,
+            percent = percent
+        )
     }
 }
 
 @Composable
 fun ProgressStatus(
-    currentValue: Int,
-    fontSize: TextUnit
+    currentValue: Float,
+    unit: VolumeUnit,
+    percent: Int
 ) {
-    Text(text = currentValue.toString(), fontSize = fontSize, fontWeight = FontWeight.Bold)
+    val formatted = when (unit) {
+        VolumeUnit.Milliliters -> currentValue.toInt().toString()
+        VolumeUnit.Liters, VolumeUnit.Ounces -> String.format(
+            Locale.getDefault(),
+            "%.2f",
+            currentValue
+        )
+    }
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = formatted,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.headlineSmall
+        )
+        Text(
+            text = "$percent%",
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+
 }
 
 @Composable
@@ -114,7 +145,9 @@ fun CircularPIPreview() {
                     progressBackgroundColor = Color.Green,
                     progressIndicatorColor = Color.Blue,
                     indicatorColor = MaterialTheme.colorScheme.surface,
-                    currentValueProvider = { currentAnimValue }
+                    currentValueProvider = { currentAnimValue },
+                    unit = VolumeUnit.Milliliters,
+                    percent = 1
                 )
 
                 Button(

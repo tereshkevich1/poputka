@@ -3,12 +3,12 @@ package com.example.poputka.feature_settings.presentation.settings_screen.bottom
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.poputka.common.domain.AppStateHolder
+import com.example.poputka.common.presentation.models.mappers.toDisplayableVolume
 import com.example.poputka.core.domain.Result
+import com.example.poputka.feature_daily_goal.domain.use_case.SaveHydrationGoalUseCase
 import com.example.poputka.feature_settings.domain.use_case.ValidateVolumeInputUseCase
 import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.errors.asUiText
-import com.example.poputka.feature_weather.domain.use_case.SaveHydrationGoalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -22,27 +22,27 @@ class DailyGoalViewModel @Inject constructor(
     private val validateVolumeInputUseCase: ValidateVolumeInputUseCase,
     private val saveHydrationGoalUseCase: SaveHydrationGoalUseCase
 ) : ViewModel() {
-    private var autoCalculationGoal = ""
     private val _state = MutableStateFlow(DailyGoalState())
-    val state = _state.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        DailyGoalState()
-    )
-
-    private val appPreferencesStateHolder = appStateHolder.appPreferencesStateHolder
+    val state = _state
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            DailyGoalState()
+        )
+    private val appPref = appStateHolder.appPreferencesStateHolder
 
     init {
         viewModelScope.launch {
-            appPreferencesStateHolder.appPrefFlow.collect { domainState ->
+            appPref.appPrefFlow.collect { domainState ->
+                val goalMl =
+                    domainState.goalSetting.toDisplayableVolume(domainState.volumeUnitSetting)
                 _state.update { currentUiState ->
                     currentUiState.copy(
                         autoCalculation = domainState.autoCalculation,
-                        currentGoal = domainState.goalSetting.toString(),
+                        currentGoal = goalMl,
                         currentVolumeUnit = domainState.volumeUnitSetting
                     )
                 }
-                autoCalculationGoal = domainState.goalSetting.toString()
             }
         }
     }
@@ -54,7 +54,7 @@ class DailyGoalViewModel @Inject constructor(
                 showDialog(action.enabled)
             }
 
-            is DailyGoalAction.OnGoalValueChange -> updateDailyGoal(action.value)
+            is DailyGoalAction.OnGoalValueChange -> updateInputDailyGoal(action.value)
             DailyGoalAction.OnDialogConfirm -> {
                 saveDailyGoalInBottomSheet()
                 closeDialog()
@@ -66,33 +66,24 @@ class DailyGoalViewModel @Inject constructor(
             }
 
             DailyGoalAction.OnCancelClick -> resetToCurrentPreferences()
-            DailyGoalAction.OnSaveClick -> saveGoal()
+            DailyGoalAction.OnSaveClick -> saveManualGoal()
         }
     }
 
-    private fun saveGoal() {
-        if (!_state.value.autoCalculation) {
-            val newGoal = _state.value.currentGoal.toDoubleOrNull()
-            newGoal?.let {
-                viewModelScope.launch {
-                    appPreferencesStateHolder.saveGoal(newGoal)
-                    appPreferencesStateHolder.saveAutoCalculation(_state.value.autoCalculation)
-                }
-            }
-        } else {
-            viewModelScope.launch {
-                appPreferencesStateHolder.saveAutoCalculation(_state.value.autoCalculation)
-            }
+    private fun saveManualGoal() {
+        if (_state.value.autoCalculation) return
+
+        viewModelScope.launch {
+            appPref.saveGoal(_state.value.currentGoal.value)
+            appPref.saveAutoCalculation(false)
         }
     }
 
     private fun toggleAutoCalculation(checked: Boolean) {
         if (checked) {
             viewModelScope.launch {
+                appPref.saveAutoCalculation(true)
                 saveHydrationGoalUseCase()
-            }
-            _state.update {
-                it.copy(currentGoal = autoCalculationGoal)
             }
         }
         _state.update {
@@ -101,16 +92,9 @@ class DailyGoalViewModel @Inject constructor(
     }
 
     private fun showDialog(checked: Boolean) {
-        if (!checked) {
-            _state.update {
-                it.copy(showDialog = true)
-            }
-        }
-    }
-
-    private fun saveDailyGoalInBottomSheet() {
+        if (checked) return
         _state.update {
-            it.copy(currentGoal = it.inputValue)
+            it.copy(showDialog = true)
         }
     }
 
@@ -124,7 +108,19 @@ class DailyGoalViewModel @Inject constructor(
         }
     }
 
-    private fun updateDailyGoal(input: String) {
+    private fun saveDailyGoalInBottomSheet() {
+        val newGoal = _state.value.inputValue.toDoubleOrNull()
+        newGoal?.let {
+            val newGoalMl =
+                appPref.appPrefFlow.value.volumeUnitSetting.convertToMilliliters(newGoal)
+                    .toDisplayableVolume(_state.value.currentVolumeUnit)
+            _state.update {
+                it.copy(currentGoal = newGoalMl)
+            }
+        }
+    }
+
+    private fun updateInputDailyGoal(input: String) {
         val result = validateVolumeInputUseCase(input, _state.value.currentVolumeUnit)
         _state.update { currentState ->
             when (result) {
@@ -146,18 +142,16 @@ class DailyGoalViewModel @Inject constructor(
 
     private fun resetToCurrentPreferences() {
         viewModelScope.launch {
-            appPreferencesStateHolder.appPrefFlow.collect { domainState ->
-                _state.update {
-                    it.copy(
-                        autoCalculation = domainState.autoCalculation,
-                        currentGoal = domainState.goalSetting.toString(),
-                        currentVolumeUnit = domainState.volumeUnitSetting,
-                        inputValue = "",
-                        errorMessage = null,
-                        showDialog = false
-                    )
-                }
-                this.cancel()
+            val appPref = appPref.getAppPreferencesSnapshot()
+            _state.update {
+                it.copy(
+                    autoCalculation = appPref.autoCalculation,
+                    currentGoal = appPref.goalSetting.toDisplayableVolume(appPref.volumeUnitSetting),
+                    currentVolumeUnit = appPref.volumeUnitSetting,
+                    inputValue = "",
+                    errorMessage = null,
+                    showDialog = false
+                )
             }
         }
     }

@@ -6,7 +6,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.poputka.feature_notifications.domain.use_case.ScheduleEnabledNotificationsIfAllowedUseCase
-import com.example.poputka.feature_weather.data.DefaultLocationClient
+import com.example.poputka.feature_daily_goal.data.DefaultLocationClient
 import com.google.android.gms.location.LocationServices
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject

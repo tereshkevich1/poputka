@@ -7,4 +7,6 @@ sealed class HomeDestination {
     data object HomeNav : HomeDestination()
     @Serializable
     data object Home : HomeDestination()
+    @Serializable
+    data object AddDrink: HomeDestination()
 }

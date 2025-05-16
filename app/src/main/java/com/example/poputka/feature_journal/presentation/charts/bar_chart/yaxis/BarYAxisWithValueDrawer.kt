@@ -21,11 +21,11 @@ import kotlin.math.roundToInt
 
 class BarYAxisWithValueDrawer(
     private val labelTextSize: TextUnit = 12.sp,
-    private val labelTextColor: Color = Color.DarkGray,
+    private val labelTextColor: Color = Color.LightGray,
     private val labelRatio: Int = 5,
     private val labelValueFormatter: Formatter = { value -> "%.1f".format(value) },
     private val axisLineThickness: Dp = 1.dp,
-    private val axisLineColor: Color = Color.DarkGray,
+    private val axisLineColor: Color = Color.LightGray,
     private val achievementLineColor: Color = Color.Blue,
     private val achievementLineThickness: Dp = 1.dp,
     private val spacingFactor: Float = 0.07f,

@@ -10,7 +10,7 @@ import com.example.poputka.feature_notifications.domain.use_case.CancelAllEnable
 import com.example.poputka.feature_notifications.domain.use_case.GetReminderTimeInMillisUseCase
 import com.example.poputka.feature_notifications.domain.use_case.ScheduleAllEnabledNotifications
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.models.NotificationUi
-import com.example.poputka.feature_settings.presentation.notification_settings_screen.models.mappers.toDisplayableTime
+import com.example.poputka.common.presentation.models.mappers.toDisplayableTime
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.models.mappers.toDomain
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.models.mappers.toNotificationUi
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -51,10 +51,11 @@ import kotlin.random.Random
 
 @Composable
 fun BarChart(
-    modifier: Modifier = Modifier,
     bars: Bars,
-    animation: AnimationSpec<Float> = fadeInAnimation(),
     chartMode: BaseChartMode,
+    modifier: Modifier = Modifier,
+    onBarTap: (bar: Bar) -> Unit = {},
+    animation: AnimationSpec<Float> = fadeInAnimation(),
     xAxisDrawer: XAxisDrawer = BarXAxisDrawer(chartMode = chartMode),
     yAxisDrawer: YAxisDrawer = BarYAxisWithValueDrawer(),
     valueBarDrawer: ChartValueDrawer = SimpleChartValueDrawer()
@@ -75,12 +76,15 @@ fun BarChart(
         .fillMaxSize()
         .pointerInput(bars.bars) {
             detectBarByDragGestures(chartMode, rectangles) { selectedBar = it }
+        }
+        .pointerInput(bars.bars) {
             detectTapGestures { offset ->
                 rectangles
                     .filter { it.value.contains(offset) }
-                    .forEach { it.key.onTap(it.key) }
+                    .forEach { onBarTap(it.key) }
             }
-        }) {
+        }
+    ) {
         drawIntoCanvas { canvas ->
             val (xAxisArea, yAxisArea) = axisAreas(this, size, xAxisDrawer, yAxisDrawer)
             val barDrawableArea = barDrawableArea(xAxisArea)
@@ -180,17 +184,15 @@ fun BarChartPreviewV2() {
                 val chartMode = DayMode()
 
                 val numberOfBars = chartMode.getBarCount()
-                val max = 1200.0f
-                val min = 100f
+                val max = 10.0f
+                val min = 0f
 
                 val barsListM = Bars(
                     bars = (1..numberOfBars).map {
                         Bar(
                             label = "BAR$it",
                             value = Random.nextFloat() * (max - min) + min
-                        ) { _ ->
-
-                        }
+                        )
                     }, achievementValue = Random.nextFloat() * (max - min) + min
                 )
 

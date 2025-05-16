@@ -9,7 +9,9 @@ interface AppPreferencesStateHolder {
 
     suspend fun toggleVolumeUnit(newValue: VolumeUnit)
 
-    suspend fun saveGoal(newValue: Double)
+    suspend fun saveGoal(newValue: Int)
+
+    suspend fun saveAutoCalculation(newValue: Double)
 
     suspend fun saveAutoCalculation(newValue: Boolean)
 

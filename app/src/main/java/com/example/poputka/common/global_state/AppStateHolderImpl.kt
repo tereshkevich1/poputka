@@ -6,7 +6,7 @@ import com.example.poputka.common.domain.repository.AppPreferencesStateHolder
 import com.example.poputka.common.global_state.local_settings_state.PersonalInfoStateHolderImpl
 import com.example.poputka.feature_settings.domain.NotificationSettingsStateHolder
 import com.example.poputka.feature_settings.domain.PersonalInfoStateHolder
-import com.example.poputka.feature_weather.domain.WeatherPreferencesStateHolder
+import com.example.poputka.feature_daily_goal.domain.WeatherPreferencesStateHolder
 import javax.inject.Inject
 
 class AppStateHolderImpl @Inject constructor(

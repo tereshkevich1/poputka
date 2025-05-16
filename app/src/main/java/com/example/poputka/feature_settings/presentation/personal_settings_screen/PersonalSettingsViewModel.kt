@@ -6,7 +6,7 @@ import com.example.poputka.core.presentation.BaseViewModel
 import com.example.poputka.feature_settings.domain.model.ActivityLevel
 import com.example.poputka.feature_settings.domain.model.Gender
 import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.PersonalSettingsBottomSheet
-import com.example.poputka.feature_weather.domain.use_case.SaveHydrationGoalUseCase
+import com.example.poputka.feature_daily_goal.domain.use_case.SaveHydrationGoalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

@@ -11,8 +11,9 @@ import com.example.poputka.common.data.local.db.ioThread
 import com.example.poputka.common.domain.AppStateHolder
 import com.example.poputka.common.domain.repository.AppDataStoreSource
 import com.example.poputka.common.global_state.AppStateHolderImpl
+import com.example.poputka.feature_daily_goal.data.data_source.WeatherApi
+import com.example.poputka.feature_notifications.data.util.PrepopulateData.generateConsumptionData
 import com.example.poputka.feature_notifications.data.util.PrepopulateData.notifications
-import com.example.poputka.feature_weather.data.data_source.WeatherApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -75,10 +76,12 @@ object AppModule {
                     super.onCreate(connection)
                     ioThread {
                         instance.notificationsDao().upsertNotifications(notifications)
+                        instance.consumptionDao().upsertAll(generateConsumptionData())
                     }
                 }
             }
-        ).build()
+        ).fallbackToDestructiveMigration(true)
+            .build()
         instance = database
         return instance
     }

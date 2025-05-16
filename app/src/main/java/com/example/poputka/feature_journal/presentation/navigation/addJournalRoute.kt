@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.poputka.feature_journal.presentation.journal_screen.JournalScreen
+import com.example.poputka.feature_journal.presentation.journal_screen.JournalScreenRoute
 
 fun NavGraphBuilder.addJournalRoute(navController: NavController) {
     navigation<JournalDestination.JournalNav>(
@@ -16,6 +16,6 @@ fun NavGraphBuilder.addJournalRoute(navController: NavController) {
 
 fun NavGraphBuilder.journalDestination() {
     composable<JournalDestination.Journal> {
-        JournalScreen()
+        JournalScreenRoute()
     }
 }

@@ -1,8 +1,8 @@
 package com.example.poputka.common.global_state
 
 import com.example.poputka.common.domain.repository.AppDataStoreSource
-import com.example.poputka.feature_weather.domain.WeatherPreferencesStateHolder
-import com.example.poputka.feature_weather.domain.models.WeatherPreferencesState
+import com.example.poputka.feature_daily_goal.domain.WeatherPreferencesStateHolder
+import com.example.poputka.feature_daily_goal.domain.models.WeatherPreferencesState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

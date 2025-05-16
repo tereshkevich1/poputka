@@ -5,8 +5,8 @@ import com.google.gson.JsonSyntaxException
 import retrofit2.Response
 import java.nio.channels.UnresolvedAddressException
 
-suspend inline fun <T> responseToResult(
-    execute: suspend () -> Response<T>
+inline fun <T> responseToResult(
+    execute: () -> Response<T>
 ): Result<T, DataError.Network> {
     return try {
         val response = execute()

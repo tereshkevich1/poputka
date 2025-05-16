@@ -1,13 +1,11 @@
 package com.example.poputka.feature_settings.presentation.personal_settings_screen
 
-import com.example.poputka.common.presentation.util.DateTimeUtils.DEFAULT_DATE_PATTERN
+import com.example.poputka.common.presentation.models.DisplayableLong
+import com.example.poputka.common.presentation.models.mappers.toDisplayableDate
 import com.example.poputka.feature_settings.domain.PersonalSettingsState
 import com.example.poputka.feature_settings.domain.model.ActivityLevel
 import com.example.poputka.feature_settings.domain.model.Gender
 import com.example.poputka.feature_settings.presentation.personal_settings_screen.models.PersonalSettingsBottomSheet
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 
 data class PersonalSettingsScreenState(
@@ -27,22 +25,13 @@ data class PersonalSettingsStateUi(
 
 fun PersonalSettingsState.toUi(): PersonalSettingsStateUi =
     PersonalSettingsStateUi(
-        birthday = birthday.toFormattedDate(),
+        birthday = birthday.toDisplayableDate(),
         height = height.toString(),
         weight = weight.toWeightParts(),
         gender = gender,
         activityLevel = activityLevel
     )
 
-
-data class DisplayableLong(val value: Long, val formatted: String)
-
-fun Long.toFormattedDate(): DisplayableLong {
-    val date = Date(this)
-    val formatter = SimpleDateFormat(DEFAULT_DATE_PATTERN, Locale.getDefault())
-    val formatted = formatter.format(date)
-    return DisplayableLong(this, formatted)
-}
 
 fun Int.toWeightParts(): Pair<String, String> {
     val kg = this / 1000

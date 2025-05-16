@@ -1,6 +1,12 @@
 package com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.graph_modes
 
-class DayMode(labelStep: Int = 8, barCount: Int = 48, barGapCoefficient: Float = 0.1f) :
+import com.example.poputka.feature_journal.presentation.charts.common.ChartModeConstants.DAY_BAR_COUNT
+
+class DayMode(
+    barCount: Int = DAY_BAR_COUNT,
+    labelStep: Int = 8,
+    barGapCoefficient: Float = 0.1f
+) :
     BaseChartMode(
         labels = generateDayLabels(labelStep),
         labelStep = labelStep,

@@ -90,7 +90,7 @@ fun DailyGoalBottomSheet(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "${state.currentGoal} ${state.currentVolumeUnit.asUiText().asString()}",
+                    text = "${state.currentGoal.formatted} ${state.currentVolumeUnit.asUiText().asString()}",
                     style = MaterialTheme.typography.headlineSmall
                 )
             }

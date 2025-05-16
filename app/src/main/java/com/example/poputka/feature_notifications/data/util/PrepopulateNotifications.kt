@@ -1,6 +1,8 @@
 package com.example.poputka.feature_notifications.data.util
 
 import com.example.poputka.R
+import com.example.poputka.common.presentation.drinkCategories
+import com.example.poputka.feature_home.data.models.ConsumptionEntity
 import com.example.poputka.feature_notifications.data.models.NotificationEntity
 
 object PrepopulateData {
@@ -54,6 +56,40 @@ object PrepopulateData {
             isEnabled = true
         )
     )
+
+
+    fun generateConsumptionData(): List<ConsumptionEntity> {
+        val now = System.currentTimeMillis()
+        val oneDayMillis = 24 * 60 * 60 * 1000L
+        val random = java.util.Random()
+
+        val allEntries = mutableListOf<ConsumptionEntity>()
+
+        for (dayOffset in 0..5) {
+            val dayStart = getStartOfDayMillis(now - dayOffset * oneDayMillis)
+
+            repeat(15) { i ->
+                val randomTimeOffset = random.nextInt(24 * 60) * 60 * 1000L // время в течение дня
+                val timestamp = dayStart + randomTimeOffset
+                val volume = listOf(150, 200, 250, 300).random()
+                val drinkType = drinkCategories.random().name
+
+                allEntries += ConsumptionEntity(
+                    drinkType = drinkType,
+                    volume = volume,
+                    timestamp = timestamp
+                )
+            }
+        }
+
+        return allEntries
+    }
+
+    private fun getStartOfDayMillis(timestamp: Long): Long {
+        val zone = java.time.ZoneId.systemDefault()
+        val localDate = java.time.Instant.ofEpochMilli(timestamp).atZone(zone).toLocalDate()
+        return localDate.atStartOfDay(zone).toInstant().toEpochMilli()
+    }
 
     private fun localTimeToMillis(hour: Int, minute: Int): Long {
         return (hour * 60 + minute) * 60 * 1000L

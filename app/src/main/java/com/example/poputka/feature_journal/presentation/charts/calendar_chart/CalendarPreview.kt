@@ -292,9 +292,11 @@ fun CalendarPreview() {
 
                     DateNavigationBar(
                         modifier = Modifier,
-                        currentDate = currentDate.toString(),
+                        currentDatePeriod = currentDate.toString(),
                         onNext = { viewModel.nextMonth() },
-                        onPrevious = { viewModel.previousMonth() })
+                        onPrevious = { viewModel.previousMonth() },
+                        volumeUnit = "мл",
+                        totalHydration = "1000")
                     CalendarChart(currentMonth = currentDate, ChartData(elements))
                 }
             }

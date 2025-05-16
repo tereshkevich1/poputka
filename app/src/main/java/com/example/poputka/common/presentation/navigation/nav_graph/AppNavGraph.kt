@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.poputka.common.presentation.navigation.util.enterFadeTransaction
 import com.example.poputka.common.presentation.navigation.util.exitFadeTransaction
-import com.example.poputka.common.presentation.navigation.util.popExitSlideTransition
 import com.example.poputka.feature_auth.presentation.navigation.addAuthRoute
 import com.example.poputka.feature_home.presentation.navigation.HomeDestination
 import com.example.poputka.feature_home.presentation.navigation.addHomeRoute
@@ -25,7 +24,7 @@ fun AppNavGraph(
         enterTransition = { enterFadeTransaction() },
         exitTransition = { exitFadeTransaction() },
         popEnterTransition = { enterFadeTransaction() },
-        popExitTransition = { popExitSlideTransition() })
+        popExitTransition = { exitFadeTransaction() })
     {
         addAuthRoute(navController = navController)
         addHomeRoute(navController = navController)

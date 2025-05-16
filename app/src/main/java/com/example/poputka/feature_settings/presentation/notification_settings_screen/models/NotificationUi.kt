@@ -1,6 +1,6 @@
 package com.example.poputka.feature_settings.presentation.notification_settings_screen.models
 
-import com.example.poputka.feature_settings.presentation.personal_settings_screen.DisplayableLong
+import com.example.poputka.common.presentation.models.DisplayableLong
 
 data class NotificationUi(
     val id: Int,

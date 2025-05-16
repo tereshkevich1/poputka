@@ -160,6 +160,11 @@
     <string name="notification_dinner">Перед ужином</string>
     <string name="notification_night_relax">После ужина</string>
     <string name="notification_before_sleep">Перед сном</string>
+    <string name="add_drink_screen_title">Добавление напитка</string>
+    <string name="day">День</string>
+    <string name="week">Неделя</string>
+    <string name="month">Месяц</string>
+    <string name="tirle_records">Записи</string>
 
 
 </resources>

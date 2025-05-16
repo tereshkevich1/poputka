@@ -10,7 +10,7 @@ class UpdateValueUseCase @Inject constructor() {
         return when {
             nonZeroNumberRegex.matches(newValue) -> newValue
             numberRegex.matches(newValue) -> newValue.replaceFirst(leadingZerosRegex, "")
-                .ifEmpty { "1" }
+            newValue.isBlank() -> ""
 
             else -> null
         }

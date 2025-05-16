@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -58,7 +57,7 @@ fun SynchronizeProfileSection(onClick: () -> Unit) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = stringResource(R.string.sync_data), style = fontStyle)
             Icon(
-                painter = painterResource(R.drawable.baseline_keyboard_arrow_right_24),
+                painter = painterResource(R.drawable.keyboard_arrow_right),
                 contentDescription = null,
                 tint = backgroundColor
             )

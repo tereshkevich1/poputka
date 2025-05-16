@@ -1,5 +1,6 @@
 package com.example.poputka.common.global_state
 
+import android.util.Log
 import com.example.poputka.common.domain.model.VolumeUnit
 import com.example.poputka.common.domain.repository.AppDataStoreSource
 import com.example.poputka.common.domain.repository.AppPreferencesStateHolder
@@ -24,7 +25,7 @@ class AppPreferencesStateHolderImpl @Inject constructor(private val appDataStore
 
             val volumeUnit =
                 runCatching { VolumeUnit.valueOf(flows[0] as String) }.getOrDefault(VolumeUnit.Milliliters)
-            val goal = volumeUnit.convertFromMilliliters(flows[1] as Int)
+            val goal = flows[1] as Int
             val autoCalculation = flows[2] as Boolean
 
             AppPreferencesState(
@@ -45,12 +46,16 @@ class AppPreferencesStateHolderImpl @Inject constructor(private val appDataStore
         appDataStoreSource.putString(VOLUME_UNIT_SETTING, newValue.name)
     }
 
-    override suspend fun saveGoal(newValue: Double) {
-        val newValueInt = _volumeUnitFlow.value.volumeUnitSetting.convertToMilliliters(newValue)
-        appDataStoreSource.putInt(DAILY_GOAL_SETTING, newValueInt)
+    override suspend fun saveGoal(newValue: Int) {
+        appDataStoreSource.putInt(DAILY_GOAL_SETTING, newValue)
+    }
+
+    override suspend fun saveAutoCalculation(newValue: Double) {
+        appDataStoreSource.putInt(DAILY_GOAL_SETTING, newValue.toInt())
     }
 
     override suspend fun saveAutoCalculation(newValue: Boolean) {
+        Log.d("auto_calculation", newValue.toString())
         appDataStoreSource.putBoolean(AUTO_CALCULATION_SETTING, newValue)
     }
 
@@ -65,9 +70,7 @@ class AppPreferencesStateHolderImpl @Inject constructor(private val appDataStore
                 )
             }.getOrDefault(VolumeUnit.Milliliters)
         return AppPreferencesState(
-            goalSetting = appDataStoreSource.getIntValue(
-                DAILY_GOAL_SETTING, 0
-            ).toDouble(),
+            goalSetting = appDataStoreSource.getIntValue(DAILY_GOAL_SETTING, 2000),
             volumeUnitSetting = volumeUnit,
             autoCalculation = appDataStoreSource.getBooleanValue(AUTO_CALCULATION_SETTING, false)
         )

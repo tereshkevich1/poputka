@@ -43,7 +43,7 @@ fun SettingsNavigationRow(
         Text(text = description)
         Spacer(modifier = Modifier.weight(1f))
         Icon(
-            painter = painterResource(R.drawable.baseline_keyboard_arrow_right_24),
+            painter = painterResource(R.drawable.keyboard_arrow_right),
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
         )

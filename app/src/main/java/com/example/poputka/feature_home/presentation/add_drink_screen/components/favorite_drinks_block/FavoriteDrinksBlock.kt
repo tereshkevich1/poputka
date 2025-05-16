@@ -9,14 +9,15 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.poputka.common.presentation.DrinkCategory
+import com.example.poputka.ui.theme.DpSpSize.paddingExtraLarge
 
 @Composable
-fun FavoriteDrinksBlock() {
+fun FavoriteDrinksBlock(modifier: Modifier = Modifier) {
     val drinkCategory = DrinkCategory.Water
     val color = colorResource(drinkCategory.colorId)
     val drinkIcon = painterResource(drinkCategory.iconId)
     val description = "400 ml"
-    Column {
+    Column(modifier = modifier.padding(horizontal = paddingExtraLarge)) {
         repeat(3) {
             FavoriteDrinkItem(
                 backgroundColor = color,

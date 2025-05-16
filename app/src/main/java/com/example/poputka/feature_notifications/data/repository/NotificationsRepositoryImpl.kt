@@ -4,8 +4,10 @@ import com.example.poputka.feature_notifications.data.local.NotificationsDao
 import com.example.poputka.feature_notifications.data.mappers.toDomain
 import com.example.poputka.feature_notifications.data.mappers.toEntity
 import com.example.poputka.feature_notifications.domain.models.Notification
+import javax.inject.Inject
 
-class NotificationsRepositoryImpl(private val dao: NotificationsDao) : NotificationsRepository {
+class NotificationsRepositoryImpl @Inject constructor(private val dao: NotificationsDao) :
+    NotificationsRepository {
     override suspend fun getAllNotifications(): List<Notification> =
         dao.getNotifications().map { entity ->
             entity.toDomain()

@@ -20,13 +20,12 @@ import androidx.compose.ui.res.stringResource
 import com.example.poputka.R
 import com.example.poputka.common.presentation.components.DatePickerModule
 import com.example.poputka.common.presentation.components.TimePickerModule
+import com.example.poputka.common.presentation.models.DisplayableLong
 
 @Composable
 fun TimeRow(
-    timeLong: Long?,
-    dateLong: Long?,
-    time: String,
-    date: String,
+    displayableTime: DisplayableLong,
+    displayableDate: DisplayableLong,
     onDateSelect: (Long?) -> Unit,
     onDateDismiss: () -> Unit,
     onTimeSelect: (TimePickerState) -> Unit,
@@ -41,17 +40,17 @@ fun TimeRow(
         Text(stringResource(R.string.time_title))
         Spacer(modifier = Modifier.weight(1f))
 
-        TextButton(onClick = { showDateDialog = true }, modifier = Modifier) {
-            Text(date)
+        TextButton(onClick = { showDateDialog = true }) {
+            Text(displayableDate.formatted)
         }
 
-        TextButton(onClick = { showTimeDialog = true }, modifier = Modifier) {
-            Text(time)
+        TextButton(onClick = { showTimeDialog = true }) {
+            Text(displayableTime.formatted)
         }
 
         if (showDateDialog) {
             DatePickerModule(
-                dateLong,
+                initialSelectedDateMillis = displayableDate.value,
                 onDateSelected = {
                     showDateDialog = false
                     onDateSelect(it)
@@ -64,7 +63,7 @@ fun TimeRow(
 
         if (showTimeDialog) {
             TimePickerModule(
-                timeLong,
+                selectedTime = displayableTime.value,
                 onConfirm = {
                     showTimeDialog = false
                     onTimeSelect(it)

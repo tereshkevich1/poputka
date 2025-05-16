@@ -4,37 +4,74 @@ package com.example.poputka.feature_home.presentation.add_drink_screen
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
-import androidx.lifecycle.ViewModel
-import com.example.poputka.feature_home.domain.use_case.UpdateValueUseCase
-import com.example.poputka.common.domain.use_case.format.DateFormatUseCase
-import com.example.poputka.common.domain.use_case.format.TimeFormatUseCase
+import androidx.lifecycle.viewModelScope
+import com.example.poputka.common.domain.model.VolumeUnit
 import com.example.poputka.common.presentation.DrinkCategory
+import com.example.poputka.common.presentation.models.DisplayableLong
+import com.example.poputka.common.presentation.models.mappers.toDisplayableTime
+import com.example.poputka.common.presentation.models.mappers.toSmartDisplayableDate
+import com.example.poputka.core.presentation.BaseViewModel
+import com.example.poputka.feature_home.domain.models.Consumption
+import com.example.poputka.feature_home.domain.repository.ConsumptionRepository
+import com.example.poputka.feature_home.domain.use_case.UpdateValueUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
 class AddDrinkViewModel @Inject constructor(
-    private val dateFormatUseCase: DateFormatUseCase,
-    private val timeFormatUseCase: TimeFormatUseCase,
-    private val updateValueUseCase: UpdateValueUseCase
-) : ViewModel() {
-    private var _uiState = MutableStateFlow(
-        AddDrinkUiState()
-    )
+    private val updateValueUseCase: UpdateValueUseCase,
+    private val consumptionRepository: ConsumptionRepository
+) : BaseViewModel<AddDrinkEvent>() {
+    private val _uiState = MutableStateFlow(AddDrinkUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun getDate(timestamp: Long) = dateFormatUseCase(timestamp)
 
-    fun getTime(timestamp: Long) = timeFormatUseCase(timestamp)
+    fun onAction(action: AddDrinkAction) {
+        when (action) {
+            AddDrinkAction.OnBackClick -> sendEvent(AddDrinkEvent.NavigateBack)
+            is AddDrinkAction.OnAddClick -> {
+                saveConsumption(action.volumeUnit)
+                sendEvent(AddDrinkEvent.NavigateBack)
+            }
 
-    fun setDate(newDate: Long?) {
-        _uiState.value = _uiState.value.copy(date = newDate ?: System.currentTimeMillis())
+            is AddDrinkAction.OnVolumeChange -> changeVolume(action.newVolume)
+            is AddDrinkAction.OnCategoryChange -> changeDrinkCategory(action.category)
+            is AddDrinkAction.OnDateChange -> setDate(action.date)
+            is AddDrinkAction.OnTimeChange -> setTime(action.time)
+        }
     }
 
-    fun setTime(newTime: TimePickerState) {
+    private fun saveConsumption(volumeUnit: VolumeUnit) {
+        val volumeDouble = _uiState.value.volume.toDoubleOrNull()
+
+        volumeDouble?.let {
+            val volumeMl = volumeUnit.convertToMilliliters(it)
+            viewModelScope.launch {
+                consumptionRepository.upsert(
+                    Consumption(
+                        drinkType = _uiState.value.drinkCategory,
+                        volume = volumeMl,
+                        timestamp = _uiState.value.time.value
+                    )
+                )
+            }
+            sendEvent(AddDrinkEvent.ShowToast("Напиток добавлен"))
+        } ?: sendEvent(AddDrinkEvent.ShowToast("ошибка"))
+    }
+
+
+    private fun setDate(newDate: Long?) {
+        newDate?.let {
+            _uiState.update { it.copy(date = newDate.toSmartDisplayableDate()) }
+        }
+    }
+
+    private fun setTime(newTime: TimePickerState) {
         val hours = newTime.hour
         val minutes = newTime.minute
         val calendar = Calendar.getInstance()
@@ -44,28 +81,34 @@ class AddDrinkViewModel @Inject constructor(
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
 
-        val timeInMillis = calendar.timeInMillis
-
-        _uiState.value = _uiState.value.copy(time = timeInMillis)
+        _uiState.update {
+            it.copy(time = calendar.timeInMillis.toDisplayableTime())
+        }
     }
 
-    fun changeDrinkCategory(newDrinkCategory: DrinkCategory?) {
+    private fun changeDrinkCategory(newDrinkCategory: DrinkCategory?) {
         newDrinkCategory?.let { drinkCategory ->
-            _uiState.value = _uiState.value.copy(drinkCategory = drinkCategory)
+            _uiState.update {
+                it.copy(drinkCategory = drinkCategory)
+            }
         }
     }
 
 
-    fun changeVolume(newVolume: String) {
+    private fun changeVolume(newVolume: String) {
         updateValueUseCase(newVolume)?.let { validVolume ->
-            _uiState.value = _uiState.value.copy(volume = validVolume)
+            _uiState.update {
+                it.copy(volume = validVolume)
+            }
         }
     }
 }
 
 data class AddDrinkUiState(
-    var time: Long = System.currentTimeMillis(),
-    var date: Long = System.currentTimeMillis(),
+    var time: DisplayableLong = System.currentTimeMillis().toDisplayableTime(),
+    var date: DisplayableLong = System.currentTimeMillis().toSmartDisplayableDate(),
     var drinkCategory: DrinkCategory = DrinkCategory.Water,
     var volume: String = ""
 )
+
+

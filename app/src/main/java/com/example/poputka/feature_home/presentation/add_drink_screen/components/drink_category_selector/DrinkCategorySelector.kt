@@ -1,5 +1,6 @@
 package com.example.poputka.feature_home.presentation.add_drink_screen.components.drink_category_selector
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,8 +26,9 @@ import com.example.poputka.common.presentation.components.selectors.util.Orienta
 import com.example.poputka.common.presentation.drinkCategories
 import com.example.poputka.common.presentation.util.dpToPx
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
-fun DrinkCategorySelector(onDrinkCategoryChange: (newDrinkCategory: DrinkCategory?) -> Unit) {
+fun DrinkCategorySelector(onDrinkCategoryChange: (newDrinkCategory: DrinkCategory) -> Unit) {
     val listState = rememberLazyListState()
     val snapBehavior = rememberSnapFlingBehavior(listState)
 
@@ -49,7 +51,9 @@ fun DrinkCategorySelector(onDrinkCategoryChange: (newDrinkCategory: DrinkCategor
     LaunchedEffect(listState.isScrollInProgress) {
         if (listState.isScrollInProgress) return@LaunchedEffect
         val currentIndex = calculateCenterIndex(listState, horizontalLazyRowPaddingPx)
-        onDrinkCategoryChange(drinkCategories.getOrNull(currentIndex))
+        drinkCategories.getOrNull(currentIndex)?.let {
+            onDrinkCategoryChange(it)
+        }
     }
 
     LazyRow(
