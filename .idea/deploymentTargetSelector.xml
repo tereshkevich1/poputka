@@ -26,7 +26,7 @@
       </SelectionState>
       <SelectionState runConfigName="AddDrinkScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-04-23T15:26:07.313920500Z">
+        <DropdownSelection timestamp="2025-05-24T13:41:25.121645Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="PhysicalDevice" identifier="serial=38231JEHN05951" />

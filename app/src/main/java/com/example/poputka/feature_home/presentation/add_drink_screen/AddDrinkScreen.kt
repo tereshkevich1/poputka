@@ -45,8 +45,8 @@ import com.example.poputka.common.global_state.local_settings_state.LocalSetting
 import com.example.poputka.feature_home.presentation.add_drink_screen.components.DrinkVolumeInputField
 import com.example.poputka.feature_home.presentation.add_drink_screen.components.date_time_block.TimeRow
 import com.example.poputka.feature_home.presentation.add_drink_screen.components.drink_category_selector.DrinkCategorySelector
-import com.example.poputka.feature_home.presentation.add_drink_screen.components.drink_liquid_control.DrinkLiquidControl
 import com.example.poputka.feature_home.presentation.add_drink_screen.components.favorite_drinks_block.FavoriteDrinksBlock
+import com.example.poputka.feature_home.presentation.add_drink_screen.components.vertical_slider.VerticalSlider
 import com.example.poputka.ui.theme.DpSpSize.paddingExtraLarge
 import com.example.poputka.ui.theme.DpSpSize.paddingMedium
 import com.example.poputka.ui.theme.DpSpSize.paddingSmall
@@ -143,8 +143,10 @@ fun AddDrinkScreen(
                     .fillMaxWidth()
                     .padding(vertical = paddingMedium)
             ) {
-                DrinkLiquidControl(
-                    color = colorResource(state.drinkCategory.colorId),
+                VerticalSlider(
+                    sliderRatio = state.volumeSliderRatio,
+                    onValueChange = { onAction(AddDrinkAction.OnSliderRatioChange(it)) },
+                    fillColor = colorResource(state.drinkCategory.colorId),
                     modifier = Modifier
                         .fillMaxHeight(0.6f)
                         .width(120.dp)
@@ -153,7 +155,6 @@ fun AddDrinkScreen(
 
                 FavoriteDrinksBlock(modifier = Modifier.align(Alignment.CenterEnd))
             }
-
 
             DrinkCategorySelector(
                 onDrinkCategoryChange = {
@@ -176,6 +177,9 @@ fun AddDrinkScreen(
         }
     }
 }
+
+
+
 
 
 

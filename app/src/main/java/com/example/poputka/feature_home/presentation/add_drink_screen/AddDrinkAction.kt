@@ -14,4 +14,5 @@ sealed class AddDrinkAction {
     data class OnCategoryChange(val category: DrinkCategory) : AddDrinkAction()
     data class OnDateChange(val date: Long?) : AddDrinkAction()
     data class OnTimeChange(val time: TimePickerState) : AddDrinkAction()
+    data class OnSliderRatioChange(val sliderRatio: Float) : AddDrinkAction()
 }

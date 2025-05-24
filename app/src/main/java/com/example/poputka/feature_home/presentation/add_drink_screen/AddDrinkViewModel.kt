@@ -7,7 +7,6 @@ import androidx.compose.material3.TimePickerState
 import androidx.lifecycle.viewModelScope
 import com.example.poputka.common.domain.model.VolumeUnit
 import com.example.poputka.common.presentation.DrinkCategory
-import com.example.poputka.common.presentation.models.DisplayableLong
 import com.example.poputka.common.presentation.models.mappers.toDisplayableTime
 import com.example.poputka.common.presentation.models.mappers.toSmartDisplayableDate
 import com.example.poputka.core.presentation.BaseViewModel
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class AddDrinkViewModel @Inject constructor(
@@ -43,6 +43,7 @@ class AddDrinkViewModel @Inject constructor(
             is AddDrinkAction.OnCategoryChange -> changeDrinkCategory(action.category)
             is AddDrinkAction.OnDateChange -> setDate(action.date)
             is AddDrinkAction.OnTimeChange -> setTime(action.time)
+            is AddDrinkAction.OnSliderRatioChange -> updateVolumeFromSliderRatio(action.sliderRatio)
         }
     }
 
@@ -101,17 +102,37 @@ class AddDrinkViewModel @Inject constructor(
     private fun changeVolume(newVolume: String) {
         updateValueUseCase(newVolume)?.let { validVolume ->
             _uiState.update {
-                it.copy(volume = validVolume)
+                it.copy(
+                    volume = validVolume,
+                    currentVolumeFloat = validVolume.toFloatOrNull() ?: 0f,
+                    volumeSliderRatio = validVolume.toFloatOrNull()?.div(it.maxVolumeFloat) ?: 0f
+                )
             }
+        }
+    }
+
+    private fun updateVolumeFromSliderRatio(sliderRatio: Float) {
+        _uiState.update { state ->
+            val step = 10f
+            val maxVolume = state.maxVolumeFloat
+            val desiredVolume = maxVolume * sliderRatio
+
+            val clampedVolume = (desiredVolume / step).roundToInt() * step
+                .coerceIn(0f, maxVolume)
+
+            state.copy(
+                volume = clampedVolume.toInt().toString(),
+                currentVolumeFloat = clampedVolume,
+                volumeSliderRatio = sliderRatio
+            )
         }
     }
 }
 
-data class AddDrinkUiState(
-    var time: DisplayableLong = System.currentTimeMillis().toDisplayableTime(),
-    var date: DisplayableLong = System.currentTimeMillis().toSmartDisplayableDate(),
-    var drinkCategory: DrinkCategory = DrinkCategory.Water,
-    var volume: String = ""
-)
+
+
+
+
+
 
 
