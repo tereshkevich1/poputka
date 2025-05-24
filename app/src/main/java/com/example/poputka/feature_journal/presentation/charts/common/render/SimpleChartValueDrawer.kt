@@ -6,7 +6,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PathEffect
@@ -22,18 +24,18 @@ import kotlin.math.abs
 
 class SimpleChartValueDrawer(
     private val valueTextSize: TextUnit = 14.sp,
-    private val valueTextColor: Color = Black,
+    private val valueTextColor: Color = White,
     private val formatter: Formatter = { value -> "%.1f".format(value) },
-    private val textBackgroundRectColor: Color = Color.LightGray,
-    private val valueLineColor: Color = Color.LightGray,
+    private val textBackgroundRectColor: Color = Gray,
+    private val valueLineColor: Color = Gray,
     private val valueLineThickness: Dp = 2.dp,
     private val dashEffect: PathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f)),
     private val textPadding: Float = 5f,
     private val rectVerticalPadding: Float = 5f,
     private val rectHorizontalPaddingMultiplier: Float = 1f,
-    private val outerCircleColor: Color = Color.Green.copy(alpha = 0.2f),
-    private val middleCircleColor: Color = Color.Green,
-    private val innerCircleColor: Color = Color.White
+    private val outerCircleColor: Color = Green.copy(alpha = 0.2f),
+    private val middleCircleColor: Color = Green,
+    private val innerCircleColor: Color = White
 ) : ChartValueDrawer {
 
     private val rectPaint = Paint().apply {

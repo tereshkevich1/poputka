@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.poputka.R
@@ -20,7 +19,7 @@ fun ProgressOverviewSection(totalConsumed: String, daysCompleted: String) {
         modifier = Modifier.fillMaxWidth()
     ) {
         MetricCard(
-            icon = painterResource(R.drawable.water_drop),
+            icon = painterResource(R.drawable.water_drop_rounded),
             iconColor = iconColor,
             value = totalConsumed,
             label = stringResource(R.string.total_drunk),

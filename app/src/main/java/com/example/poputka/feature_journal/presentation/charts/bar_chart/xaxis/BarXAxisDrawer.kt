@@ -17,7 +17,7 @@ import com.example.poputka.feature_journal.presentation.charts.common.toLegacyIn
 
 class BarXAxisDrawer(
     private val axisLineThickness: Dp = 2.dp,
-    private val axisLineColor: Color = Color.LightGray,
+    private val axisLineColor: Color = Color.DarkGray,
     private val labelTextSize: TextUnit = 12.sp,
     private val markerHeight: Float = 10f,
     private val labelMarkerSpacing: Float = 20f,

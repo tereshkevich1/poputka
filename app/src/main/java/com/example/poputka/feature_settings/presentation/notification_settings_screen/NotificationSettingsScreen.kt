@@ -35,14 +35,12 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.poputka.R
 import com.example.poputka.common.presentation.components.TimePickerModule
-import com.example.poputka.feature_settings.presentation.notification_settings_screen.components.CheckMultiplyPermission
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.components.CheckPermission
 import com.example.poputka.feature_settings.presentation.notification_settings_screen.components.NotificationRow
 import com.example.poputka.ui.theme.DpSpSize.paddingMedium
 import com.example.poputka.ui.theme.DpSpSize.paddingSmall
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
 
@@ -131,7 +129,7 @@ fun NotificationSettingsScreen(
                 .fillMaxSize()
         ) {
 
-
+/*
             val multiplePermissionsState = rememberMultiplePermissionsState(
                 listOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -139,7 +137,7 @@ fun NotificationSettingsScreen(
                 )
             )
             CheckMultiplyPermission(multiplePermissionsState)
-
+*/
 
 
 

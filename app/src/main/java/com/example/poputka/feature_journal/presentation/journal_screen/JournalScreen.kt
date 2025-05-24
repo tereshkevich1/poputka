@@ -1,9 +1,9 @@
 package com.example.poputka.feature_journal.presentation.journal_screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -30,24 +30,17 @@ import com.example.poputka.common.presentation.models.asUiText
 import com.example.poputka.common.presentation.models.mappers.toDisplayableDate
 import com.example.poputka.common.presentation.models.mappers.toDisplayableVolume
 import com.example.poputka.core.presentation.BaseViewModel
-import com.example.poputka.feature_home.domain.models.DayConsumptionSummary
-import com.example.poputka.feature_home.domain.repository.ConsumptionRepository
 import com.example.poputka.feature_journal.presentation.charts.calendar_chart.DateNavigationBar
-import com.example.poputka.feature_journal.presentation.journal_screen.day_screen.DayJournalViewModel
-import com.example.poputka.feature_journal.presentation.journal_screen.day_screen.DayScreen
-import com.example.poputka.feature_journal.presentation.journal_screen.week_screen.WeekScreen
+import com.example.poputka.feature_journal.presentation.day_screen.DayScreen
+import com.example.poputka.feature_journal.presentation.day_screen.DayViewModel
+import com.example.poputka.feature_journal.presentation.week_screen.WeekScreen
+import com.example.poputka.feature_journal.presentation.week_screen.WeekViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.ZoneId
 import javax.inject.Inject
 
 @Composable
@@ -86,45 +79,47 @@ fun JournalScreen(
 
     val volumeUnit = state.unit.asUiText().asString()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TabRow(selectedTabIndex = state.selectedIndex) {
-            state.tabs.forEachIndexed { index, tab ->
-                Tab(
-                    text = { Text(stringResource(tab.titleResId)) },
-                    selected = state.selectedIndex == index,
-                    onClick = { onAction(JournalScreenAction.OnTabSelected(tab)) }
-                )
-            }
-        }
-
-        when (state.selectedTab) {
-            JournalTab.Day -> {
-
-                val dayViewModel: DayJournalViewModel = hiltViewModel()
-                val dayState by dayViewModel.uiState.collectAsStateWithLifecycle()
-                DayScreen(state = dayState, onAction = dayViewModel::onAction)
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TabRow(selectedTabIndex = state.selectedIndex) {
+                state.tabs.forEachIndexed { index, tab ->
+                    Tab(
+                        text = { Text(stringResource(tab.titleResId)) },
+                        selected = state.selectedIndex == index,
+                        onClick = { onAction(JournalScreenAction.OnTabSelected(tab)) }
+                    )
+                }
             }
 
-            JournalTab.Week -> {
-                val dayViewModel: DayJournalViewModel = hiltViewModel()
-                val dayState by dayViewModel.uiState.collectAsStateWithLifecycle()
-                WeekScreen(state = dayState, onAction = dayViewModel::onAction)
-            }
+            when (state.selectedTab) {
+                JournalTab.Day -> {
 
-            JournalTab.Month -> {
-                DateNavigationBar(
-                    currentDatePeriod = state.dateRange.formatted,
-                    onPrevious = { onAction(JournalScreenAction.OnPreviousPeriodClick) },
-                    onNext = { onAction(JournalScreenAction.OnNextPeriodClick) },
-                    totalHydration = state.totalHydration.formatted,
-                    volumeUnit = volumeUnit
-                )
-                Text(text = "Month")
+                    val dayViewModel: DayViewModel = hiltViewModel()
+                    val dayState by dayViewModel.dayState.collectAsStateWithLifecycle()
+                    DayScreen(state = dayState, onAction = dayViewModel::onAction)
+                }
+
+                JournalTab.Week -> {
+                    val weekViewModel: WeekViewModel = hiltViewModel()
+                    val weekState by weekViewModel.weekState.collectAsStateWithLifecycle()
+                    WeekScreen(state = weekState, onAction = weekViewModel::onAction)
+                }
+
+                JournalTab.Month -> {
+                    DateNavigationBar(
+                        currentDatePeriod = state.dateRange.formatted,
+                        onPrevious = { onAction(JournalScreenAction.OnPreviousPeriodClick) },
+                        onNext = { onAction(JournalScreenAction.OnNextPeriodClick) },
+                        totalHydration = state.totalHydration.formatted,
+                        volumeUnit = volumeUnit
+                    )
+                    Text(text = "Month")
+                }
             }
         }
     }
@@ -195,34 +190,4 @@ enum class JournalTab(val titleResId: Int) {
     Month(R.string.month)
 }
 
-
-class GetConsumptionForDayFlowUseCase @Inject constructor(
-    private val repository: ConsumptionRepository
-) {
-    operator fun invoke(startDate: LocalDate): Flow<DayConsumptionSummary> {
-        val zone = ZoneId.systemDefault()
-
-        val startOfDay = startDate.atStartOfDay(zone).toInstant().toEpochMilli()
-        val endOfDay = startDate.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
-        return repository.getForPeriodFlow(startOfDay, endOfDay)
-            .map { list ->
-                val totalMl = list.sumOf { it.volume }
-                val totalHydroMl = list.sumOf { it.volume * it.drinkType.hydration / 100 }
-                DayConsumptionSummary(
-                    totalMl = totalMl,
-                    totalHydroMl = totalHydroMl,
-                    consumptions = list
-                )
-            }.onStart {
-                Log.d("FlowDebug", "Flow STARTED for date = $startDate")
-            }
-            .onCompletion { cause ->
-                if (cause == null) {
-                    Log.d("FlowDebug", "Flow COMPLETED normally for date = $startDate")
-                } else {
-                    Log.d("FlowDebug", "Flow CANCELLED for date = $startDate, cause = $cause")
-                }
-            }
-    }
-}
 

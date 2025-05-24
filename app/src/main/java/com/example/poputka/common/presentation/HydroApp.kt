@@ -75,7 +75,7 @@ fun HydroApp(appStateViewModel: AppStateViewModel = hiltViewModel()) {
                 )
             },
             floatingActionButtonPosition = FabPosition.Center,
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
         ) { paddingValues ->
 
             // Ignoring bottom padding to allow the content to fill the screen

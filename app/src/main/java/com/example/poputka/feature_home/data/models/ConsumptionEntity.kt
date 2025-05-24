@@ -11,6 +11,8 @@ data class ConsumptionEntity(
     @ColumnInfo(name = "drink_type")
     val drinkType: String,
     val volume: Int,
+    @ColumnInfo(name = "hydration_volume")
+    val hydrationVolume: Int,
     val timestamp: Long
 )
 

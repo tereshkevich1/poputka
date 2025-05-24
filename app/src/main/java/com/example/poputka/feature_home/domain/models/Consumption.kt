@@ -6,5 +6,6 @@ data class Consumption(
     val id: Int = 0,
     val drinkType: DrinkCategory,
     val volume: Int,
+    val hydrationVolume: Int,
     val timestamp: Long
 )

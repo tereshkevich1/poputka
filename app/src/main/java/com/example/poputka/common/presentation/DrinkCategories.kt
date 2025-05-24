@@ -11,12 +11,4 @@ val drinkCategories = listOf(
     DrinkCategory.Beer,
     DrinkCategory.Wine,
     DrinkCategory.Whiskey,
-    DrinkCategory.Wine,
-    DrinkCategory.Wine,
-    DrinkCategory.Wine,
-    DrinkCategory.Wine,
-    DrinkCategory.Wine,
-    DrinkCategory.Wine,
-    DrinkCategory.Wine,
-    DrinkCategory.Wine,
 )

@@ -65,20 +65,23 @@ object PrepopulateData {
 
         val allEntries = mutableListOf<ConsumptionEntity>()
 
-        for (dayOffset in 0..5) {
+        for (dayOffset in 0..30) {
             val dayStart = getStartOfDayMillis(now - dayOffset * oneDayMillis)
 
-            repeat(15) { i ->
-                val randomTimeOffset = random.nextInt(24 * 60) * 60 * 1000L // время в течение дня
+            repeat(10) { i ->
+                val randomTimeOffset = random.nextInt(24 * 60) * 60 * 1000L
                 val timestamp = dayStart + randomTimeOffset
-                val volume = listOf(150, 200, 250, 300).random()
-                val drinkType = drinkCategories.random().name
+                val volume = listOf(0, 0, 150, 200, 250, 300).random()
+                val drinkType = drinkCategories.random()
 
-                allEntries += ConsumptionEntity(
-                    drinkType = drinkType,
-                    volume = volume,
-                    timestamp = timestamp
-                )
+                if (volume != 0) {
+                    allEntries += ConsumptionEntity(
+                        drinkType = drinkType.name,
+                        volume = volume,
+                        hydrationVolume = volume * drinkType.hydration / 100,
+                        timestamp = timestamp
+                    )
+                }
             }
         }
 

@@ -45,7 +45,7 @@ fun AnimatedCircularProgressIndicator(
     strokeWidth: Dp = 12.dp,
     circularIndicatorDiameter: Dp = 184.dp,
     animation: AnimationSpec<Float> = fadeInAnimation(800),
-    progressBackgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    progressBackgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
     progressIndicatorColor: Color = MaterialTheme.colorScheme.primary,
     indicatorColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest
 ) {

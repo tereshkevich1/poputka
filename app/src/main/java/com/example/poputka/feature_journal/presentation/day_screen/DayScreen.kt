@@ -1,4 +1,4 @@
-package com.example.poputka.feature_journal.presentation.journal_screen.day_screen
+package com.example.poputka.feature_journal.presentation.day_screen
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +20,6 @@ import com.example.poputka.feature_journal.presentation.charts.bar_chart.Bars
 import com.example.poputka.feature_journal.presentation.charts.bar_chart.animation.fadeInAnimation
 import com.example.poputka.feature_journal.presentation.charts.bar_chart.xaxis.graph_modes.DayMode
 import com.example.poputka.feature_journal.presentation.charts.calendar_chart.DateNavigationBar
-import com.example.poputka.feature_journal.presentation.journal_screen.DayScreenAction
 import com.example.poputka.feature_journal.presentation.journal_screen.components.DrinkRecordItem
 import com.example.poputka.feature_journal.presentation.journal_screen.components.HeaderRecords
 import com.example.poputka.ui.theme.DpSpSize.paddingMedium
@@ -28,7 +27,7 @@ import com.example.poputka.ui.theme.DpSpSize.paddingSmall
 
 @Composable
 fun DayScreen(
-    state: DayUiState,
+    state: DayState,
     onAction: (DayScreenAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -71,10 +70,12 @@ fun DayScreen(
 
         items(
             items = state.records,
-            key = { it.id }) { record ->
+            key = { it.id })
+        { record ->
 
             DrinkRecordItem(
-                record = record,
+                time = record.time.formatted,
+                volume = record.totalHydration.formatted,
                 volumeUnit = volumeUnit
             )
         }

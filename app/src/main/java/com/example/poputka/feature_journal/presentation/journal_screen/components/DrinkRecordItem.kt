@@ -22,11 +22,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.poputka.R
-import com.example.poputka.feature_journal.presentation.journal_screen.DrinkRecordUi
 import com.example.poputka.ui.theme.DpSpSize
 
 @Composable
-fun DrinkRecordItem(record: DrinkRecordUi, volumeUnit: String) {
+fun DrinkRecordItem(time: String, volume: String, volumeUnit: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,13 +36,13 @@ fun DrinkRecordItem(record: DrinkRecordUi, volumeUnit: String) {
     ) {
         Column {
             Text(
-                text = record.time.formatted,
+                text = time,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.outline
             )
             Spacer(modifier = Modifier.height(DpSpSize.paddingSmall))
             Text(
-                text = "${record.totalHydration.formatted} $volumeUnit",
+                text = "$volume $volumeUnit",
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
             )
         }

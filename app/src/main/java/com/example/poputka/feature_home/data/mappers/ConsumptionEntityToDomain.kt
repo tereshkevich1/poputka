@@ -8,5 +8,6 @@ fun ConsumptionEntity.toDomain(): Consumption = Consumption(
     id = id,
     drinkType = drinkType.toDrinkCategoryOrDefault(),
     volume = volume,
+    hydrationVolume = hydrationVolume,
     timestamp = timestamp
 )

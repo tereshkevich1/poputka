@@ -7,7 +7,7 @@ import com.example.poputka.feature_home.data.models.ConsumptionEntity
 import com.example.poputka.feature_notifications.data.local.NotificationsDao
 import com.example.poputka.feature_notifications.data.models.NotificationEntity
 
-@Database(entities = [NotificationEntity::class, ConsumptionEntity::class], version = 2)
+@Database(entities = [NotificationEntity::class, ConsumptionEntity::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun notificationsDao(): NotificationsDao
     abstract fun consumptionDao(): ConsumptionDao

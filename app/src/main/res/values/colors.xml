@@ -8,14 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="water_color">#5034ed</color>
+    <color name="water_color">#488bf7</color>
     <color name="energy_drink_color">#ed8815</color>
     <color name="tea_color">#38cf60</color>
     <color name="coffee_color">#574441</color>
     <color name="juice_color">#f2bd41</color>
     <color name="milk_color">#abbbe0</color>
     <color name="soda_color">#1976D2</color>
-    <color name="beer_color">#998e3c</color>
-    <color name="wine_color">#d6645a</color>
+    <color name="beer_color">#ffad29</color>
+    <color name="wine_color">#fa2f19</color>
     <color name="whiskey_color">#6A4E23</color>
 </resources>

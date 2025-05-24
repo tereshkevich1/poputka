@@ -50,12 +50,15 @@ class AddDrinkViewModel @Inject constructor(
         val volumeDouble = _uiState.value.volume.toDoubleOrNull()
 
         volumeDouble?.let {
+            val drinkCategory = _uiState.value.drinkCategory
             val volumeMl = volumeUnit.convertToMilliliters(it)
+            val hydrationVolume = volumeMl * drinkCategory.hydration / 100
             viewModelScope.launch {
                 consumptionRepository.upsert(
                     Consumption(
-                        drinkType = _uiState.value.drinkCategory,
+                        drinkType = drinkCategory,
                         volume = volumeMl,
+                        hydrationVolume = hydrationVolume,
                         timestamp = _uiState.value.time.value
                     )
                 )

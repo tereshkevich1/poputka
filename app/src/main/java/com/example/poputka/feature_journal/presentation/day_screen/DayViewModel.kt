@@ -1,4 +1,4 @@
-package com.example.poputka.feature_journal.presentation.journal_screen.day_screen
+package com.example.poputka.feature_journal.presentation.day_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,11 +7,10 @@ import com.example.poputka.common.domain.model.VolumeUnit
 import com.example.poputka.common.presentation.models.mappers.toDisplayableDateFull
 import com.example.poputka.common.presentation.models.mappers.toDisplayableTime
 import com.example.poputka.common.presentation.models.mappers.toDisplayableVolume
+import com.example.poputka.feature_journal.domain.GetConsumptionForDayFlowUseCase
 import com.example.poputka.feature_journal.presentation.charts.bar_chart.Bar
 import com.example.poputka.feature_journal.presentation.charts.common.ChartModeConstants.DAY_BAR_COUNT
-import com.example.poputka.feature_journal.presentation.journal_screen.DayScreenAction
 import com.example.poputka.feature_journal.presentation.journal_screen.DrinkRecordUi
-import com.example.poputka.feature_journal.presentation.journal_screen.GetConsumptionForDayFlowUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,16 +27,16 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class DayJournalViewModel @Inject constructor(
+class DayViewModel @Inject constructor(
     private val getConsumptionForDayFlowUseCase: GetConsumptionForDayFlowUseCase,
     appStateHolder: AppStateHolder
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(DayUiState())
-    val uiState = _uiState
+    private val _dayState = MutableStateFlow(DayState())
+    val dayState = _dayState
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
-            DayUiState()
+            DayState()
         )
 
     private val appPrefs = appStateHolder.appPreferencesStateHolder
@@ -52,7 +51,7 @@ class DayJournalViewModel @Inject constructor(
         viewModelScope.launch {
             combine(
                 appPrefs.appPrefFlow,
-                _uiState.map { it.currentDate.value }.distinctUntilChanged()
+                _dayState.map { it.currentDate.value }.distinctUntilChanged()
             ) { appPrefs, dateRange ->
                 Pair(appPrefs, dateRange)
             }.flatMapLatest { (appPrefs, dateRange) ->
@@ -60,7 +59,7 @@ class DayJournalViewModel @Inject constructor(
                     Pair(appPrefs, summary)
                 }
             }.collect { (appPrefs, dayConsumptionSummary) ->
-                _uiState.update {
+                _dayState.update {
                     it.copy(
                         volumeUnit = appPrefs.volumeUnitSetting,
                         totalHydration = dayConsumptionSummary.totalHydroMl.toDisplayableVolume(
@@ -98,7 +97,7 @@ class DayJournalViewModel @Inject constructor(
     }
 
     private fun onNextPeriod() {
-        _uiState.update {
+        _dayState.update {
             it.copy(
                 currentDate = it.currentDate.value.plusDays(1).toDisplayableDateFull()
             )
@@ -106,7 +105,7 @@ class DayJournalViewModel @Inject constructor(
     }
 
     private fun onPreviousPeriod() {
-        _uiState.update {
+        _dayState.update {
             it.copy(
                 currentDate = it.currentDate.value.minusDays(1).toDisplayableDateFull()
             )
@@ -114,13 +113,13 @@ class DayJournalViewModel @Inject constructor(
     }
 
     private fun consumeBars(volumeUnit: VolumeUnit) {
-        val startDate = _uiState.value.currentDate.value
+        val startDate = _dayState.value.currentDate.value
         val zone = ZoneId.systemDefault()
         val intervalMs = 1000L * 60 * 30
         val startOfDayMillis = startDate.atStartOfDay(zone).toInstant().toEpochMilli()
 
         val groupedByBarIndex =
-            _uiState.value.records.groupBy { ((it.time.value - startOfDayMillis) / intervalMs).toInt() }
+            _dayState.value.records.groupBy { ((it.time.value - startOfDayMillis) / intervalMs).toInt() }
 
         val bars = (0 until barCount).map { barIndex ->
             val sum =
@@ -130,6 +129,8 @@ class DayJournalViewModel @Inject constructor(
                 value = volumeUnit.convertFromMilliliters(sum).toFloat()
             )
         }
-        _uiState.update { it.copy(bars = bars) }
+        _dayState.update { it.copy(bars = bars) }
     }
 }
+
+

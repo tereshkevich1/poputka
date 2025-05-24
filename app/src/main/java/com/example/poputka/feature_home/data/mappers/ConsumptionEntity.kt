@@ -7,5 +7,6 @@ fun Consumption.toEntity(): ConsumptionEntity = ConsumptionEntity(
     id = id,
     drinkType = drinkType.name,
     volume = volume,
+    hydrationVolume = hydrationVolume,
     timestamp = timestamp
 )

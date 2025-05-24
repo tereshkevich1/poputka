@@ -21,7 +21,7 @@ class GetTodayConsumptionFlowUseCase @Inject constructor(
         return repository.getForPeriodFlow(startOfDay, endOfDay)
             .map { list ->
                 val totalMl = list.sumOf { it.volume }
-                val totalHydroMl = list.sumOf { it.volume * it.drinkType.hydration / 100 }
+                val totalHydroMl = list.sumOf { it.hydrationVolume }
                 DayConsumptionSummary(
                     totalMl = totalMl,
                     totalHydroMl = totalHydroMl,

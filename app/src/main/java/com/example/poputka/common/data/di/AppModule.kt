@@ -76,7 +76,7 @@ object AppModule {
                     super.onCreate(connection)
                     ioThread {
                         instance.notificationsDao().upsertNotifications(notifications)
-                        instance.consumptionDao().upsertAll(generateConsumptionData())
+                        instance.consumptionDao().upsertConsumption(generateConsumptionData())
                     }
                 }
             }
